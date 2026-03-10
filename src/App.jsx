@@ -1,14 +1,16 @@
 import './App.css'
+import React from 'react';
+import { AppProvider } from './providers'
+import ProductFinder from './pages/ProductFinder';
 
-function App() {
+function App({ PFShopId, PFShopDomain }) {
 
+  console.log("call")
   return (
     <>
-      <div className="flex items-center justify-center">
-        <h1 className="text-xl font-bold text-blue-600">
-          Product Finder
-        </h1>
-      </div>
+      <AppProvider>
+        <ProductFinder />
+      </AppProvider>
     </>
   )
 }

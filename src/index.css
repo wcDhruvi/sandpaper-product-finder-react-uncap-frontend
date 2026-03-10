@@ -1,2 +1,73 @@
-@import "tailwindcss";
+/* =====================================================
+   ROOT VARIABLES
+===================================================== */
 
+:root {
+    --Surface-White: #FFFFFF;
+    --Grey-Grey-300: #D8D8D8;
+    --Content-Disabled: #7F7F7F;
+    --Content-Default: #000000;
+    --Gray-Grey-700: #666365;
+
+    --Brand-Secondary: #004890;
+    --brand-accent-2-eyedropped-from-static-site: #F6F6F6;
+
+    --Family-Body: "DIN Pro", sans-serif;
+
+    --Size-Small: 14px;
+    --Line-height-Small: 20px;
+
+    --Size-H6: 18px;
+    --Line-height-H6: 26px;
+}
+
+/* =====================================================
+   FONT
+===================================================== */
+
+@font-face {
+    font-family: "DIN Pro";
+    src: url("/src/assets/fonts/DINPro-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* =====================================================
+   GLOBAL CONTAINER
+===================================================== */
+
+.container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (min-width: 576px) {
+    .container {
+        max-width: 576px;
+    }
+}
+
+@media (min-width: 834px) {
+    .container {
+        max-width: 834px;
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+}
+
+@media (min-width: 1440px) {
+    .container {
+        max-width: 1440px;
+    }
+}
+
+/* =====================================================
+   COMMON FLEX UTILITIES
+===================================================== */
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
