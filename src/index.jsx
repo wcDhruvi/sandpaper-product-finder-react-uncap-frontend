@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelectorAll(".productFinderFilter").forEach((thisSection) => {
       const loadSection = createRoot(thisSection);
       loadSection.render(
-        <App PFShopId={PFShopId} PFShopDomain={PFShopDomain} />
+          <App PFShopId={PFShopId} PFShopDomain={PFShopDomain} />
       )
     })
   } catch (error) {

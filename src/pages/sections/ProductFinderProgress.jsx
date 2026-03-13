@@ -3,7 +3,7 @@ import FinderProgress from "../../components/FinderProgress";
 import { useAppContext } from "../../hooks/useAppContext";
 import FlippingNumber from "../../components/FlippingNumber";
 import IconRefresh from "../../utils/icons/IconRefresh";
-import "../../assets/css/product-finder-progress.css"
+// import "../../assets/css/product-finder-progress.css"
 
 function ProductFinderProgress() {
 
@@ -14,72 +14,70 @@ function ProductFinderProgress() {
         resultsCount
     } = useAppContext();
 
-    const pathname = window.location.pathname;
-
-    const isResults = pathname.startsWith("/product-finder/results/");
-
     return (
         <>
-            <div className=" product-finder-progress-container">
-                <div className="product-finder-progress container">
-                    <button className="refresh-icon-btn lg-refresh-btn" onClick={resetData}>
-                        <IconRefresh />
+
+            <div className="pf-items-center pf-border-t pf-border-b pf-border-[#D8D8D8] pf-bg-white pf-shadow-[0_4px_6px_rgba(0,0,0,0.08)] pf-border-solid pf-border-x-0">
+
+                <div className="pf-flex pf-items-center pf-gap-[20px] pf-w-full pf-mx-auto container lg:max-xl:pf-pr-0">
+
+                    {/* Refresh button */}
+                    <button
+                        className="pf-flex pf-w-[40px] pf-h-[40px] pf-min-w-[40px]
+                                    pf-items-center pf-justify-center
+                                    pf-bg-[#F6F6F6]
+                                    pf-border-none
+                                    pf-group
+                                    pf-shrink-0
+                                    max-lg:pf-hidden"
+                        onClick={() => resetData()}
+                    >
+                        <span className="pf-transition-transform pf-duration-300 group-hover:pf-rotate-180">
+                            <IconRefresh />
+                        </span>
                     </button>
 
                     <FinderProgress />
 
                     {material === "Belts" ? (
 
-                        <div className="results-wrapper lg-results-wrapper">
+                        <div className="pf-bg-[#f9fafb] pf-shrink-0 max-lg:pf-hidden lg:pf-w-[160px]">
 
-                            <div className="results-container">
-                                <a href={`/product-finder/results?${getStringifiedQuery()}`}
-                                    className="show-result-text" >
+                            <div className="pf-flex pf-items-center pf-justify-center pf-py-[8px] lg:pf-w-[160px] lg:pf-h-[120px] lg:pf-p-[12px]">
+
+                                <a
+                                    href={`/product-finder/results?${getStringifiedQuery()}`}
+                                    className="pf-text-[#004890] pf-font-bold pf-underline"
+                                >
                                     Show results
                                 </a>
-                            </div>
 
-                        </div>) :
-                        <div className="countdown-timer-box lg-countdown-time">
-                            <div className="countdown-timer">
-                                <p className="product-found-text">
+                            </div>
+                        </div>
+
+                    ) : (
+
+                        <div className="pf-flex pf-px-[12px] pf-py-[10px] pf-gap-[5px] pf-bg-[#FFE411] pf-shrink-0 max-lg:pf-hidden">
+
+                            <div className="pf-flex pf-flex-col pf-gap-[5px]">
+
+                                <p className="pf-m-0 pf-text-[#272727] pf-text-[12px] pf-leading-[18px]">
                                     Product found:
                                 </p>
 
                                 <FlippingNumber num={resultsCount} />
-                                <a className="show-result-text">
+
+                                <a className="pf-text-[#004890] pf-text-[12px] pf-leading-[18px] pf-font-bold pf-underline">
                                     Show Results
                                 </a>
 
                             </div>
-                        </div>}
 
+                        </div>
+
+                    )}
                 </div>
             </div>
-
-            {material === "Belts" ? <div className="results-wrapper sm-results-wrapper">
-                <div className="results-container container">
-                    <a href={`/product-finder/results?${getStringifiedQuery()}`}
-                        className="show-result-text" >
-                        Show results
-                    </a>
-                </div>
-
-            </div> : <div className="sm-countdown-time-box">
-                <div className=" container ">
-                    <div className="sm-countdown-time">
-                        <p className="sm-product-found-text">
-                            Product found:
-                        </p>
-
-                        <FlippingNumber num={resultsCount} />
-
-                        <a className="sm-show-result-text">
-                            Show Results
-                        </a>
-                    </div>
-                </div>
-            </div>}
         </>
     );
 }

@@ -5,6 +5,7 @@ import React, {
   useRef,
   useCallback
 } from "react";
+import { useNavigate } from "react-router-dom";
 
 import qs from "qs";
 
@@ -23,7 +24,10 @@ import {
   backing_materials_rolls,
   backing_materials_sheets,
   backing_materials_belts,
-  defaultAppValue
+  defaultAppValue,
+  apiService,
+  PFShopDomain,
+  baseUrl
 } from "../utils/Constent";
 
 /* -----------------------------------------
@@ -63,6 +67,7 @@ const AppProvider = ({ children }) => {
   const [filtersLoading, setFiltersLoading] = useState(false);
 
   const firstRun = useRef(true);
+  const navigate = useNavigate();
 
   /* -----------------------------------------
      INITIAL LOAD
@@ -138,6 +143,21 @@ const AppProvider = ({ children }) => {
 
   }, [pickedData]);
 
+
+  useEffect(() => {
+
+    if (!step) return;
+
+    const q = getStringifiedQuery();
+
+    let path = baseUrl;
+
+    if (step === "inquire") path = `${baseUrl}/inquire`;
+    if (step === "results") path = `${baseUrl}/results`;
+
+    navigate(`${path}?${q}&step=${step}`, { replace: false });
+
+  }, [step, getStringifiedQuery, navigate]);
   /* -----------------------------------------
      SEARCH BODY
   ----------------------------------------- */
@@ -174,22 +194,20 @@ const AppProvider = ({ children }) => {
 
     const body = prepareSearchBody();
 
+    console.log("body", body)
     setFiltersLoading(true);
 
     try {
+      const payload = { shop: PFShopDomain }
 
-      const res = await fetch("/api/search", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(body)
-      });
+      console.log("payload", payload)
+      const res = await apiService.getFilter(payload)
 
-      const data = await res.json();
+      if (res.apiStatus == 200) {
 
-      setResultsCount(data?.total || 0);
-      setAvailableFilters(data?.filters || defaultAvailableFilters);
+        setResultsCount(res?.total || 0);
+        setAvailableFilters(res?.filters || defaultAvailableFilters);
+      }
 
     } catch (error) {
 
@@ -203,9 +221,9 @@ const AppProvider = ({ children }) => {
 
   }, [prepareSearchBody]);
 
-  // useEffect(() => {
-  //   fetchResults();
-  // }, [pickedData, fetchResults]);
+  useEffect(() => {
+    fetchResults();
+  }, [pickedData, fetchResults]);
 
   /* -----------------------------------------
      QUERY STRING
@@ -255,24 +273,55 @@ const AppProvider = ({ children }) => {
      DEVICE
   ----------------------------------------- */
 
-  const pickDevice = (device) => {
+  const pickDevice = (device, switchMaterial = true, switchSize = true) => {
+    setSelectedFilters('');
 
-    setSelectedFilters("");
+    let material = pickedData?.material;
 
-    setPickedData((prev) => ({
-      ...prev,
-      device,
-      size: "",
-      thickness: "",
-      application: [],
-      attachment: "",
-      center_hole: "",
-      center_hole_size: "",
-      vented_hole: ""
-    }));
+    setPickedData((draft) => {
+      if (draft.device !== device) {
+        if (switchSize) {
+          draft.size = '';
+          draft.thickness = '';
+        }
 
-    setStep("size");
+        draft.application = [];
+        draft.attachment = '';
+        draft.center_hole = '';
+        draft.center_hole_size = '';
+        draft.vented_hole = '';
 
+        if (switchMaterial) {
+          draft.material = '';
+        }
+      }
+
+      draft.device = device;
+
+      if (switchMaterial && devices?.[device]?.material) {
+        draft.material = devices[device].material;
+      }
+
+      return draft;
+    });
+
+    if (switchMaterial) {
+      if (devices?.[device]?.material) {
+        material = devices[device].material;
+      } else {
+        material = '';
+      }
+    }
+
+    let nextStep = 'size';
+
+    if (material === '' && device === 'Hand Sanding') {
+      nextStep = 'specmaterial';
+    } else if (material === 'Sponges' && device === 'Hand Sanding') {
+      nextStep = 'thickness';
+    }
+
+    pickStep(nextStep);
   };
 
   /* -----------------------------------------
@@ -441,8 +490,7 @@ const AppProvider = ({ children }) => {
 
     const query = getStringifiedQuery();
 
-    window.location.href =
-      `/pages/product-finder/results/?${query}&page=${page}`;
+    navigate(`${baseUrl}/results/?${query}&page=${page}`)
 
   };
 
@@ -462,15 +510,16 @@ const AppProvider = ({ children }) => {
      RESET
   ----------------------------------------- */
 
-  const resetData = () => {
+  const resetData = (redirect = baseUrl) => {
 
     setPickedData({});
     setSelectedFilters("");
     setStep("");
 
-    localStorage.removeItem("pf-data");
+    navigate(redirect);
 
   };
+  
 
   const replaceData = (data) => {
     setPickedData(data);

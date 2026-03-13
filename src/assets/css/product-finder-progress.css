@@ -70,8 +70,9 @@
     display: flex;
     width: 24px;
     height: 24px;
+    min-height: 24px;
+    min-width: 24px;
     justify-content: center;
-    align-items: center;
 
     border-radius: 50%;
     background: var(--brand-accent-2-eyedropped-from-static-site, #F6F6F6);

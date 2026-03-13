@@ -2,15 +2,17 @@ import './App.css'
 import React from 'react';
 import { AppProvider } from './providers'
 import ProductFinder from './pages/ProductFinder';
+import { BrowserRouter } from "react-router-dom";
 
 function App({ PFShopId, PFShopDomain }) {
 
-  console.log("call")
   return (
     <>
-      <AppProvider>
-        <ProductFinder />
-      </AppProvider>
+      <BrowserRouter>
+        <AppProvider>
+          <ProductFinder />
+        </AppProvider>
+      </BrowserRouter>
     </>
   )
 }

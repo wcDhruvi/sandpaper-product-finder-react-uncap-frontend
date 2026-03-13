@@ -1,3 +1,13 @@
+import ApiService from "./ApiService";
+
+export const ApiBaseUrl = "https://productfinder.sandpaper.com/api"
+
+export const baseUrl = "/pages/product-finder"
+
+export const apiService = ApiService();
+export const PFShopId = window.PFStoreDetails.shopId;
+export const PFShopDomain = window.PFStoreDetails.shopDomain;
+
 export const materials = {
     Discs: {
         'Shape Description': [
@@ -360,57 +370,57 @@ export const defaultAppValue = {
     filtersLoading: false,
     selectedFilters: '',
     availableFilters: {},
-    setStep: (step)=>{},
-    getSizes: ()=>{
+    setStep: (step) => { },
+    getSizes: () => {
         return [];
     },
-    getThicknesses: ()=>{
+    getThicknesses: () => {
         return [];
     },
-    getAttachments: ()=>{
+    getAttachments: () => {
         return [];
     },
-    getCenterHoles: ()=>{
+    getCenterHoles: () => {
         return [];
     },
-    getCenterHoleSizes: ()=>{
+    getCenterHoleSizes: () => {
         return {};
     },
-    getOtherCenterHoleSizes: ()=>{
+    getOtherCenterHoleSizes: () => {
         return {};
     },
-    getVentedHoles: ()=>{
+    getVentedHoles: () => {
         return [];
     },
-    getBackingMaterials: ()=>{
+    getBackingMaterials: () => {
         return [];
     },
-    getStringifiedQuery: (data)=>{
+    getStringifiedQuery: (data) => {
         return '';
     },
-    pickStep: (step)=>{},
-    pickMaterial: function(material) {
+    pickStep: (step) => { },
+    pickMaterial: function (material) {
         let switch_device = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : true;
     },
-    pickDevice: function(device) {
+    pickDevice: function (device) {
         let switch_material = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : true, switch_size = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : true;
     },
-    pickSize: (width, height)=>{},
-    pickAttachment: (attachment)=>{},
-    pickCenterHole: (hole)=>{},
-    pickCenterHoleSize: (hole)=>{},
-    pickVentedHole: (hole)=>{},
-    pickApplication: (application)=>{},
-    pickBackingMaterial: (mat)=>{},
-    pickThickness: (thick)=>{},
-    pickAdditionalFilters: (filters)=>{},
-    pickPage: (page)=>{},
-    loadProductInfo: (sku)=>{
-        return new Promise((resolve, reject)=>{});
+    pickSize: (width, height) => { },
+    pickAttachment: (attachment) => { },
+    pickCenterHole: (hole) => { },
+    pickCenterHoleSize: (hole) => { },
+    pickVentedHole: (hole) => { },
+    pickApplication: (application) => { },
+    pickBackingMaterial: (mat) => { },
+    pickThickness: (thick) => { },
+    pickAdditionalFilters: (filters) => { },
+    pickPage: (page) => { },
+    loadProductInfo: (sku) => {
+        return new Promise((resolve, reject) => { });
     },
-    resetData: (redirect)=>{},
-    replaceData: (data)=>{},
-    resetSomeData: (key)=>{}
+    resetData: (redirect) => { },
+    replaceData: (data) => { },
+    resetSomeData: (key) => { }
 };
 
 

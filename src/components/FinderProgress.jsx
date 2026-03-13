@@ -10,17 +10,12 @@ import useProgressSteps from "../hooks/useProgressSteps";
 function FinderProgress() {
 
   const {
-    step,
     device,
     initialized,
     resetData,
-    getStringifiedQuery
   } = useAppContext();
 
   const [currentStep, nextSteps] = useProgressSteps();
-
-  const pathname = window.location.pathname;
-  const isResults = pathname.startsWith("/product-finder/results/");
 
   if (!initialized) {
     return null;
@@ -28,7 +23,7 @@ function FinderProgress() {
 
   return (
     <>
-      <div className="finder-progress-section ">
+      <div className="pf-flex pf-items-center xl:pf-gap-[20px] lg:pf-gap-[15px] lg:pf-flex-nowrap pf-flex-1 pf-min-w-0 max-lg:pf-hidden pf-justify-center">
         {nextSteps.map((nextStep, i) => {
 
           if (nextStep.step === "1") {
@@ -93,32 +88,45 @@ function FinderProgress() {
       </div>
 
 
-      <div className="sm-finder-progress-section">
-        <div className="progress-circle-div">
+      {/* MOBILE PROGRESS */}
+      <div className="pf-flex pf-w-full pf-px-[15px] pf-py-[10px] pf-gap-[15px] lg:pf-hidden">
+
+
+        {/* Circle */}
+        <div className="pf-w-[60px] pf-h-[60px] pf-flex-shrink-0">
           <ProgressCircle
             current={currentStep}
             total={nextSteps.length}
           />
         </div>
-        <div className="sm-step-div">
-          <div className="sm-current-step" >
+
+        {/* Step Text */}
+        <div className="pf-flex pf-items-center pf-gap-[10px] pf-flex-[1_0_0]">
+
+          <div className="pf-text-[#000] pf-text-[14px] pf-leading-[22px] pf-font-bold">
             {currentStep > 1 ? nextSteps[currentStep - 1].title : ""}
           </div>
 
-          <div className="sm-next-step">
+          <div className="pf-flex-[1_0_0] pf-text-[#7F7F7F] pf-text-[14px] pf-leading-[22px] pf-font-normal">
 
             {currentStep < nextSteps.length ? (
-              <span >
-                Next:  {nextSteps[currentStep].title}
-                </span>
+              <span>
+                Next: {nextSteps[currentStep].title}
+              </span>
             ) : (
               <span>Final step</span>
             )}
 
           </div>
-          <button className="refresh-icon-btn sm-refresh-btn" onClick={resetData}>
+
+          {/* Refresh */}
+          <button
+            className="pf-flex pf-w-[40px] pf-h-[40px] pf-min-w-[40px] pf-items-center pf-justify-center pf-bg-[#F6F6F6] sm:pf-flex"
+            onClick={() => resetData()}
+          >
             <IconRefresh />
           </button>
+
         </div>
       </div>
     </>

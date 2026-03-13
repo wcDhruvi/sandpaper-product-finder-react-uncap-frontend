@@ -2,13 +2,16 @@ import React from "react";
 import SizeFormat from "./SizeFormat";
 import { useAppContext } from "../hooks/useAppContext";
 import ThickIcon from "../utils/icons/TickIcon";
+import { Link, useLocation } from "react-router-dom";
+import { baseUrl } from "../utils/Constent";
 
 function StepCircle({ title, index, step, num }) {
 
   const { pickedData, getStringifiedQuery } = useAppContext();
+  const location = useLocation();
 
-  const params = new URLSearchParams(window.location.search);
-  const pathname = window.location.pathname;
+  const params = new URLSearchParams(location.search);
+  const pathname = location.pathname;
 
   const currentStep = params.get("step") || "";
   const isResults = pathname === "/product-finder/results/";
@@ -23,72 +26,97 @@ function StepCircle({ title, index, step, num }) {
   const url = getStringifiedQuery() + "&step=" + step;
 
   return (
-    <a
-      href={"/pages/product-finder/?" + url}
-      data-step={step}
-      className={`finder-step 
-        ${isCurrent ? "finder-step-current" : ""} 
-        ${isPicked && !isCurrent ? "finder-step-completed" : ""}`}
-    >
-      {!isResults && (
-        <span className="finder-step-circle">
-          <span className={isPicked && !isCurrent ? "hidden" : ""}>
-            {num}
+    <>
+      <Link
+        to={`${baseUrl}?` + url}
+        data-step={step}
+        className="pf-flex pf-items-center pf-gap-[10px] pf-no-underline pf-group"
+      >
+
+        {!isResults && (
+
+          <span
+            className={`
+            pf-flex  pf-justify-center
+            pf-w-[24px] pf-h-[24px]
+            pf-min-w-[24px] pf-min-h-[24px]
+            pf-rounded-full
+            pf-text-[14px] pf-font-bold pf-leading-[20px]
+            pf-transition-all pf-duration-200
+            
+            ${isPicked && !isCurrent
+                ? "pf-bg-[#004890] pf-text-white pf-items-center"
+                : isCurrent
+                  ? "pf-border-solid pf-border pf-border-[#004890] pf-bg-transparent pf-text-[#004890]"
+                  : "pf-bg-[#F6F6F6] pf-text-[#7F7F7F] group-hover:pf-border-solid group-hover:pf-border group-hover:pf-border-[#004890] group-hover:pf-text-[#004890] group-hover:pf-bg-transparent"
+              }
+          `}
+          >
+            {isPicked && !isCurrent ? <ThickIcon /> : num}
           </span>
 
-          {isPicked && !isCurrent && <ThickIcon />}
-        </span>
-      )}
+        )}
 
-      <span className="finder-step-content">
+        <span className="pf-flex pf-flex-col pf-gap-[2px]">
 
-        <span
-          className="finder-step-title"
+          <span
+            className={`
+            pf-text-[14px] pf-font-bold pf-leading-[20px]
+            pf-transition-colors
+    pf-break-words pf-break-normal
 
-        >
-          {title}
-        </span>
+            ${isCurrent
+                ? "pf-text-[#004890]"
+                : isPicked
+                  ? "pf-text-[#666365] group-hover:pf-text-[#004890]"
+                  : "pf-text-[#7F7F7F]"
+              }
 
-        <span className="finder-step-value">
+            ${!isPicked ? "group-hover:pf-text-[#004890]" : ""}
+          `}
+          >
+            {title}
+          </span>
 
-          {step === "size" && (
-            <>
-              {pickedData?.material === "Rolls" && pickedData?.size ? (
-                <SizeFormat
-                  size={`${pickedData.size}x${pickedData.size_height}m`}
-                />
-              ) : pickedData?.size ? (
-                <SizeFormat
-                  size={
-                    pickedData.size +
-                    (pickedData?.size_height
-                      ? "x" + pickedData.size_height
-                      : "")
-                  }
-                />
-              ) : null}
+          <span className="pf-text-black pf-text-[18px] pf-font-bold pf-leading-[26px] pf-break-words pf-break-normal">
 
-            </>
-          )}
-
-          {step === "application" && pickedData?.application && (
-            <>
-              {pickedData.application.length} selected
-            </>
-          )}
-
-          {step !== "size" &&
-            step !== "application" &&
-            pickedData?.[index] && (
+            {step === "size" && (
               <>
-                {pickedData[index]}
+                {pickedData?.material === "Rolls" && pickedData?.size ? (
+                  <SizeFormat size={`${pickedData.size}x${pickedData.size_height}m`} />
+                ) : pickedData?.size ? (
+                  <SizeFormat
+                    size={
+                      pickedData.size +
+                      (pickedData?.size_height
+                        ? "x" + pickedData.size_height
+                        : "")
+                    }
+                  />
+                ) : null}
               </>
             )}
 
+            {step === "application" && pickedData?.application && (
+              <>
+                {pickedData.application.length} selected
+              </>
+            )}
+
+            {step !== "size" &&
+              step !== "application" &&
+              pickedData?.[index] && (
+                <>
+                  {pickedData[index]}
+                </>
+              )}
+
+          </span>
+
         </span>
 
-      </span>
-    </a>
+      </Link>
+    </>
   );
 }
 

@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 /* =====================================================
    ROOT VARIABLES
 ===================================================== */
@@ -25,16 +28,19 @@
    FONT
 ===================================================== */
 
-@font-face {
+/* @font-face {
     font-family: "DIN Pro";
     src: url("/src/assets/fonts/DINPro-Regular.woff2") format("woff2");
     font-weight: 400;
     font-style: normal;
-}
+} */
 
 /* =====================================================
    GLOBAL CONTAINER
 ===================================================== */
+* {
+    font-family: var(--Family-Body, "Din Pro");
+}
 
 .container {
     width: 100%;
@@ -50,7 +56,7 @@
 
 @media (min-width: 834px) {
     .container {
-        max-width: 834px;
+        max-width: var(--grid-width-row, 1380px);
         padding-left: 24px;
         padding-right: 24px;
     }
@@ -71,3 +77,68 @@
     align-items: center;
     justify-content: center;
 }
+
+
+
+/* ================================
+   PRODUCT FINDER COMMON CLASSES
+================================ */
+
+@layer components {
+
+    .pf-option-section {
+      @apply pf-flex pf-flex-col pf-items-center pf-gap-[30px] xl:pf-px-[170px] pf-self-stretch ;
+    }
+  
+    .pf-option-title {
+      @apply pf-text-black pf-text-center pf-font-bold pf-text-[18px] pf-leading-[24px] md:pf-text-[24px] md:pf-leading-[32px];
+    }
+  
+    .pf-section-main-heading {
+      @apply pf-text-black pf-text-center pf-font-bold pf-text-[28px] pf-leading-[36px] md:pf-text-[36px] md:pf-leading-[44px] lg:pf-text-[42px] lg:pf-leading-[50px];
+    }
+  
+    .pf-small-text1 {
+      @apply pf-text-black pf-text-[12px] pf-leading-[18px] pf-m-0;
+    }
+
+
+  
+  }
+
+  .pf-section-spacing-padding {
+
+    padding-top: 50px;
+    padding-bottom: 50px;
+    background: var(--Surface-Grey, #F6F6F6);
+  }
+  
+  .pf-section-main {
+    max-width: var(--grid-width-row, 1380px);
+  }
+  
+  @media only screen and (min-width: 768px) {
+    .pf-section-spacing-padding {
+      padding-top: 80px;
+      padding-bottom: 200px;
+    }
+  }
+  
+  .pf-section-row {
+    max-width: var(--grid-width-row, 1380px);
+    display: flex;
+    padding-left: 15px;
+    padding-right: 15px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+    align-self: stretch;
+  
+  }
+  
+  @media only screen and (min-width: 768px) {
+    .pf-section-row {
+      padding-left: 80px;
+      padding-right: 80px;
+    }
+  }
