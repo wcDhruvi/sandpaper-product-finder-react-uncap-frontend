@@ -17,9 +17,9 @@ function ProductFinderProgress() {
     return (
         <>
 
-            <div className="pf-items-center pf-border-t pf-border-b pf-border-[#D8D8D8] pf-bg-white pf-shadow-[0_4px_6px_rgba(0,0,0,0.08)] pf-border-solid pf-border-x-0">
+            <div className="pf-items-center pf-flex pf-justify-center pf-border-t pf-border-b pf-border-[#D8D8D8] pf-bg-white pf-shadow-[0_4px_6px_rgba(0,0,0,0.08)] pf-border-solid pf-border-x-0">
 
-                <div className="pf-flex pf-items-center pf-gap-[20px] pf-w-full pf-mx-auto container lg:max-xl:pf-pr-0">
+                <div className="pf-flex pf-items-center pf-gap-[20px] pf-w-full container lg:max-xl:pf-pr-0">
 
                     {/* Refresh button */}
                     <button

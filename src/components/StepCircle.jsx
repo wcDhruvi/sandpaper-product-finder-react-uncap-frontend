@@ -14,7 +14,7 @@ function StepCircle({ title, index, step, num }) {
   const pathname = location.pathname;
 
   const currentStep = params.get("step") || "";
-  const isResults = pathname === "/product-finder/results/";
+  const isResults = pathname === `${baseUrl}/results/`;
 
   const isCurrent = currentStep === step;
 
@@ -78,7 +78,7 @@ function StepCircle({ title, index, step, num }) {
             {title}
           </span>
 
-          <span className="pf-text-black pf-text-[18px] pf-font-bold pf-leading-[26px] pf-break-words pf-break-normal">
+          <span className={`pf-text-[18px] pf-font-bold pf-leading-[26px] pf-break-words pf-break-normal ${isCurrent ? 'pf-text-[#004890]' : 'pf-text-black'}`}>
 
             {step === "size" && (
               <>

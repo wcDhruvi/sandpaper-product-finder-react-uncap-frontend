@@ -70,7 +70,7 @@ const ProductFinder = () => {
 
                     <div className="pf-section-row">
                     {(currentStep === '1' || currentStep === '') && <MaterialPicker />}
-                        
+                    {(currentStep === 'size') && <MaterialPicker />}
                     </div>
                 </div>
             </div>

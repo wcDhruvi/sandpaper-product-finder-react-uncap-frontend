@@ -17,13 +17,16 @@ function FinderProgress() {
 
   const [currentStep, nextSteps] = useProgressSteps();
 
+  console.log("currentStep",currentStep)
+  console.log("nextSteps",nextSteps)
+
   if (!initialized) {
     return null;
   }
 
   return (
     <>
-      <div className="pf-flex pf-items-center xl:pf-gap-[20px] lg:pf-gap-[15px] lg:pf-flex-nowrap pf-flex-1 pf-min-w-0 max-lg:pf-hidden pf-justify-center">
+      <div className="pf-flex pf-items-center xl:pf-gap-[20px] lg:pf-gap-[15px] pf-flex-wrap xl:pf-flex-nowrap pf-flex-1 pf-min-w-0 max-lg:pf-hidden pf-justify-center ">
         {nextSteps.map((nextStep, i) => {
 
           if (nextStep.step === "1") {
