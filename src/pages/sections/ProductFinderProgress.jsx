@@ -3,7 +3,6 @@ import FinderProgress from "../../components/FinderProgress";
 import { useAppContext } from "../../hooks/useAppContext";
 import FlippingNumber from "../../components/FlippingNumber";
 import IconRefresh from "../../utils/icons/IconRefresh";
-// import "../../assets/css/product-finder-progress.css"
 
 function ProductFinderProgress() {
 

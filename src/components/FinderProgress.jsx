@@ -15,10 +15,13 @@ function FinderProgress() {
     resetData,
   } = useAppContext();
 
-  const [currentStep, nextSteps] = useProgressSteps();
+  const { currentStep, nextSteps } = useProgressSteps();
 
-  console.log("currentStep",currentStep)
-  console.log("nextSteps",nextSteps)
+
+
+
+  console.log("currentStep", currentStep)
+  console.log("nextSteps", nextSteps)
 
   if (!initialized) {
     return null;
@@ -26,7 +29,7 @@ function FinderProgress() {
 
   return (
     <>
-      <div className="pf-flex pf-items-center xl:pf-gap-[20px] lg:pf-gap-[15px] pf-flex-wrap xl:pf-flex-nowrap pf-flex-1 pf-min-w-0 max-lg:pf-hidden pf-justify-center ">
+      <div className="pf-flex pf-items-center xl:pf-gap-[20px] lg:pf-gap-[15px] pf-flex-wrap xl:pf-flex-nowrap pf-flex-1 pf-min-w-0 max-lg:pf-hidden pf-justify-around ">
         {nextSteps.map((nextStep, i) => {
 
           if (nextStep.step === "1") {
@@ -92,7 +95,7 @@ function FinderProgress() {
 
 
       {/* MOBILE PROGRESS */}
-      <div className="pf-flex pf-w-full pf-px-[15px] pf-py-[10px] pf-gap-[15px] lg:pf-hidden">
+      <div className="pf-flex pf-w-full pf-px-[15px] pf-py-[10px] pf-gap-[15px] lg:pf-hidden pf-items-center pf-gap-[10px]">
 
 
         {/* Circle */}
@@ -104,7 +107,7 @@ function FinderProgress() {
         </div>
 
         {/* Step Text */}
-        <div className="pf-flex pf-items-center pf-gap-[10px] pf-flex-[1_0_0]">
+        <div className="pf-flex pf-gap-[2px] pf-flex-[1_0_0] pf-flex-col">
 
           <div className="pf-text-[#000] pf-text-[14px] pf-leading-[22px] pf-font-bold">
             {currentStep > 1 ? nextSteps[currentStep - 1].title : ""}
@@ -122,15 +125,16 @@ function FinderProgress() {
 
           </div>
 
-          {/* Refresh */}
-          <button
-            className="pf-flex pf-w-[40px] pf-h-[40px] pf-min-w-[40px] pf-items-center pf-justify-center pf-bg-[#F6F6F6] sm:pf-flex"
-            onClick={() => resetData()}
-          >
-            <IconRefresh />
-          </button>
+
 
         </div>
+        {/* Refresh */}
+        <button
+          className="pf-flex pf-w-[40px] pf-h-[40px] pf-min-w-[40px] pf-items-center pf-justify-center pf-bg-[#F6F6F6] sm:pf-flex"
+          onClick={() => resetData()}
+        >
+          <IconRefresh />
+        </button>
       </div>
     </>
   );

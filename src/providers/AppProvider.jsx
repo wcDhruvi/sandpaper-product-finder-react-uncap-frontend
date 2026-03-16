@@ -6,7 +6,8 @@ import React, {
   useCallback
 } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { configuration_namespaceObject } from "../utils/Constent"
+import { sizeSorter, unique } from "../utils/Common"
 import qs from "qs";
 
 /* -----------------------------------------
@@ -65,6 +66,7 @@ const AppProvider = ({ children }) => {
   const [selectedFilters, setSelectedFilters] = useState("");
 
   const [filtersLoading, setFiltersLoading] = useState(false);
+  const sizes = configuration_namespaceObject.L;
 
   const firstRun = useRef(true);
   const navigate = useNavigate();
@@ -164,9 +166,12 @@ const AppProvider = ({ children }) => {
 
   const prepareSearchBody = useCallback(() => {
 
+    console.log("window.location.search", window.location.search)
     const params = qs.parse(window.location.search, {
       ignoreQueryPrefix: true
     });
+
+    console.log("params", params)
 
     if (Object.keys(pickedData).length) {
       return {
@@ -182,23 +187,44 @@ const AppProvider = ({ children }) => {
       withfilters: 1
     };
 
-  }, [pickedData]);
+  }, [pickedData, window.location.search]);
 
   /* -----------------------------------------
      FETCH RESULTS
   ----------------------------------------- */
 
+  const getPayload = () => {
+    const body = prepareSearchBody();
+
+    const { material, ...restBody } = body;
+
+    const shapeDescriptions =
+      materials?.[material]?.["Shape Description"] ?? [];
+
+
+
+    return {
+      shop: PFShopDomain,
+      ...restBody,
+      shape_description: shapeDescriptions,
+      dim_1_description_fraction: restBody?.size,
+      dim_2_description_fraction: restBody?.size_height,
+      machine: restBody?.device
+    };
+  };
+
   const fetchResults = useCallback(async () => {
 
     if (firstRun.current) return;
 
-    const body = prepareSearchBody();
+    // const body = prepareSearchBody();
 
-    console.log("body", body)
+
     setFiltersLoading(true);
 
     try {
-      const payload = { shop: PFShopDomain }
+
+      const payload = getPayload()
 
       console.log("payload", payload)
       const res = await apiService.getFilter(payload)
@@ -519,7 +545,7 @@ const AppProvider = ({ children }) => {
     navigate(redirect);
 
   };
-  
+
 
   const replaceData = (data) => {
     setPickedData(data);
@@ -544,8 +570,115 @@ const AppProvider = ({ children }) => {
   ----------------------------------------- */
 
   const getSizes = () => {
-    if (!pickedData?.material) return [];
-    return materials[pickedData.material]?.Sizes || [];
+    if (!pickedData) return [];
+
+    const { material: materialName, device } = pickedData;
+
+    /* MATERIAL SELECTED */
+    if (materialName) {
+      const material = materials[materialName];
+      const shapeNames = material?.["Shape Description"] || [];
+
+      /* FILTER BY SHAPE */
+      let results = sizes.filter((s) =>
+        shapeNames.includes(
+          s?.["Shape Description"]?.toLowerCase()
+        )
+      );
+
+      /* DEVICE SELECTED */
+      if (device) {
+        const sizesPerDevice = material?.SizesPerDevice?.[device];
+
+        if (
+          ["Discs", "Sponges", "Belts", "Sheets"].includes(materialName) &&
+          sizesPerDevice
+        ) {
+          const machines =
+            devices?.[device]?.Machine?.map((m) => m.toLowerCase()) || [];
+
+          /* TWO DIMENSION SIZE */
+          if (
+            ["Sponges", "Sheets"].includes(materialName) &&
+            device !== "Disc Orbital Sander"
+          ) {
+            const additionalSizes = results
+              .filter((r) =>
+                machines.includes(r?.Machine?.toLowerCase())
+              )
+              .flatMap((r) =>
+                r?.Sizes
+                  ?.filter((s) => s["Dim 2 Description Fraction"])
+                  .map(
+                    (s) =>
+                      `${s["Dim 1 Description Fraction"]}x${s["Dim 2 Description Fraction"]}`
+                  ) || []
+              );
+
+            const allSizes = unique([
+              ...sizesPerDevice,
+              ...additionalSizes
+            ]);
+
+            return allSizes.sort(sizeSorter);
+          }
+
+          /* ONE DIMENSION SIZE */
+          const additionalSizes = results
+            .filter((r) =>
+              machines.includes(r?.Machine?.toLowerCase())
+            )
+            .flatMap((r) =>
+              r?.Sizes?.map(
+                (s) => s["Dim 1 Description Fraction"]
+              ) || []
+            );
+
+          const allSizes = unique([
+            ...sizesPerDevice,
+            ...additionalSizes
+          ]);
+
+          return allSizes.sort(sizeSorter);
+        }
+      }
+
+      /* STATIC SIZES */
+      if (Array.isArray(material?.Sizes)) {
+        return material.Sizes;
+      }
+
+      /* DEFAULT SIZE EXTRACTION */
+      return unique(
+        results.flatMap((s) =>
+          s?.Sizes?.map(
+            (size) => size["Dim 1 Description Fraction"]
+          ) || []
+        )
+      ).sort(sizeSorter);
+    }
+
+    /* DEVICE ONLY SELECTED */
+    if (device) {
+      const deviceData = devices?.[device];
+      const machineNames = deviceData?.Machine || [];
+
+      const results = sizes.filter((s) =>
+        machineNames.some((name) =>
+          new RegExp(name, "i").test(s?.Machine)
+        )
+      );
+
+      return unique(
+        results.flatMap((s) =>
+          s?.Sizes?.map(
+            (size) => size["Dim 1 Description Fraction"]
+          ) || []
+        )
+      ).sort(sizeSorter);
+    }
+
+    return [];
   };
 
   const getThicknesses = () => thicknesses || [];

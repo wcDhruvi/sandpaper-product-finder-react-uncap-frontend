@@ -9,6 +9,7 @@ import DeviceNarrowBeltSander from "../../utils/icons/DeviceNarrowBeltSander";
 import DevicePortableBeltSander from "../../utils/icons/DevicePortableBeltSander";
 import DeviceDrumSander from "../../utils/icons/DeviceDrumSander";
 import DeviceHandSanding from "../../utils/icons/DeviceHandSanding";
+import ProgressHeader from "../ProgressHeader";
 
 
 
@@ -31,17 +32,19 @@ function MaterialPicker() {
     <>
 
       {/* HEADER */}
-      <div className="pf-flex pf-flex-col pf-items-center pf-gap-[10px] pf-self-stretch">
+      <ProgressHeader isFirstStep={true}>
+        <div className="pf-flex pf-flex-col pf-items-center pf-gap-[10px] pf-self-stretch pf-w-full">
 
-        <p className="pf-small-text">
-          Not sure what to look for?
-        </p>
+          <p className="pf-small-text">
+            Not sure what to look for?
+          </p>
 
-        <h2 className="pf-section-main-heading">
-          Use our Product Finder
-        </h2>
+          <h2 className="pf-section-main-heading">
+            Use our Product Finder
+          </h2>
 
-      </div>
+        </div>
+      </ProgressHeader>
 
 
       {/* MATERIAL SECTION */}

@@ -103,11 +103,12 @@
   }
 }
 
-@media (min-width: 1536px){
+@media (min-width: 1536px) {
   .container {
     max-width: 1420px;
   }
 }
+
 /* =====================================================
    COMMON FLEX UTILITIES
 ===================================================== */
@@ -135,11 +136,18 @@
   }
 
   .pf-section-main-heading {
-    @apply pf-text-black pf-text-center pf-font-bold pf-text-[28px] pf-leading-[36px] md:pf-text-[36px] md:pf-leading-[44px] lg:pf-text-[42px] lg:pf-leading-[50px];
+    @apply pf-text-black pf-text-center pf-font-bold pf-text-[28px] pf-leading-[36px] md:pf-text-[36px] md:pf-leading-[44px] lg:pf-text-[42px] lg:pf-leading-[50px] pf-mb-0;
   }
 
-  .pf-small-text1 {
+  .pf-small-text {
     @apply pf-text-black pf-text-[12px] pf-leading-[18px] pf-m-0;
+  }
+
+  .pf-sub-section-heading {
+    @apply pf-text-black pf-font-bold pf-text-[18px] pf-leading-[24px] lg:pf-text-[24px] lg:pf-leading-[32px] pf-w-full pf-mb-0;
+
+    font-family: var(--Family-Title, "Din Pro");
+    text-align: center;
   }
 
 
