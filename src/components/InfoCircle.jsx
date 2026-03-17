@@ -16,7 +16,7 @@ function InfoCircle({ onClick, text }) {
             <Questionmark />
 
             {text && (
-                <SpecPopup className="pf-text-left pf-max-w-[392px]">
+                <SpecPopup className="pf-text-left sm:pf-max-w-[392px]">
                     <div dangerouslySetInnerHTML={{ __html: text }} />
                 </SpecPopup>
             )}

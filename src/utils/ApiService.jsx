@@ -7,12 +7,14 @@ const instance = axios.create();
 const ApiService = () => {
     const baseUrl = ApiBaseUrl;
 
-    const fetchData = async (method, url, data, isFormData, header) => {
+    const fetchData = async (method, url, data, isFormData, header, options = {}) => {
         const config = {
             headers: {
                 ...(header || {}),
                 "content-type": isFormData ? "multipart/form-data" : "application/json",
-            }
+
+            },
+            signal: options?.signal
         };
 
         let result = '';
@@ -35,20 +37,25 @@ const ApiService = () => {
 
     // //----------------------------API-Methods-----------------------------//
 
-    const getData = async (url, header) => await fetchData('get', url, null, false, header);
+    const getData = async (url, header, options) =>
+        await fetchData('get', url, null, false, header, options);
 
-    const postData = async (url, data, isFormData, header) => await fetchData('post', url, data, isFormData, header);
+    const postData = async (url, data, isFormData, header, options) =>
+        await fetchData('post', url, data, isFormData, header, options);
 
-    const putData = async (url, data, isFormData, header) => await fetchData('put', url, data, isFormData, header);
+    const putData = async (url, data, isFormData, header, options) =>
+        await fetchData('put', url, data, isFormData, header, options);
 
-    const deleteData = async (url, header) => await fetchData('delete', url, null, false, header);
+    const deleteData = async (url, header, options) =>
+        await fetchData('delete', url, null, false, header, options);
 
     // //---------------------------------------------------------------------//
 
 
     //--------------------------------API----------------------------------//
     return {
-        getFilter: async (payload) => await postData(`${baseUrl}/product-finder`, payload)
+        getFilter: async (payload, options = {}) =>
+            await postData(`${baseUrl}/product-finder`, payload, false, null, options)
     }
 
 }

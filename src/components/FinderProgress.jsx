@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-
-
 import StepCircle from "./StepCircle";
 import ProgressCircle from "./ProgressCircle";
 import IconRefresh from "../utils/icons/IconRefresh";
@@ -16,12 +14,6 @@ function FinderProgress() {
   } = useAppContext();
 
   const { currentStep, nextSteps } = useProgressSteps();
-
-
-
-
-  console.log("currentStep", currentStep)
-  console.log("nextSteps", nextSteps)
 
   if (!initialized) {
     return null;

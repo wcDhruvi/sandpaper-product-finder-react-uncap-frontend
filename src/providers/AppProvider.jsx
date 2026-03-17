@@ -5,7 +5,7 @@ import React, {
   useRef,
   useCallback
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { configuration_namespaceObject } from "../utils/Constent"
 import { sizeSorter, unique } from "../utils/Common"
 import qs from "qs";
@@ -69,7 +69,9 @@ const AppProvider = ({ children }) => {
   const sizes = configuration_namespaceObject.L;
 
   const firstRun = useRef(true);
+  const abortControllerRef = useRef(null);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   /* -----------------------------------------
      INITIAL LOAD
@@ -93,7 +95,7 @@ const AppProvider = ({ children }) => {
       }
     }
 
-    const params = qs.parse(window.location.search, {
+    const params = qs.parse(searchParams?.toString(), {
       ignoreQueryPrefix: true
     });
 
@@ -133,6 +135,17 @@ const AppProvider = ({ children }) => {
 
   }, []);
 
+  useEffect(() => {
+    const urlStep = searchParams.get('step');
+    if (typeof urlStep === 'string') {
+      setStep(urlStep || '');
+    } else {
+      setStep('');
+    }
+  }, [
+    searchParams
+  ]);
+
   /* -----------------------------------------
      SAVE LOCAL STORAGE
   ----------------------------------------- */
@@ -166,12 +179,9 @@ const AppProvider = ({ children }) => {
 
   const prepareSearchBody = useCallback(() => {
 
-    console.log("window.location.search", window.location.search)
-    const params = qs.parse(window.location.search, {
+    const params = qs.parse(searchParams?.toString(), {
       ignoreQueryPrefix: true
     });
-
-    console.log("params", params)
 
     if (Object.keys(pickedData).length) {
       return {
@@ -187,7 +197,7 @@ const AppProvider = ({ children }) => {
       withfilters: 1
     };
 
-  }, [pickedData, window.location.search]);
+  }, [pickedData, searchParams]);
 
   /* -----------------------------------------
      FETCH RESULTS
@@ -196,7 +206,7 @@ const AppProvider = ({ children }) => {
   const getPayload = () => {
     const body = prepareSearchBody();
 
-    const { material, size, size_height, ...restBody } = body;
+    const { material, size, size_height, vented_hole, ...restBody } = body;
 
     const shapeDescriptions =
       materials?.[material]?.["Shape Description"] ?? [];
@@ -221,46 +231,62 @@ const AppProvider = ({ children }) => {
       shop: PFShopDomain,
       ...restBody,
       shape_description: shapeDescriptions,
-      dim_1_description_fraction: restBody?.size,
-      dim_2_description_fraction: restBody?.size_height,
-      machine: restBody?.device,
-      shape: attachmentValues
+      dim_1_description_fraction: size || "",
+      dim_2_description_fraction: size_height || "",
+      machine: restBody?.device || "",
+      shape: attachmentValues,
+      dim_3_description: vented_hole
     };
   };
 
   const fetchResults = useCallback(async () => {
-
     if (firstRun.current) return;
 
-    // const body = prepareSearchBody();
+    // 🔥 Abort previous request
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
 
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
 
     setFiltersLoading(true);
 
     try {
+      const payload = getPayload();
 
-      const payload = getPayload()
+      console.log("payload", payload);
 
-      console.log("payload", payload)
-      const res = await apiService.getFilter(payload)
+      const res = await apiService.getFilter(payload, {
+        signal: controller.signal, // ✅ pass abort signal
+      });
 
-      if (res.apiStatus == 200) {
-
+      if (res?.apiStatus === 200) {
         setResultsCount(res?.total || 0);
         setAvailableFilters(res?.filters || defaultAvailableFilters);
       }
 
     } catch (error) {
-
+      if (error.name === "AbortError") {
+        // request cancelled → ignore
+        return;
+      }
       console.error(error);
-
     } finally {
-
-      setFiltersLoading(false);
-
+      if (abortControllerRef.current === controller) {
+        setFiltersLoading(false);
+      }
     }
-
   }, [prepareSearchBody]);
+
+  useEffect(() => {
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
+  }, []);
+
 
   useEffect(() => {
     fetchResults();
@@ -401,19 +427,21 @@ const AppProvider = ({ children }) => {
   ----------------------------------------- */
 
   const pickAttachment = (attachment) => {
-
     setSelectedFilters("");
 
-    setPickedData((prev) => ({
-      ...prev,
-      attachment,
-      center_hole: "",
-      center_hole_size: "",
-      vented_hole: ""
-    }));
+    setPickedData((draft) => {
+      draft.attachment = attachment;
+      draft.center_hole = "";
+      draft.center_hole_size = "";
+      draft.vented_hole = "";
+      return draft;
+    });
 
-    setStep("centerhole");
+    const pickedMaterial = pickedData?.material;
 
+    if (pickedMaterial === "Discs") pickStep("centerhole");
+    if (pickedMaterial === "Sheets") pickStep("ventedhole");
+    if (pickedMaterial === "Rolls") pickStep("application");
   };
 
   /* -----------------------------------------
@@ -765,11 +793,11 @@ const AppProvider = ({ children }) => {
   }, [pickedData, sizes, materials]);
 
   const getCenterHoles = () => {
-
-    if (!pickedData?.material) return {};
-
-    return materials[pickedData.material]?.["Center Holes"] || {};
-
+    if (pickedData?.material) {
+      const material = materials[pickedData.material];
+      return material?.["Center Holes"] ?? {};
+    }
+    return {};
   };
 
   const getCenterHoleSizes = () => center_hole_sizes;
