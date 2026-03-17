@@ -56,7 +56,7 @@ function ProductFinderProgress() {
 
                     ) : (
 
-                        <div className="pf-flex pf-px-[12px] pf-py-[10px] pf-gap-[5px] pf-bg-[#FFE411] pf-shrink-0 max-lg:pf-hidden">
+                        <div className="pf-flex pf-px-[12px] pf-py-[10px] pf-gap-[5px] pf-bg-uneeda-primary pf-shrink-0 max-lg:pf-hidden">
 
                             <div className="pf-flex pf-flex-col pf-gap-[5px]">
 

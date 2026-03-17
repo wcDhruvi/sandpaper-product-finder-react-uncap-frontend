@@ -150,7 +150,13 @@
     text-align: center;
   }
 
+  .pf-bg-uneeda-primary {
+    @apply pf-bg-[#FFE411]
+  }
 
+  .pf-bg-disable {
+    @apply pf-bg-[#E5E5E5]
+  }
 
 }
 

@@ -6,7 +6,7 @@ const ProgressHeader = ({ title, isFirstStep = false, children }) => {
 
     const showButtons = isFirstStep != true
     return (
-        <div className={`pf-flex pf-items-center pf-justify-between pf-gap-[5px] ${isFirstStep !== true ? "pf-w-full" : ""}`}>
+        <div className={`pf-flex pf-items-center pf-justify-between pf-gap-[5px] pf-flex-wrap ${isFirstStep !== true ? "pf-w-full" : ""}`}>
             <div className={`pf-flex pf-items-center pf-justify-between pf-w-full ${isFirstStep == true ? "pf-hidden sm:pf-inline" : ""}`}>
                 {showButtons && <BackButton />}
                 <div className="pf-hidden sm:pf-inline">{children}</div>

@@ -196,12 +196,26 @@ const AppProvider = ({ children }) => {
   const getPayload = () => {
     const body = prepareSearchBody();
 
-    const { material, ...restBody } = body;
+    const { material, size, size_height, ...restBody } = body;
 
     const shapeDescriptions =
       materials?.[material]?.["Shape Description"] ?? [];
 
+    // ✅ Collect ALL unique attachment values across ALL materials
+    let attachmentValues = [];
 
+    if (restBody?.attachment) {
+      Object.values(materials).forEach((mat) => {
+        const values = mat?.["Attachment Types"]?.[restBody.attachment]?.Values;
+
+        if (values) {
+          attachmentValues.push(...values);
+        }
+      });
+
+      // ✅ Remove duplicates
+      attachmentValues = [...new Set(attachmentValues)];
+    }
 
     return {
       shop: PFShopDomain,
@@ -209,7 +223,8 @@ const AppProvider = ({ children }) => {
       shape_description: shapeDescriptions,
       dim_1_description_fraction: restBody?.size,
       dim_2_description_fraction: restBody?.size_height,
-      machine: restBody?.device
+      machine: restBody?.device,
+      shape: attachmentValues
     };
   };
 
@@ -355,24 +370,30 @@ const AppProvider = ({ children }) => {
   ----------------------------------------- */
 
   const pickSize = (width, height) => {
-
     setSelectedFilters("");
 
-    setPickedData((prev) => ({
-      ...prev,
-      size: width,
-      size_height: height,
-      center_hole: "",
-      center_hole_size: "",
-      vented_hole: "",
-      application: [],
-      attachment: "",
-      backing: "",
-      thickness: ""
-    }));
+    setPickedData((draft) => {
+      draft.size = width;
+      draft.size_height = height;
+      delete draft.center_hole;
+      delete draft.center_hole_size;
+      delete draft.vented_hole;
+      draft.application = [];
+      draft.attachment = "";
+      draft.backing = "";
+      draft.thickness = "";
+      return draft;
+    });
 
-    setStep("attachment");
+    const pickedMaterial = pickedData?.material;
 
+    if (["Discs", "Sheets", "Rolls"].includes(pickedMaterial)) {
+      pickStep("attachment");
+    } else if (pickedMaterial === "Belts") {
+      pickStep("application");
+    } else if (pickedMaterial === "Sponges") {
+      pickStep("thickness");
+    }
   };
 
   /* -----------------------------------------
@@ -683,13 +704,65 @@ const AppProvider = ({ children }) => {
 
   const getThicknesses = () => thicknesses || [];
 
-  const getAttachments = () => {
-
+  const getAttachments = useCallback(() => {
     if (!pickedData?.material) return {};
 
-    return materials[pickedData.material]?.["Attachment Types"] || {};
+    const material = materials[pickedData.material];
 
-  };
+    // clone attachment types
+    let types = {
+      ...material["Attachment Types"],
+    };
+
+    for (let type in types) {
+      types[type] = { ...types[type] };
+    }
+
+    if (pickedData.size) {
+      // get all attachment combinations available for the selected size
+      const specificSizes = sizes
+        .map((shape) => {
+          if (
+            material["Shape Description"].indexOf(shape["Shape Description"]) ===
+            -1
+          ) {
+            return null;
+          }
+
+          return shape.Sizes.find((size) => {
+            if (pickedData.size && pickedData.size_height) {
+              return (
+                size["Dim 1 Description Fraction"] === pickedData.size &&
+                size["Dim 2 Description Fraction"] === pickedData.size_height
+              );
+            }
+
+            return size["Dim 1 Description Fraction"] === pickedData.size;
+          });
+        })
+        .filter(Boolean)
+        .map((size) => size?.Attachments)
+        .flat();
+
+      // check which attachment types are selectable
+      for (let type in types) {
+        let found = false;
+
+        if (types[type].Values) {
+          for (let value of types[type].Values) {
+            if (specificSizes.find((attachment) => attachment === value)) {
+              found = true;
+              break;
+            }
+          }
+        }
+
+        types[type].Selectable = found;
+      }
+    }
+
+    return types;
+  }, [pickedData, sizes, materials]);
 
   const getCenterHoles = () => {
 

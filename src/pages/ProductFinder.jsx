@@ -4,7 +4,8 @@ import { useLocation } from "react-router-dom";
 import { useAppContext } from "../hooks/useAppContext";
 import ProductFinderProgress from "./sections/ProductFinderProgress";
 import MaterialPicker from "../components/pickers/MaterialPicker";
-import SizePicker from "../components/pickers/SizePicker"
+import SizePicker from "../components/pickers/SizePicker";
+import AttachmentTypePicker from "../components/pickers/AttachmentTypePicker";
 
 const ProductFinder = () => {
 
@@ -72,6 +73,7 @@ const ProductFinder = () => {
                     <div className="pf-section-row">
                         {(currentStep === '1' || currentStep === '') && <MaterialPicker />}
                         {(currentStep === 'size') && <SizePicker />}
+                        {(currentStep === "attachment") && <AttachmentTypePicker />}
                     </div>
                 </div>
             </div>
