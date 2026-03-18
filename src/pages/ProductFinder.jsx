@@ -10,6 +10,8 @@ import HolePicker from "../components/pickers/HolePicker";
 import CenterHolePicker from "../components/pickers/CenterHolePicker";
 import VentedHolePicker from "../components/pickers/VentedHolePicker";
 import SpecificMaterialPicker from "../components/pickers/SpecificMaterialPicker";
+import UsePicker from "../components/pickers/UsePicker";
+import ThicknessPicker from "../components/pickers/ThicknessPicker";
 
 const ProductFinder = () => {
 
@@ -84,6 +86,8 @@ const ProductFinder = () => {
                         {(currentStep === "centerholesize") && <CenterHolePicker />}
                         {(currentStep === "ventedhole") && <VentedHolePicker />}
                         {(currentStep === "specmaterial") && <SpecificMaterialPicker />}
+                        {(currentStep === "use") && <UsePicker />}
+                        {(currentStep === "thickness") && <ThicknessPicker />}
                     </div>
                 </div>
             </div>

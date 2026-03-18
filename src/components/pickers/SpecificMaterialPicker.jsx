@@ -3,10 +3,8 @@ import { useAppContext } from '../../hooks/useAppContext';
 import ProgressHeader from '../ProgressHeader';
 
 const SpecificMaterialPicker = () => {
-    const { device, materials, devices, pickMaterial } = useAppContext();
 
-    console.log("device", device)
-    console.log("devices", devices)
+    const { device, materials, devices, pickMaterial } = useAppContext();
     const availableMaterials = devices[device]?.Materials || [];
 
     const filteredMaterials = Object.keys(materials).filter(
@@ -30,11 +28,9 @@ const SpecificMaterialPicker = () => {
                             onClick={() => pickMaterial(material, false)}
                             className="pf-flex pf-items-center pf-justify-center pf-p-[16px] pf-bg-white md:pf-flex-1 hover:pf-bg-uneeda-primary"
                         >
-
                             <span className="pf-text-black pf-text-center pf-font-bold pf-text-[16px] pf-leading-[24px] md:pf-text-[20px] md:pf-leading-[28px]">
                                 {material}
                             </span>
-
                         </button>
                     ))}
                 </div>

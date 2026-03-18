@@ -206,7 +206,7 @@ const AppProvider = ({ children }) => {
   const getPayload = () => {
     const body = prepareSearchBody();
 
-    const { material, size, size_height, vented_hole, ...restBody } = body;
+    const { material, size, size_height, vented_hole, device, thickness, ...restBody } = body;
 
     const shapeDescriptions =
       materials?.[material]?.["Shape Description"] ?? [];
@@ -232,9 +232,10 @@ const AppProvider = ({ children }) => {
       shape_description: shapeDescriptions,
       dim_1_description_fraction: size || undefined,
       dim_2_description_fraction: size_height || undefined,
-      machine: restBody?.device || undefined,
+      machine: device || undefined,
       shape: attachmentValues,
-      dim_3_description: vented_hole ? (vented_hole == "No holes" ? "" : vented_hole) : undefined
+      dim_3_description: vented_hole ? (vented_hole == "No holes" ? "" : vented_hole) : undefined,
+      thickness: thickness || undefined
     };
   };
 
@@ -313,27 +314,43 @@ const AppProvider = ({ children }) => {
      MATERIAL
   ----------------------------------------- */
 
-  const pickMaterial = (material) => {
+  const pickMaterial = useCallback((material, switch_device = true) => {
 
-    setSelectedFilters("");
+    setSelectedFilters('');
 
-    setPickedData((prev) => ({
-      ...prev,
-      material,
-      size: "",
-      size_height: "",
-      application: [],
-      backing: "",
-      center_hole: "",
-      center_hole_size: "",
-      vented_hole: "",
-      attachment: "",
-      thickness: ""
-    }));
+    setPickedData((draft) => {
+      if (draft.material !== material) {
+        draft.size = '';
+        draft.size_height = '';
+        draft.application = [];
+        draft.backing = '';
+        draft.center_hole = '';
+        draft.center_hole_size = '';
+        draft.vented_hole = '';
+        draft.attachment = '';
+        draft.thickness = '';
 
-    setStep("size");
+        if (switch_device) {
+          draft.device = '';
+        }
+      }
 
-  };
+      draft.material = material;
+      return draft;
+    });
+
+    let nextStep = 'size';
+
+    if ((material === 'Sheets' || material === 'Sponges') && switch_device) {
+      nextStep = 'use';
+    } else if (material === 'Sponges' && pickedData.device !== 'Rectangular Orbital Sander') {
+      nextStep = 'thickness';
+    }
+
+    pickStep(nextStep);
+
+  }, [setPickedData, pickedData, pickStep]);
+
 
   /* -----------------------------------------
      DEVICE
@@ -534,15 +551,19 @@ const AppProvider = ({ children }) => {
      THICKNESS
   ----------------------------------------- */
 
-  const pickThickness = (thickness) => {
-
-    setSelectedFilters("");
+  const pickThickness = (thick) => {
+    setSelectedFilters('');
 
     setPickedData((prev) => ({
       ...prev,
-      thickness
+      thickness: thick
     }));
 
+    if (pickedData?.device === 'Hand Sanding') {
+      pickStep('application');
+    } else {
+      pickStep('ventedhole');
+    }
   };
 
   /* -----------------------------------------
