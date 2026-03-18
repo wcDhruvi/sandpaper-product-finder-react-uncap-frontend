@@ -7,7 +7,7 @@ const SpecPopup = ({ children, className = "" }) => {
             className={`pf-absolute pf-left-[80%] -pf-translate-x-[85%] sm:pf-left-1/2 pf-bottom-[calc(100%+16px)] sm:pf--translate-x-1/2
       pf-rounded-[3px] pf-p-2
       pf-bg-[#004890] pf-text-white pf-font-[700] pf-text-[12px]
-      leading-[16px]
+      leading-[18px]
       pf-w-screen  pf-max-w-[200px] sm:pf-max-w-[344px]
       pf-opacity-0 pf-translate-y-2
       pf-transition pf-duration-200 pf-ease-out

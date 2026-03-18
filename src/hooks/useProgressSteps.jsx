@@ -100,10 +100,6 @@ function useProgressSteps() {
     setNextSteps(stepsArr);
   }, [step, device, material]);
 
-
-
-  console.log("currentStep", currentStep, step)
-  console.log("next step", nextSteps)
   /* -------------------------
     PREVIOUS STEP
   ------------------------- */

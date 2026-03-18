@@ -9,6 +9,7 @@ import AttachmentTypePicker from "../components/pickers/AttachmentTypePicker";
 import HolePicker from "../components/pickers/HolePicker";
 import CenterHolePicker from "../components/pickers/CenterHolePicker";
 import VentedHolePicker from "../components/pickers/VentedHolePicker";
+import SpecificMaterialPicker from "../components/pickers/SpecificMaterialPicker";
 
 const ProductFinder = () => {
 
@@ -51,7 +52,7 @@ const ProductFinder = () => {
 
             pickStep(params.step || "step");
         }
-        
+
 
     }, [initialized, location.search]);
 
@@ -67,7 +68,6 @@ const ProductFinder = () => {
 
     }, [location.search, step]);
 
-    console.log("initialized", initialized)
 
     return (
         <>
@@ -83,6 +83,7 @@ const ProductFinder = () => {
                         {(currentStep === "centerhole") && <HolePicker />}
                         {(currentStep === "centerholesize") && <CenterHolePicker />}
                         {(currentStep === "ventedhole") && <VentedHolePicker />}
+                        {(currentStep === "specmaterial") && <SpecificMaterialPicker />}
                     </div>
                 </div>
             </div>

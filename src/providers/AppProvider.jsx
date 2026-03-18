@@ -229,13 +229,12 @@ const AppProvider = ({ children }) => {
 
     return {
       shop: PFShopDomain,
-      ...restBody,
       shape_description: shapeDescriptions,
-      dim_1_description_fraction: size || "",
-      dim_2_description_fraction: size_height || "",
-      machine: restBody?.device || "",
+      dim_1_description_fraction: size || undefined,
+      dim_2_description_fraction: size_height || undefined,
+      machine: restBody?.device || undefined,
       shape: attachmentValues,
-      dim_3_description: vented_hole
+      dim_3_description: vented_hole ? (vented_hole == "No holes" ? "" : vented_hole) : undefined
     };
   };
 
