@@ -33,42 +33,42 @@ export default function NotAvailable({ onDismiss, option }) {
     if (!mounted) return null;
 
     return createPortal(
-        <div className={`modal-wrapper ${show ? "show" : ""}`}>
+        <div className={`pf-modal-wrapper ${show ? "show" : ""}`}>
 
             {/* ── Backdrop ── */}
-            <div className="modal-backdrop" onClick={hide} />
+            <div className="pf-modal-backdrop" onClick={hide} />
 
             {/* ── Modal card ── */}
-            <div className="modal-card">
+            <div className="pf-modal-card">
 
                 {/* Close */}
-                <div className="modal-close-row">
+                <div className="pf-modal-close-row">
                     <button
                         type="button"
                         aria-label="Close"
                         onClick={hide}
-                        className="modal-close-btn"
+                        className="pf-modal-close-btn"
                     >
                         <Close />
                     </button>
                 </div>
 
                 {/* Body */}
-                <div className="modal-body">
-                    <div className="modal-inner">
+                <div className="pf-modal-body">
+                    <div className="pf-modal-inner">
 
-                        <p className="modal-heading">
+                        <p className="pf-modal-heading">
                             <span className="option">{option}</span>
                             {" is not available for this configuration."}
                         </p>
 
-                        <div className="modal-inquire-box">
-                            <p className="modal-inquire-text">
+                        <div className="pf-modal-inquire-box">
+                            <p className="pf-modal-inquire-text">
                                 Didn't find the product you need?
                             </p>
                             <Link
                                 to={`${baseUrl}/inquire/?${q}&step=${step}`}
-                                className="modal-btn-yellow"
+                                className="pf-modal-btn-yellow"
                             >
                                 Inquire Now
                             </Link>
@@ -77,7 +77,7 @@ export default function NotAvailable({ onDismiss, option }) {
                         <Link
                             to={`${baseUrl}?reset=1&material=${material}&device=${device}&step=size`}
                             onClick={hide}
-                            className="modal-btn-blue"
+                            className="pf-modal-btn-blue"
                         >
                             Find another {deviceSingular}
                         </Link>

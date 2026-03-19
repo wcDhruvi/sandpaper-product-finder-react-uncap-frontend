@@ -172,7 +172,7 @@ const AppProvider = ({ children }) => {
 
     navigate(`${path}?${q}&step=${step}`, { replace: false });
 
-  }, [step, getStringifiedQuery, navigate]);
+  }, [step, getStringifiedQuery]);
   /* -----------------------------------------
      SEARCH BODY
   ----------------------------------------- */
@@ -206,7 +206,7 @@ const AppProvider = ({ children }) => {
   const getPayload = () => {
     const body = prepareSearchBody();
 
-    const { material, size, size_height, vented_hole, device, thickness, ...restBody } = body;
+    const { material, size, size_height, vented_hole, device, thickness, application, ...restBody } = body;
 
     const shapeDescriptions =
       materials?.[material]?.["Shape Description"] ?? [];
@@ -234,8 +234,9 @@ const AppProvider = ({ children }) => {
       dim_2_description_fraction: size_height || undefined,
       machine: device || undefined,
       shape: attachmentValues,
-      dim_3_description: vented_hole ? (vented_hole == "No holes" ? "" : vented_hole) : undefined,
-      thickness: thickness || undefined
+      dim_3_description: vented_hole || undefined,
+      thickness: thickness || undefined,
+      surface: application || []
     };
   };
 

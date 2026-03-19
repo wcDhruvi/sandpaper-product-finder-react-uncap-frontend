@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import SizeFormat from "./SizeFormat";
 import { useAppContext } from "../hooks/useAppContext";
 import ThickIcon from "../utils/icons/TickIcon";
@@ -24,6 +24,10 @@ function StepCircle({ title, index, step, num }) {
     pickedData[index].toString().length > 0;
 
   const url = getStringifiedQuery() + "&step=" + step;
+
+  const activeGroup = useMemo(() =>
+    params.get("activeGroup") || ""
+    , [params])
 
   return (
     <>
@@ -97,7 +101,13 @@ function StepCircle({ title, index, step, num }) {
               </>
             )}
 
-            {step === "application" && pickedData?.application && (
+            {step === "application" && activeGroup &&(
+              <span className="pf-text-black">
+                {activeGroup}
+              </span>
+            )}
+
+            {step === "application" && pickedData?.application?.length > 0 && !activeGroup &&(
               <>
                 {pickedData.application.length} selected
               </>

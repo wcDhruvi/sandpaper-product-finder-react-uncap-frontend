@@ -12,6 +12,7 @@ import VentedHolePicker from "../components/pickers/VentedHolePicker";
 import SpecificMaterialPicker from "../components/pickers/SpecificMaterialPicker";
 import UsePicker from "../components/pickers/UsePicker";
 import ThicknessPicker from "../components/pickers/ThicknessPicker";
+import ApplicationPicker from "../components/pickers/ApplicationPicker";
 
 const ProductFinder = () => {
 
@@ -80,14 +81,15 @@ const ProductFinder = () => {
 
                     <div className="pf-section-row">
                         {(currentStep === '1' || currentStep === '') && <MaterialPicker />}
+                        {(currentStep === "specmaterial") && <SpecificMaterialPicker />}
+                        {(currentStep === "use") && <UsePicker />}
                         {(currentStep === 'size') && <SizePicker />}
+                        {(currentStep === "thickness") && <ThicknessPicker />}
                         {(currentStep === "attachment") && <AttachmentTypePicker />}
                         {(currentStep === "centerhole") && <HolePicker />}
                         {(currentStep === "centerholesize") && <CenterHolePicker />}
                         {(currentStep === "ventedhole") && <VentedHolePicker />}
-                        {(currentStep === "specmaterial") && <SpecificMaterialPicker />}
-                        {(currentStep === "use") && <UsePicker />}
-                        {(currentStep === "thickness") && <ThicknessPicker />}
+                        {(currentStep === "application") && <ApplicationPicker />}
                     </div>
                 </div>
             </div>

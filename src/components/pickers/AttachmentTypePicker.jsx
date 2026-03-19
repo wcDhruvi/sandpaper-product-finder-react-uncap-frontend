@@ -66,11 +66,11 @@ const AttachmentTypePicker = () => {
                 }}
                 className={twMerge(
                   clsx(
-                    "pf-flex pf-flex-col pf-justify-center pf-items-center pf-text-center",
+                    "pf-flex pf-flex-col pf-justify-center pf-items-center pf-text-center pf-cursor-pointer",
                     "pf-text-base  lg:pf-text-xl pf-font-bold",
                     "pf-transition",
                     "pf-p-5 lg:pf-grow",
-                    selectable && " pf-cursor-pointer pf-bg-white hover:pf-bg-uneeda-primary",
+                    selectable && "  pf-bg-white hover:pf-bg-uneeda-primary",
                     !selectable && "pf-bg-disable"
                   )
                 )}

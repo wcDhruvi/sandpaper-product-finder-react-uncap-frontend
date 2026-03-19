@@ -16,7 +16,7 @@ function SizeFormat({ size }) {
     split[1] = split[1]?.trim();
 
     return (
-      <span>
+      <span className="pf-flex pf-flex-wrap">
 
         <Fraction>{split[0]}</Fraction>
         <Dimensions>{split[0]}</Dimensions>
