@@ -13,6 +13,8 @@ import SpecificMaterialPicker from "../components/pickers/SpecificMaterialPicker
 import UsePicker from "../components/pickers/UsePicker";
 import ThicknessPicker from "../components/pickers/ThicknessPicker";
 import ApplicationPicker from "../components/pickers/ApplicationPicker";
+import BackingPicker from "../components/pickers/BackingPicker";
+import ProgressFooter from "../components/ProgressFooter";
 
 const ProductFinder = () => {
 
@@ -20,7 +22,8 @@ const ProductFinder = () => {
         step,
         pickStep,
         replaceData,
-        initialized
+        initialized,
+        filtersLoading
     } = useAppContext();
 
     const location = useLocation();
@@ -90,9 +93,15 @@ const ProductFinder = () => {
                         {(currentStep === "centerholesize") && <CenterHolePicker />}
                         {(currentStep === "ventedhole") && <VentedHolePicker />}
                         {(currentStep === "application") && <ApplicationPicker />}
+                        {(currentStep === "backing") && <BackingPicker />}
+                        <ProgressFooter isFirstStep={currentStep === '1' || currentStep === ''} />
                     </div>
+
+
                 </div>
+
             </div>
+
         </>
     );
 };

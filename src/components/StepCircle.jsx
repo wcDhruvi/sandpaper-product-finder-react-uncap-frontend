@@ -3,7 +3,8 @@ import SizeFormat from "./SizeFormat";
 import { useAppContext } from "../hooks/useAppContext";
 import ThickIcon from "../utils/icons/TickIcon";
 import { Link, useLocation } from "react-router-dom";
-import { baseUrl } from "../utils/Constent";
+import { baseUrl, resultPageUrl } from "../utils/Constent";
+import SpecPopup from "./SpecPopup ";
 
 function StepCircle({ title, index, step, num }) {
 
@@ -14,7 +15,7 @@ function StepCircle({ title, index, step, num }) {
   const pathname = location.pathname;
 
   const currentStep = params.get("step") || "";
-  const isResults = pathname === `${baseUrl}/results/`;
+  const isResults = pathname === resultPageUrl;
 
   const isCurrent = currentStep === step;
 
@@ -101,16 +102,19 @@ function StepCircle({ title, index, step, num }) {
               </>
             )}
 
-            {step === "application" && activeGroup &&(
+            {step === "application" && activeGroup && (
               <span className="pf-text-black">
                 {activeGroup}
               </span>
             )}
 
-            {step === "application" && pickedData?.application?.length > 0 && !activeGroup &&(
-              <>
+            {step === "application" && pickedData?.application?.length > 0 && !activeGroup && (
+              <span className="pf-group pf-relative">
                 {pickedData.application.length} selected
-              </>
+                <SpecPopup className="pf-text-left sm:pf-max-w-[300px]">
+                  {pickedData.application.join(", ")}
+                </SpecPopup>
+              </span>
             )}
 
             {step !== "size" &&

@@ -3,6 +3,7 @@ import ApiService from "./ApiService";
 export const ApiBaseUrl = "https://productfinder.sandpaper.com/api"
 
 export const baseUrl = "/pages/product-finder"
+export const resultPageUrl = `${baseUrl}/results`
 
 export const apiService = ApiService();
 export const PFShopId = window.PFStoreDetails.shopId;

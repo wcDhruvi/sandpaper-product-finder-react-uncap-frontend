@@ -2,15 +2,24 @@ import './App.css'
 import React from 'react';
 import { AppProvider } from './providers'
 import ProductFinder from './pages/ProductFinder';
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import ProductListing from './pages/ProductListing';
+import { baseUrl, resultPageUrl } from './utils/Constent';
 
-function App({ PFShopId, PFShopDomain }) {
+function App() {
 
   return (
     <>
       <BrowserRouter>
         <AppProvider>
-          <ProductFinder />
+          <Routes>
+            {/* ── Full path routes — no basename needed ── */}
+            <Route path={baseUrl} element={<ProductFinder />} />
+            <Route path={resultPageUrl} element={<ProductListing />} />
+
+            {/* ── Fallback ── */}
+            <Route path="*" element={<Navigate to={baseUrl} replace />} />
+          </Routes>
         </AppProvider>
       </BrowserRouter>
     </>

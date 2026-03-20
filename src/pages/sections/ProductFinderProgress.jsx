@@ -3,6 +3,9 @@ import FinderProgress from "../../components/FinderProgress";
 import { useAppContext } from "../../hooks/useAppContext";
 import FlippingNumber from "../../components/FlippingNumber";
 import IconRefresh from "../../utils/icons/IconRefresh";
+import { baseUrl, resultPageUrl } from "../../utils/Constent";
+import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function ProductFinderProgress() {
 
@@ -13,12 +16,17 @@ function ProductFinderProgress() {
         resultsCount
     } = useAppContext();
 
+    const { pathname } = useLocation();
+
+    console.log("pathname", pathname)
+    const isResults = pathname.startsWith(resultPageUrl);
+
     return (
         <>
 
             <div className="pf-items-center pf-flex pf-justify-center pf-border-t pf-border-b pf-border-[#D8D8D8] pf-bg-white pf-shadow-[0_4px_6px_rgba(0,0,0,0.08)] pf-border-solid pf-border-x-0">
 
-                <div className="pf-flex pf-items-center pf-gap-[20px] pf-w-full container lg:max-xl:pf-pr-0">
+                <div className="pf-flex pf-items-center pf-gap-[20px] pf-w-full container lg:max-xl:pf-pr-0 lg:pf-min-h-[102px]">
 
                     {/* Refresh button */}
                     <button
@@ -38,18 +46,18 @@ function ProductFinderProgress() {
 
                     <FinderProgress />
 
-                    {material === "Belts" ? (
+                    {!isResults ? (material === "Belts" ? (
 
                         <div className="pf-bg-[#f9fafb] pf-shrink-0 max-lg:pf-hidden lg:pf-w-[160px]">
 
                             <div className="pf-flex pf-items-center pf-justify-center pf-py-[8px] lg:pf-w-[160px] lg:pf-h-[120px] lg:pf-p-[12px]">
 
-                                <a
-                                    href={`/product-finder/results?${getStringifiedQuery()}`}
+                                <Link
+                                    to={`${resultPageUrl}?${getStringifiedQuery()}`}
                                     className="pf-text-[#004890] pf-font-bold pf-underline"
                                 >
                                     Show results
-                                </a>
+                                </Link>
 
                             </div>
                         </div>
@@ -66,15 +74,15 @@ function ProductFinderProgress() {
 
                                 <FlippingNumber num={resultsCount} />
 
-                                <a className="pf-text-[#004890] pf-text-[12px] pf-leading-[18px] pf-font-bold pf-underline">
+                                <Link className="pf-text-[#004890] pf-text-[12px] pf-leading-[18px] pf-font-bold pf-underline" to={`${resultPageUrl}?${getStringifiedQuery()}`}>
                                     Show Results
-                                </a>
+                                </Link>
 
                             </div>
 
                         </div>
 
-                    )}
+                    )) : null}
                 </div>
             </div>
         </>

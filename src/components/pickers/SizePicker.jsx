@@ -11,7 +11,7 @@ const COMMON_DISC_SIZES = ["3", "5", "6", "8"];
 
 const SizePicker = () => {
 
-  const { material, device, getSizes, pickSize, availableFilters } = useAppContext();
+  const { material, device, getSizes, pickSize } = useAppContext();
   const sizes = getSizes();
 
   const [width, setWidth] = useState("");

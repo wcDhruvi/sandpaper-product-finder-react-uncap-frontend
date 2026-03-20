@@ -11,6 +11,7 @@ function FinderProgress() {
     device,
     initialized,
     resetData,
+    step
   } = useAppContext();
 
   const { currentStep, nextSteps } = useProgressSteps();
@@ -93,7 +94,7 @@ function FinderProgress() {
         {/* Circle */}
         <div className="pf-w-[60px] pf-h-[60px] pf-flex-shrink-0">
           <ProgressCircle
-            current={currentStep}
+            current={step == "use" ? 1 : currentStep}
             total={nextSteps.length}
           />
         </div>
@@ -102,14 +103,14 @@ function FinderProgress() {
         <div className="pf-flex pf-gap-[2px] pf-flex-[1_0_0] pf-flex-col">
 
           <div className="pf-text-[#000] pf-text-[14px] pf-leading-[22px] pf-font-bold">
-            {currentStep > 1 ? nextSteps[currentStep - 1].title : ""}
+            {step == "use" ? "" : (nextSteps[currentStep]?.title || "")}
           </div>
 
           <div className="pf-flex-[1_0_0] pf-text-[#7F7F7F] pf-text-[14px] pf-leading-[22px] pf-font-normal">
 
-            {currentStep < nextSteps.length ? (
+            {currentStep + 1 < nextSteps.length ? (
               <span>
-                Next: {nextSteps[currentStep].title}
+                Next: {nextSteps[currentStep + 1].title}
               </span>
             ) : (
               <span>Final step</span>

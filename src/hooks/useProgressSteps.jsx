@@ -1,126 +1,58 @@
-import { useEffect, useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useAppContext } from "./useAppContext";
+import { STEP_ALIASES } from "../utils/Common";
 
 function useProgressSteps() {
-  const { step, device, material, pickStep } = useAppContext();
-  
-  const [currentStep, setCurrentStep] = useState(1);
-  const [nextSteps, setNextSteps] = useState([]);
+  const { step, pickStep, stepOrderFull, stepOrder } = useAppContext();
+
+  const [currentStep, setCurrentStep] = useState(0);
 
   useEffect(() => {
-    const stepsArr = [];
+    if (!stepOrderFull.length) return;
 
-    stepsArr.push({
-      step: "1",
-      title: device ? "Device" : "Material",
-    });
+    // ── Check if the step exists directly in stepOrder ──
+    const existsInStepOrder = stepOrderFull.some((s) => s.step === step);
 
-    if (
-      device === "Hand Sanding" ||
-      device === "Rectangular Orbital Sander"
-    ) {
-      stepsArr.push({
-        step: "specmaterial",
-        title: "Material",
-      });
+    if (existsInStepOrder) {
+      // Step is its own step — find it directly
+      const index = stepOrderFull.findIndex((s) => s.step === step);
+      setCurrentStep(index !== -1 ? index : 0);
+    } else {
+      // Step is a sub-step — resolve via STEP_ALIASES
+      const resolvedStep = STEP_ALIASES[step] || step;
+      const index = stepOrderFull.findIndex((s) => s.step === resolvedStep);
+      setCurrentStep(index !== -1 ? index : 0);
     }
 
-    if (
-      material === "Sponges" &&
-      (device === "Disc Orbital Sander" ||
-        device === "Rectangular Orbital Sander")
-    ) {
-      stepsArr.push({ step: "size", title: "Size" });
-      if (step === "size") setCurrentStep(stepsArr.length - 1);
-    }
-
-    if (
-      material !== "Sponges" &&
-      (device !== "Hand Sanding" || material === "Sheets")
-    ) {
-      stepsArr.push({ step: "size", title: "Size" });
-      if (step === "size") setCurrentStep(stepsArr.length - 1);
-    }
-
-    if (material !== "Belts" && material !== "Sponges") {
-      stepsArr.push({
-        step: "attachment",
-        title: "Attachment Type",
-      });
-      if (step === "attachment") setCurrentStep(stepsArr.length - 1);
-    }
-
-    if (material === "Sponges" || (!material && device === "Hand Sanding")) {
-      stepsArr.push({
-        step: "thickness",
-        title: "Thickness",
-      });
-      if (step === "thickness") setCurrentStep(stepsArr.length - 1);
-    }
-
-    if (
-      material !== "Belts" &&
-      material !== "Sheets" &&
-      material !== "Rolls" &&
-      material !== "Sponges" &&
-      device !== "Hand Sanding"
-    ) {
-      stepsArr.push({
-        step: "centerhole",
-        title: "Hole Configuration",
-      });
-      if (step === "centerhole" || step === 'ventedhole' || step === "centerholesize") setCurrentStep(stepsArr.length - 1);
-    }
-
-    if (
-      material === "Sheets" ||
-      (material === "Sponges" && device !== "Hand Sanding")
-    ) {
-      stepsArr.push({
-        step: "ventedhole",
-        title: "Hole Configuration",
-      });
-      if (step === "ventedhole") setCurrentStep(stepsArr.length - 1);
-    }
-
-    stepsArr.push({
-      step: "application",
-      title: "Applications",
-    });
-    if (step === "application") setCurrentStep(stepsArr.length - 1);
-
-    if (material !== "Sponges" && device !== "Hand Sanding") {
-      stepsArr.push({
-        step: "backing",
-        title: "Backing Material",
-      });
-      if (step === "backing") setCurrentStep(stepsArr.length - 1);
-    }
-
-    setNextSteps(stepsArr);
-  }, [step, device, material]);
+  }, [step, stepOrderFull]);
 
   /* -------------------------
-    PREVIOUS STEP
-  ------------------------- */
+      PREVIOUS STEP
+    ------------------------- */
   const prevStep = useCallback(() => {
-    if (currentStep > 0) {
-      const prev = nextSteps[currentStep - 1];
-      if (prev) pickStep(prev.step);
-    }
-  }, [currentStep, nextSteps, pickStep]);
+    const prev = stepOrderFull[currentStep - 1];
+    if (prev) pickStep(prev.step)
+    else pickStep("1");
+  }, [currentStep, stepOrderFull, pickStep]);
 
   /* -------------------------
     NEXT STEP
   ------------------------- */
   const nextStep = useCallback(() => {
-    if (currentStep + 1 < nextSteps.length) {
-      const next = nextSteps[currentStep + 1];
+    if (currentStep < stepOrderFull.length) {
+      const next = stepOrderFull[currentStep + 1];
       if (next) pickStep(next.step);
     }
-  }, [currentStep, nextSteps, pickStep]);
+  }, [currentStep, stepOrderFull, pickStep]);
 
-  return { currentStep, nextSteps, prevStep, nextStep, step };
+  return {
+    currentStep,
+    nextSteps: stepOrderFull,
+    stepOrder,
+    prevStep,
+    nextStep,
+    step,
+  };
 }
 
 export default useProgressSteps;

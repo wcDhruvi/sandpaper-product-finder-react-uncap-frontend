@@ -3,11 +3,12 @@ import React, {
   useState,
   useEffect,
   useRef,
-  useCallback
+  useCallback,
+  useMemo
 } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { configuration_namespaceObject } from "../utils/Constent"
-import { sizeSorter, unique } from "../utils/Common"
+import { configuration_namespaceObject, resultPageUrl } from "../utils/Constent"
+import { sizeSorter, unique, computeStepOrder, STEP_ALIASES } from "../utils/Common"
 import qs from "qs";
 
 /* -----------------------------------------
@@ -72,6 +73,18 @@ const AppProvider = ({ children }) => {
   const abortControllerRef = useRef(null);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+
+  // ── stepOrder: array of { step, title } ──
+  const stepOrderFull = useMemo(() => {
+    const device = pickedData?.device || "";
+    const material = pickedData?.material || "";
+    return computeStepOrder(device, material);
+  }, [pickedData, searchParams]);
+
+  // ── stepOrder as flat string array for getPayload lookup ──
+  const stepOrder = useMemo(() => {
+    return stepOrderFull.map((s) => s.step);
+  }, [stepOrderFull]);
 
   /* -----------------------------------------
      INITIAL LOAD
@@ -168,7 +181,7 @@ const AppProvider = ({ children }) => {
     let path = baseUrl;
 
     if (step === "inquire") path = `${baseUrl}/inquire`;
-    if (step === "results") path = `${baseUrl}/results`;
+    if (step === "results") path = resultPageUrl;
 
     navigate(`${path}?${q}&step=${step}`, { replace: false });
 
@@ -202,32 +215,53 @@ const AppProvider = ({ children }) => {
   /* -----------------------------------------
      FETCH RESULTS
   ----------------------------------------- */
+  const getPayload = useCallback(() => {
 
-  const getPayload = () => {
     const body = prepareSearchBody();
+    const base = { ...body };
 
-    const { material, size, size_height, vented_hole, device, thickness, application, ...restBody } = body;
 
-    const shapeDescriptions =
-      materials?.[material]?.["Shape Description"] ?? [];
+    const currentStep = searchParams.get("step");
 
-    // ✅ Collect ALL unique attachment values across ALL materials
+    if (currentStep && stepOrder.length) {
+      const normalizedStep = STEP_ALIASES[currentStep] || currentStep;
+      const currentIndex = stepOrder.indexOf(normalizedStep);
+
+      if (currentIndex !== -1) {
+        const toDelete = stepOrder.slice(currentIndex);
+
+        for (const key of toDelete) {
+          delete base[key];
+
+          if (key === "ventedhole" || key === "centerhole") {
+            delete base.vented_hole;
+            delete base.center_hole;
+            delete base.center_hole_size;
+          }
+        }
+
+      } else {
+      }
+    }
+
+    const {
+      material, size, size_height,
+      vented_hole, device, thickness,
+      application, backing, ...restBody
+    } = base;
+
+    const shapeDescriptions = materials?.[material]?.["Shape Description"] ?? [];
+
     let attachmentValues = [];
-
     if (restBody?.attachment) {
       Object.values(materials).forEach((mat) => {
         const values = mat?.["Attachment Types"]?.[restBody.attachment]?.Values;
-
-        if (values) {
-          attachmentValues.push(...values);
-        }
+        if (values) attachmentValues.push(...values);
       });
-
-      // ✅ Remove duplicates
       attachmentValues = [...new Set(attachmentValues)];
     }
 
-    return {
+    const payload = {
       shop: PFShopDomain,
       shape_description: shapeDescriptions,
       dim_1_description_fraction: size || undefined,
@@ -236,9 +270,13 @@ const AppProvider = ({ children }) => {
       shape: attachmentValues,
       dim_3_description: vented_hole || undefined,
       thickness: thickness || undefined,
-      surface: application || []
+      surface: application || [],
+      material_type: backing || undefined,
     };
-  };
+
+    return payload;
+
+  }, [prepareSearchBody, materials, searchParams, stepOrder]);
 
   const fetchResults = useCallback(async () => {
     if (firstRun.current) return;
@@ -278,7 +316,7 @@ const AppProvider = ({ children }) => {
         setFiltersLoading(false);
       }
     }
-  }, [prepareSearchBody]);
+  }, [getPayload]);
 
   useEffect(() => {
     return () => {
@@ -518,35 +556,39 @@ const AppProvider = ({ children }) => {
      APPLICATION
   ----------------------------------------- */
 
-  const pickApplication = (application) => {
+  const pickApplication = useCallback((application) => {
+    setSelectedFilters('');
 
-    setSelectedFilters("");
+    setPickedData((draft) => {
+      draft.application = application;
+      return draft;
+    });
 
-    setPickedData((prev) => ({
-      ...prev,
-      application
-    }));
+    const isSpongesOrHandSanding =
+      pickedData?.material === 'Sponges' || pickedData?.device === 'Hand Sanding';
 
-    setStep("backing");
+    pickStep(isSpongesOrHandSanding ? 'results' : 'backing');
 
-  };
+  }, [pickedData, setSelectedFilters, setPickedData, pickStep]);
 
   /* -----------------------------------------
      BACKING
   ----------------------------------------- */
 
-  const pickBackingMaterial = (mat) => {
+  const pickBackingMaterial = useCallback((mat) => {
+    setSelectedFilters('');
 
-    setSelectedFilters("");
+    setPickedData((draft) => {
+      draft.backing = mat;
+      return draft;
+    });
 
-    setPickedData((prev) => ({
-      ...prev,
-      backing: mat
-    }));
-
-    setStep("results");
-
-  };
+    if (pickedData?.material === 'Belts') {
+      setStep(resultsCount ? 'results' : 'inquire');
+    } else {
+      setStep('results');
+    }
+  }, [pickedData, resultsCount, setSelectedFilters, setPickedData, setStep]);
 
   /* -----------------------------------------
      THICKNESS
@@ -586,7 +628,7 @@ const AppProvider = ({ children }) => {
 
     const query = getStringifiedQuery();
 
-    navigate(`${baseUrl}/results/?${query}&page=${page}`)
+    navigate(`${resultPageUrl}?${query}&page=${page}`)
 
   };
 
@@ -898,8 +940,10 @@ const AppProvider = ({ children }) => {
 
     resetData,
     replaceData,
-    resetSomeData
+    resetSomeData,
 
+    stepOrder,
+    stepOrderFull
   };
 
   return (

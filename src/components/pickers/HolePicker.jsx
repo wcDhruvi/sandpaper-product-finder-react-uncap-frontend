@@ -51,7 +51,7 @@ const HolePicker = () => {
                 </div>
             </ProgressHeader>
             <div className="pf-option-section">
-                <div className="pf-grid pf-grid-cols-2 lg:pf-flex pf-w-full pf-gap-[2px]">
+                <div className="pf-grid pf-grid-cols-2 lg:pf-flex pf-w-full pf-gap-[2px] lg:pf-gap-[15px]">
                     {Object.keys(centerholes).map((centerhole) => {
                         const isSelectable =
                             centerhole === "Center hole"
