@@ -5,6 +5,7 @@ import clsx from "clsx";
 import ProgressHeader from '../ProgressHeader';
 import InfoCircle from '../InfoCircle';
 import CenterHole from '../../utils/icons/CenterHole';
+import Loading from '../Loading';
 
 
 const CenterHolePicker = () => {
@@ -13,7 +14,8 @@ const CenterHolePicker = () => {
         pickCenterHoleSize,
         getCenterHoleSizes,
         getOtherCenterHoleSizes,
-        availableFilters
+        availableFilters,
+        filtersLoading
     } = useAppContext();
 
     const centerholes = getCenterHoleSizes();
@@ -47,6 +49,7 @@ const CenterHolePicker = () => {
 
     return (
         <>
+            {filtersLoading && <Loading />}
             <ProgressHeader>
                 <div className="pf-flex pf-items-center pf-justify-center pf-gap-[10px]">
                     <h2 className="pf-section-main-heading">Center hole size</h2>

@@ -4,10 +4,11 @@ import NotAvailable from '../NotAvailable';
 import ProgressHeader from '../ProgressHeader';
 import { twMerge } from "tailwind-merge";
 import clsx from "clsx";
+import Loading from '../Loading';
 
 const ThicknessPicker = () => {
 
-    const { getThicknesses, availableFilters, pickThickness } = useAppContext();
+    const { getThicknesses, availableFilters, pickThickness, filtersLoading } = useAppContext();
 
     const thicknesses = getThicknesses();
     const [showNotAvailable, setShowNotAvailable] = useState('');
@@ -22,6 +23,7 @@ const ThicknessPicker = () => {
 
     return (
         <>
+            {filtersLoading && <Loading />}
             <ProgressHeader>
                 <h2 className="pf-section-main-heading">
                     Thickness

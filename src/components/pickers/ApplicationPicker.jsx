@@ -7,6 +7,7 @@ import ApplicationBadge from '../ApplicationBadge';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { baseUrl } from '../../utils/Constent';
 import ApplicationNextButton from '../ApplicationNextButton';
+import Loading from '../Loading';
 
 
 const ApplicationPicker = () => {
@@ -86,6 +87,7 @@ const ApplicationPicker = () => {
 
     return (
         <>
+            {filtersLoading && <Loading />}
             <ProgressHeader>
                 <div className='pf-flex pf-items-center pf-justify-center pf-gap-[10px]'>
                     <h2 className="pf-section-main-heading">

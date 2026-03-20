@@ -5,6 +5,7 @@ import NotAvailable from "../NotAvailable";
 import InfoCircle from "../InfoCircle";
 import { twMerge } from "tailwind-merge";
 import clsx from "clsx";
+import Loading from "../Loading";
 
 const BACKING_INFO = `
     This is the type of material over which the abrasive grain is applied.
@@ -31,6 +32,7 @@ function BackingPicker() {
     pickBackingMaterial,
     getBackingMaterials,
     availableFilters,
+    filtersLoading
   } = useAppContext();
 
   const mats = getBackingMaterials();
@@ -48,6 +50,7 @@ function BackingPicker() {
 
   return (
     <>
+      {filtersLoading && <Loading />}
       {/* HEADER */}
       <ProgressHeader>
         <div className="pf-flex pf-items-center pf-justify-center pf-gap-[10px]">
