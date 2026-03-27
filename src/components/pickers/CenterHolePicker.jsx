@@ -5,8 +5,6 @@ import clsx from "clsx";
 import ProgressHeader from '../ProgressHeader';
 import InfoCircle from '../InfoCircle';
 import CenterHole from '../../utils/icons/CenterHole';
-import Loading from '../Loading';
-
 
 const CenterHolePicker = () => {
 
@@ -15,7 +13,6 @@ const CenterHolePicker = () => {
         getCenterHoleSizes,
         getOtherCenterHoleSizes,
         availableFilters,
-        filtersLoading
     } = useAppContext();
 
     const centerholes = getCenterHoleSizes();
@@ -28,8 +25,8 @@ const CenterHolePicker = () => {
     const sizeBoxClassName = (selectable) =>
         twMerge(
             clsx(
-                "pf-grow pf-flex pf-items-center pf-justify-center pf-gap-4 pf-text-center pf-font-bold pf-text-black pf-cursor-pointer  pf-transition  pf-p-[20px] pf-text-[16px] pf-leading-[24px] lg:pf-text-[20px] lg:pf-leading-[28px]",
-                !selectable ? "pf-bg-disable" : "pf-bg-white hover:pf-bg-uneeda-primary"
+                "pf-grow pf-flex pf-items-center pf-justify-center pf-gap-4 pf-text-center pf-font-bold pf-text-black  pf-transition  pf-p-[20px] pf-text-[16px] pf-leading-[24px] lg:pf-text-[20px] lg:pf-leading-[28px]",
+                !selectable ? "pf-bg-disable" : "pf-bg-white hover:pf-bg-uneeda-primary pf-cursor-pointer "
             )
         );
 
@@ -49,7 +46,6 @@ const CenterHolePicker = () => {
 
     return (
         <>
-            {filtersLoading && <Loading />}
             <ProgressHeader>
                 <div className="pf-flex pf-items-center pf-justify-center pf-gap-[10px]">
                     <h2 className="pf-section-main-heading">Center hole size</h2>

@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useAppContext } from '../../hooks/useAppContext';
 import NotAvailable from '../NotAvailable';
 import ProgressHeader from '../ProgressHeader';
 import { twMerge } from "tailwind-merge";
 import clsx from "clsx";
-import Loading from '../Loading';
 
 const ThicknessPicker = () => {
 
@@ -23,7 +22,6 @@ const ThicknessPicker = () => {
 
     return (
         <>
-            {filtersLoading && <Loading />}
             <ProgressHeader>
                 <h2 className="pf-section-main-heading">
                     Thickness

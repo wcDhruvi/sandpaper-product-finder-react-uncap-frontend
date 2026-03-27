@@ -84,3 +84,9 @@ export const STEP_ALIASES = {
     ventedhole: "centerhole",
     use: "1"
 };
+
+export const defaultSelectedFilter = {
+    grit: [],
+    grain: [],
+    inStock: false
+}

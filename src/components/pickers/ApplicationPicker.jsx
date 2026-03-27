@@ -7,8 +7,6 @@ import ApplicationBadge from '../ApplicationBadge';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { baseUrl } from '../../utils/Constent';
 import ApplicationNextButton from '../ApplicationNextButton';
-import Loading from '../Loading';
-
 
 const ApplicationPicker = () => {
     const {
@@ -87,7 +85,6 @@ const ApplicationPicker = () => {
 
     return (
         <>
-            {filtersLoading && <Loading />}
             <ProgressHeader>
                 <div className='pf-flex pf-items-center pf-justify-center pf-gap-[10px]'>
                     <h2 className="pf-section-main-heading">
@@ -130,7 +127,7 @@ const ApplicationPicker = () => {
                     Didn’t find the {option} you need?
                 </p>
                 <button onClick={handleNavigate}
-                    className="pf-flex pf-justify-center pf-items-center pf-gap-4 pf-py-[12px] pf-px-[24px] pf-rounded-[3px] pf-bg-white pf-text-[#004890] pf-text-center pf-font-[DIN_Pro] pf-text-[14px] pf-leading-[22px] md:pf-text-[16px] md:pf-leading-[24px]">
+                    className="pf-flex pf-justify-center pf-items-center pf-gap-4 pf-py-[12px] pf-px-[24px] pf-rounded-[3px] pf-bg-white pf-text-[#004890] pf-text-center pf-text-[14px] pf-leading-[22px] md:pf-text-[16px] md:pf-leading-[24px]">
                     Custom Order
                 </button>
             </div>

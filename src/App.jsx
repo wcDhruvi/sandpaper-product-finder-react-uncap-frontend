@@ -9,7 +9,7 @@ import { baseUrl, resultPageUrl } from './utils/Constent';
 function App() {
 
   return (
-    <>
+    <div className='product-finder-section'>
       <BrowserRouter>
         <AppProvider>
           <Routes>
@@ -22,7 +22,7 @@ function App() {
           </Routes>
         </AppProvider>
       </BrowserRouter>
-    </>
+    </div>
   )
 }
 

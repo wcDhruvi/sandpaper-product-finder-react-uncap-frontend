@@ -15,6 +15,7 @@ import ThicknessPicker from "../components/pickers/ThicknessPicker";
 import ApplicationPicker from "../components/pickers/ApplicationPicker";
 import BackingPicker from "../components/pickers/BackingPicker";
 import ProgressFooter from "../components/ProgressFooter";
+import Loading from "../components/Loading";
 
 const ProductFinder = () => {
 
@@ -45,11 +46,8 @@ const ProductFinder = () => {
     ----------------------------- */
 
     useEffect(() => {
-
         if (!initialized) return;
-
         const params = getParams();
-
         if (params.reset) {
             replaceData({
                 material: params.material || "",
@@ -58,8 +56,6 @@ const ProductFinder = () => {
 
             pickStep(params.step || "step");
         }
-
-
     }, [initialized, location.search]);
 
     /* -----------------------------
@@ -67,21 +63,21 @@ const ProductFinder = () => {
     ----------------------------- */
 
     useEffect(() => {
-
         const params = getParams();
-
         setCurrentStep(params.step || "");
-
     }, [location.search, step]);
 
+    const loadingDataPage = ["application", "backing", "centerholesize", "centerhole", "thickness", "ventedhole"]
+
+    const isLoadingPage = loadingDataPage.includes(currentStep);
 
     return (
         <>
 
             {(currentStep && currentStep !== '1') && <ProductFinderProgress />}
             <div className="pf-section-spacing-padding">
+                {filtersLoading && isLoadingPage ? <Loading /> : null}
                 <div className="pf-section-main">
-
                     <div className="pf-section-row">
                         {(currentStep === '1' || currentStep === '') && <MaterialPicker />}
                         {(currentStep === "specmaterial") && <SpecificMaterialPicker />}
@@ -96,10 +92,7 @@ const ProductFinder = () => {
                         {(currentStep === "backing") && <BackingPicker />}
                         <ProgressFooter isFirstStep={currentStep === '1' || currentStep === ''} />
                     </div>
-
-
                 </div>
-
             </div>
 
         </>

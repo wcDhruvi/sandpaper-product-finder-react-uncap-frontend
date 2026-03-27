@@ -11,8 +11,6 @@ import Hole6 from '../../utils/icons/Hole6';
 import Hole8 from '../../utils/icons/Hole8';
 import NotFound from '../NotFound';
 import NotAvailable from '../NotAvailable';
-import Loading from '../Loading';
-
 const HOLE_ICONS = {
     "No holes": NoHole,
     "5": Hole5,
@@ -75,7 +73,6 @@ const VentedHolePicker = () => {
 
     return (
         <>
-            {filtersLoading && <Loading />}
             <ProgressHeader>
                 <div className="pf-flex pf-items-center pf-justify-center pf-gap-[10px] pf-flex-col">
                     {pickedData?.center_hole && <button onClick={() => pickStep('centerhole')} className="text-black text-[12px] leading-[18px] font-normal font-[Din_Pro]">

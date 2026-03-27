@@ -4,7 +4,7 @@ module.exports = {
     "./src/**/*.{js,jsx}",
   ],
   prefix: "pf-",
-  important: ".productFinderFilter",
+  important: ".product-finder-section",
   corePlugins: {
     preflight: false,
   },

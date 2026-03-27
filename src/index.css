@@ -6,22 +6,7 @@
 ===================================================== */
 
 :root {
-  --Surface-White: #FFFFFF;
-  --Grey-Grey-300: #D8D8D8;
-  --Content-Disabled: #7F7F7F;
-  --Content-Default: #000000;
-  --Gray-Grey-700: #666365;
-
-  --Brand-Secondary: #004890;
-  --brand-accent-2-eyedropped-from-static-site: #F6F6F6;
-
   --Family-Body: "DIN Pro", sans-serif;
-
-  --Size-Small: 14px;
-  --Line-height-Small: 20px;
-
-  --Size-H6: 18px;
-  --Line-height-H6: 26px;
 }
 
 /* =====================================================
@@ -146,12 +131,16 @@
   .pf-sub-section-heading {
     @apply pf-text-black pf-font-bold pf-text-[18px] pf-leading-[24px] lg:pf-text-[24px] lg:pf-leading-[32px] pf-w-full pf-mb-0;
 
-    font-family: var(--Family-Title, "Din Pro");
+    font-family: var(--Family-Body, "Din Pro");
     text-align: center;
   }
 
   .pf-bg-uneeda-primary {
     @apply pf-bg-[#FFE411];
+  }
+
+  .pf-bg-uneeda-hover-primary {
+    @apply pf-bg-[#ecd100];
   }
 
   .pf-bg-disable {
@@ -161,8 +150,8 @@
 }
 
 .pf-section-spacing-padding {
-
-  background: var(--Surface-Grey, #F6F6F6);
+  position: relative;
+  background: #F6F6F6;
   display: flex;
   justify-content: center;
 }
@@ -213,11 +202,16 @@
   z-index: 10;
 }
 
+.pf-product-loading .loading-overlay--sticky {
+padding-top: 100px;
+}
+
 .loading-overlay--sticky {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 
 .pf-loader {
   border: 4px solid #dbdada;
@@ -225,17 +219,65 @@
   border-top: 4px solid #000000;
   width: 40px;
   height: 40px;
-  -webkit-animation: spin 2s linear infinite; /* Safari */
+  -webkit-animation: spin 2s linear infinite;
+  /* Safari */
   animation: spin 2s linear infinite;
+}
+
+.pf-loader.small{
+  width: 20px;
+  height: 20px;
+  border: 2px solid #dbdada;
+  border-top: 2px solid #000000;
 }
 
 /* Safari */
 @-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.pf-row {
+  padding: 0 11px;
+}
+
+@media only screen and (min-width: 768px) {
+  .pf-row {
+    padding: 0 35px;
+  }
+}
+
+.pf-row {
+  max-width: var(--grid-width-row, 1380px);
+  margin-right: auto;
+  margin-left: auto;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.pf-product-result {
+  padding: 30px 0;
+  background: #F6F6F6;
+}
+
+.pf-no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.pf-no-scrollbar {
+  scrollbar-width: none;
 }

@@ -10,7 +10,7 @@ function NotSureButton() {
             onClick={nextStep}
             className="pf-flex pf-items-center pf-justify-center pf-gap-[5px] pf-pt-2 pf-pb-2 pf-pr-2 pf-pl-4 pf-rounded-[3px] pf-bg-white"
         >
-            <span className="pf-text-[#004890] pf-text-center pf-font-normal pf-text-[14px] pf-leading-[20px] pf-font-[Din_Pro]">
+            <span className="pf-text-[#004890] pf-text-center pf-font-normal pf-text-[14px] pf-leading-[20px]">
                 I'm not sure
             </span>
             <NextArrow />

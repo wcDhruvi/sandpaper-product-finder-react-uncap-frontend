@@ -8,7 +8,6 @@ import NoCenterHole from '../../utils/icons/NoCenterHole';
 import CenterHole from '../../utils/icons/CenterHole';
 import { twMerge } from "tailwind-merge";
 import clsx from "clsx";
-import Loading from '../Loading';
 
 const HolePicker = () => {
 
@@ -43,7 +42,6 @@ const HolePicker = () => {
 
     return (
         <>
-            {filtersLoading && <Loading />}
             <ProgressHeader>
                 <div className='pf-flex pf-items-center pf-justify-center pf-gap-[10px]'>
                     <h2 className="pf-section-main-heading">

@@ -18,7 +18,6 @@ function ProductFinderProgress() {
 
     const { pathname } = useLocation();
 
-    console.log("pathname", pathname)
     const isResults = pathname.startsWith(resultPageUrl);
 
     return (

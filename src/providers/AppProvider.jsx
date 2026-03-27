@@ -6,9 +6,9 @@ import React, {
   useCallback,
   useMemo
 } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { configuration_namespaceObject, resultPageUrl } from "../utils/Constent"
-import { sizeSorter, unique, computeStepOrder, STEP_ALIASES } from "../utils/Common"
+import { sizeSorter, unique, computeStepOrder } from "../utils/Common"
 import qs from "qs";
 
 /* -----------------------------------------
@@ -31,6 +31,8 @@ import {
   PFShopDomain,
   baseUrl
 } from "../utils/Constent";
+
+
 
 /* -----------------------------------------
    CONTEXT
@@ -63,8 +65,16 @@ const AppProvider = ({ children }) => {
   const [pickedData, setPickedData] = useState({});
   const [resultsCount, setResultsCount] = useState(0);
 
+  const { pathname } = useLocation();
+  const isResults = pathname === resultPageUrl;
+
   const [availableFilters, setAvailableFilters] = useState(defaultAvailableFilters);
-  const [selectedFilters, setSelectedFilters] = useState("");
+
+  const [shopifyProductIds, setShopifyProductIds] = useState([]);
+  const [filterWithCount, setFilterWithCount] = useState({
+    grit: [],
+    grain: []
+  })
 
   const [filtersLoading, setFiltersLoading] = useState(false);
   const sizes = configuration_namespaceObject.L;
@@ -74,12 +84,13 @@ const AppProvider = ({ children }) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
+
   // ── stepOrder: array of { step, title } ──
   const stepOrderFull = useMemo(() => {
     const device = pickedData?.device || "";
     const material = pickedData?.material || "";
     return computeStepOrder(device, material);
-  }, [pickedData, searchParams]);
+  }, [pickedData]);
 
   // ── stepOrder as flat string array for getPayload lookup ──
   const stepOrder = useMemo(() => {
@@ -210,7 +221,7 @@ const AppProvider = ({ children }) => {
       withfilters: 1
     };
 
-  }, [pickedData, searchParams]);
+  }, [pickedData, step]);
 
   /* -----------------------------------------
      FETCH RESULTS
@@ -220,12 +231,10 @@ const AppProvider = ({ children }) => {
     const body = prepareSearchBody();
     const base = { ...body };
 
-
     const currentStep = searchParams.get("step");
 
     if (currentStep && stepOrder.length) {
-      const normalizedStep = STEP_ALIASES[currentStep] || currentStep;
-      const currentIndex = stepOrder.indexOf(normalizedStep);
+      const currentIndex = stepOrder.indexOf(currentStep);
 
       if (currentIndex !== -1) {
         const toDelete = stepOrder.slice(currentIndex);
@@ -272,11 +281,13 @@ const AppProvider = ({ children }) => {
       thickness: thickness || undefined,
       surface: application || [],
       material_type: backing || undefined,
+      isFinalFilter: isResults ? 1 : 0,
+      shopify_product_ids: shopifyProductIds
     };
 
     return payload;
 
-  }, [prepareSearchBody, materials, searchParams, stepOrder]);
+  }, [prepareSearchBody, materials, pickedData, step, stepOrder]);
 
   const fetchResults = useCallback(async () => {
     if (firstRun.current) return;
@@ -303,6 +314,14 @@ const AppProvider = ({ children }) => {
       if (res?.apiStatus === 200) {
         setResultsCount(res?.total || 0);
         setAvailableFilters(res?.filters || defaultAvailableFilters);
+        setShopifyProductIds(res?.shopify_product_ids || [])
+        if (isResults) {
+          setFilterWithCount({
+            grit: res?.grit_counts || [],
+            grain: res?.grain_counts || []
+
+          })
+        }
       }
 
     } catch (error) {
@@ -354,9 +373,6 @@ const AppProvider = ({ children }) => {
   ----------------------------------------- */
 
   const pickMaterial = useCallback((material, switch_device = true) => {
-
-    setSelectedFilters('');
-
     setPickedData((draft) => {
       if (draft.material !== material) {
         draft.size = '';
@@ -396,7 +412,6 @@ const AppProvider = ({ children }) => {
   ----------------------------------------- */
 
   const pickDevice = (device, switchMaterial = true, switchSize = true) => {
-    setSelectedFilters('');
 
     let material = pickedData?.material;
 
@@ -451,7 +466,7 @@ const AppProvider = ({ children }) => {
   ----------------------------------------- */
 
   const pickSize = (width, height) => {
-    setSelectedFilters("");
+
 
     setPickedData((draft) => {
       draft.size = width;
@@ -482,8 +497,6 @@ const AppProvider = ({ children }) => {
   ----------------------------------------- */
 
   const pickAttachment = (attachment) => {
-    setSelectedFilters("");
-
     setPickedData((draft) => {
       draft.attachment = attachment;
       draft.center_hole = "";
@@ -504,9 +517,6 @@ const AppProvider = ({ children }) => {
   ----------------------------------------- */
 
   const pickCenterHole = (hole) => {
-
-    setSelectedFilters("");
-
     setPickedData((prev) => ({
       ...prev,
       center_hole: hole,
@@ -524,7 +534,6 @@ const AppProvider = ({ children }) => {
 
   const pickCenterHoleSize = (size) => {
 
-    setSelectedFilters("");
 
     setPickedData((prev) => ({
       ...prev,
@@ -541,8 +550,6 @@ const AppProvider = ({ children }) => {
 
   const pickVentedHole = (hole) => {
 
-    setSelectedFilters("");
-
     setPickedData((prev) => ({
       ...prev,
       vented_hole: hole
@@ -557,8 +564,6 @@ const AppProvider = ({ children }) => {
   ----------------------------------------- */
 
   const pickApplication = useCallback((application) => {
-    setSelectedFilters('');
-
     setPickedData((draft) => {
       draft.application = application;
       return draft;
@@ -569,14 +574,13 @@ const AppProvider = ({ children }) => {
 
     pickStep(isSpongesOrHandSanding ? 'results' : 'backing');
 
-  }, [pickedData, setSelectedFilters, setPickedData, pickStep]);
+  }, [pickedData, setPickedData, pickStep]);
 
   /* -----------------------------------------
      BACKING
   ----------------------------------------- */
 
   const pickBackingMaterial = useCallback((mat) => {
-    setSelectedFilters('');
 
     setPickedData((draft) => {
       draft.backing = mat;
@@ -588,15 +592,13 @@ const AppProvider = ({ children }) => {
     } else {
       setStep('results');
     }
-  }, [pickedData, resultsCount, setSelectedFilters, setPickedData, setStep]);
+  }, [pickedData, resultsCount, setPickedData, setStep]);
 
   /* -----------------------------------------
      THICKNESS
   ----------------------------------------- */
 
   const pickThickness = (thick) => {
-    setSelectedFilters('');
-
     setPickedData((prev) => ({
       ...prev,
       thickness: thick
@@ -609,28 +611,6 @@ const AppProvider = ({ children }) => {
     }
   };
 
-  /* -----------------------------------------
-     FILTERS
-  ----------------------------------------- */
-
-  const pickAdditionalFilters = (filters) => {
-
-    setSelectedFilters(filters);
-    pickPage(1);
-
-  };
-
-  /* -----------------------------------------
-     PAGE
-  ----------------------------------------- */
-
-  const pickPage = (page) => {
-
-    const query = getStringifiedQuery();
-
-    navigate(`${resultPageUrl}?${query}&page=${page}`)
-
-  };
 
   /* -----------------------------------------
      PRODUCT API
@@ -651,7 +631,6 @@ const AppProvider = ({ children }) => {
   const resetData = (redirect = baseUrl) => {
 
     setPickedData({});
-    setSelectedFilters("");
     setStep("");
 
     navigate(redirect);
@@ -905,7 +884,6 @@ const AppProvider = ({ children }) => {
 
     filtersLoading,
     availableFilters,
-    selectedFilters,
 
     step,
     setStep,
@@ -933,9 +911,6 @@ const AppProvider = ({ children }) => {
     pickBackingMaterial,
     pickThickness,
 
-    pickPage,
-    pickAdditionalFilters,
-
     loadProductInfo,
 
     resetData,
@@ -943,7 +918,9 @@ const AppProvider = ({ children }) => {
     resetSomeData,
 
     stepOrder,
-    stepOrderFull
+    stepOrderFull,
+    shopifyProductIds,
+    filterWithCount
   };
 
   return (

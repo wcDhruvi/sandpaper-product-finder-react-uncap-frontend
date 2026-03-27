@@ -55,7 +55,9 @@ const ApiService = () => {
     //--------------------------------API----------------------------------//
     return {
         getFilter: async (payload, options = {}) =>
-            await postData(`${baseUrl}/product-finder`, payload, false, null, options)
+            await postData(`${baseUrl}/product-finder`, payload, false, null, options),
+        getProducts: async (payload, options = {}) =>
+            await postData(`${baseUrl}/front-product-listing`, payload, false, null, options)
     }
 
 }

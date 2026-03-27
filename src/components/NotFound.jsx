@@ -47,7 +47,7 @@ function NotFound() {
                                 </p>
                                 <Link
                                     to={`${baseUrl}/inquire/?${q}&step=${step}`}
-                                    className="pf-bg-uneeda-yellow pf-text-center pf-px-4 pf-py-3.5 pf-w-full pf-text-lg pf-text-zinc-900 pf-rounded"
+                                    className="pf-bg-uneeda-primary pf-text-center pf-px-4 pf-py-3.5 pf-w-full pf-text-lg pf-text-zinc-900 pf-rounded"
                                 >
                                     Create Custom Order
                                 </Link>
@@ -57,7 +57,7 @@ function NotFound() {
                 </div>
 
                 {/* Radial gradient background decoration */}
-                <div className="pf-absolute pf-z-0 -pf-bottom-12 lg:-pf-bottom-18 pf-h-[40em] pf-pointer-events-none pf-w-screen pf-left-1/2 -pf-translate-x-1/2 pf-bg-[radial-gradient(ellipse_at_bottom,_#FCE45055_30%,#F6F6F6_60%)] lg:pf-bg-[radial-gradient(ellipse_at_bottom,_#FCE45055_30%,#F6F6F6_70%)]" />
+                {/* <div className="pf-absolute pf-z-0 -pf-bottom-12 lg:-pf-bottom-18 pf-h-[40em] pf-pointer-events-none pf-w-screen pf-left-1/2 -pf-translate-x-1/2 pf-bg-[radial-gradient(ellipse_at_bottom,_#FCE45055_30%,#F6F6F6_60%)] lg:pf-bg-[radial-gradient(ellipse_at_bottom,_#FCE45055_30%,#F6F6F6_70%)]" /> */}
             </div>
         </div>
     );

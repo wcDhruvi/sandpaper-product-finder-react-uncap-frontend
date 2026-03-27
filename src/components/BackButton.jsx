@@ -12,7 +12,7 @@ function BackButton() {
         >
             <BackArrow />
 
-            <span className="pf-text-[#004890] pf-text-center pf-font-normal pf-text-[14px] pf-leading-[20px] pf-font-[Din_Pro]">
+            <span className="pf-text-[#004890] pf-text-center pf-font-normal pf-text-[14px] pf-leading-[20px]">
                 Back
             </span>
         </button>

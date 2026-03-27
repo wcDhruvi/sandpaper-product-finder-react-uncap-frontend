@@ -371,7 +371,6 @@ export const defaultAppValue = {
     pickedData: {},
     resultsCount: 0,
     filtersLoading: false,
-    selectedFilters: '',
     availableFilters: {},
     setStep: (step) => { },
     getSizes: () => {
@@ -417,7 +416,6 @@ export const defaultAppValue = {
     pickBackingMaterial: (mat) => { },
     pickThickness: (thick) => { },
     pickAdditionalFilters: (filters) => { },
-    pickPage: (page) => { },
     loadProductInfo: (sku) => {
         return new Promise((resolve, reject) => { });
     },
