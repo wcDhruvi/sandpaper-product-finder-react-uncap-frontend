@@ -1,11 +1,15 @@
 import { useState, useEffect, useCallback } from "react";
 import { useAppContext } from "./useAppContext";
 import { STEP_ALIASES } from "../utils/Common";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import { baseUrl, resultPageUrl } from "../utils/Constent";
 
 function useProgressSteps() {
-  const { step, pickStep, stepOrderFull, stepOrder } = useAppContext();
+  const { step, pickStep, stepOrderFull, stepOrder, getStringifiedQuery } = useAppContext();
 
   const [currentStep, setCurrentStep] = useState(0);
+  const [params] = useSearchParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!stepOrderFull.length) return;
@@ -30,19 +34,30 @@ function useProgressSteps() {
       PREVIOUS STEP
     ------------------------- */
   const prevStep = useCallback(() => {
+    if (stepOrderFull[currentStep].step === 'application' && params.get('activeGroup')) {
+      const query = getStringifiedQuery();
+      navigate(`${baseUrl}/?${query}&step=application&activeGroup=`);
+      return;
+    }
+
     const prev = stepOrderFull[currentStep - 1];
     if (prev) pickStep(prev.step)
     else pickStep("1");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentStep, stepOrderFull, pickStep]);
 
   /* -------------------------
     NEXT STEP
   ------------------------- */
   const nextStep = useCallback(() => {
-    if (currentStep < stepOrderFull.length) {
+    if (currentStep + 1 < stepOrderFull.length) {
       const next = stepOrderFull[currentStep + 1];
       if (next) pickStep(next.step);
+    } else {
+      const query = getStringifiedQuery();
+      navigate(`${resultPageUrl}/?${query}`);
     }
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentStep, stepOrderFull, pickStep]);
 
   return {

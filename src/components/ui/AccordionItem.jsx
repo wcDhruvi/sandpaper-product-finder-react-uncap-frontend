@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 
-const AccordionItem = ({ title, children, isOpen, onClick }) => {
+const AccordionItem = ({ title, children, isOpen, onClick , className = ""}) => {
     const contentRef = useRef(null);
     const [maxHeight, setMaxHeight] = useState("0px");
 
@@ -19,7 +19,7 @@ const AccordionItem = ({ title, children, isOpen, onClick }) => {
             {/* Header */}
             <button
                 onClick={onClick}
-                className="pf-flex pf-py-[15px] pf-justify-between pf-items-center pf-w-full"
+                className={`pf-flex pf-py-[15px] pf-justify-between pf-items-center pf-w-full ${className}`}
             >
                 <span className="pf-text-black pf-font-bold pf-text-[14px] pf-leading-[20px]">
                     {title}

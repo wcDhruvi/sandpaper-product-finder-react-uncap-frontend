@@ -5,15 +5,19 @@ import FilterList from "../../components/FilterList";
 import Switch from "../../components/ui/Switch";
 import { useAppContext } from "../../hooks/useAppContext";
 import { defaultSelectedFilter } from "../../utils/Common";
+import CustomSelect from "../../components/ui/CustomSelect";
 
 export default function FilterDrawer({
     onDismiss,
     selectedFilters,
     setSelectedFilters,
-
+    productCount,
+    sortOptions,
+    sortBy,
+    setSortBy,
 }) {
 
-    const { availableFilters } = useAppContext();
+    const { filterWithCount } = useAppContext();
     const [open, setOpen] = useState(false);
 
     // ✅ TEMP STATE (IMPORTANT)
@@ -79,9 +83,6 @@ export default function FilterDrawer({
 
     if (!mounted) return null;
 
-    console.log("Selected filter", selectedFilters)
-    console.log("temp filter", tempFilters)
-
     return createPortal(
         <div className="product-finder-section">
             <div className="pf-fixed pf-inset-0 pf-z-[999]">
@@ -115,19 +116,21 @@ export default function FilterDrawer({
 
                     {/* Header */}
                     <div className="pf-sticky pf-top-0 pf-z-[35] pf-bg-white pf-px-[30px]">
-                        <div className="pf-flex pf-justify-between pf-items-center pf-py-[20px] pf-border-b pf-border-gray-300">
+                        <div className="pf-flex pf-justify-between pf-items-center pf-py-[20px] pf-border-0 pf-border-b pf-border-[#dadce0] pf-border-solid">
 
                             <div>
-                                <p className="pf-text-[16px] pf-font-semibold">
+                                <p className="pf-text-[16px] pf-font-semibold pf-mb-0">
                                     Filter and sort
                                 </p>
-                                <span className="pf-text-[12px] pf-mt-[4px] pf-block">
-                                    {/* Optional: dynamic count */}
+                                <span className="pf-text-[12px] pf-block">
+                                    {productCount} products
                                 </span>
                             </div>
 
                             <button onClick={closeDrawer} className="pf-text-[18px]">
-                                ✕
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M13 1L1 13M13 13L1 1" stroke="var(--color-body)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+                                </svg>
                             </button>
                         </div>
                     </div>
@@ -159,7 +162,7 @@ export default function FilterDrawer({
                             onClick={() => toggleAccordion(1)}
                         >
                             <FilterList
-                                data={availableFilters["Grit"]}
+                                data={filterWithCount["grit"]}
                                 type="grit"
                                 selectedFilters={tempFilters}
                                 onChange={handleCheckboxChange}
@@ -173,26 +176,35 @@ export default function FilterDrawer({
                             onClick={() => toggleAccordion(2)}
                         >
                             <FilterList
-                                data={availableFilters["Grain"]}
+                                data={filterWithCount["grain"]}
                                 type="grain"
                                 selectedFilters={tempFilters}
                                 onChange={handleCheckboxChange}
                             />
                         </AccordionItem>
 
+                        <div className="pf-flex pf-py-[15px] pf-justify-between pf-items-center pf-w-full">
+                            <span className="pf-text-black pf-font-bold pf-text-[14px] pf-leading-[20px]">
+                                Sort by
+                            </span>
+                            <CustomSelect
+                                options={sortOptions}
+                                value={sortBy}
+                                onChange={setSortBy}
+                                isFilterDrawer={true}
+                            />
+                        </div>
+
                     </div>
 
                     {/* Footer */}
-                    <div className="pf-border-t pf-border-gray-300 pf-p-[20px] pf-grid pf-gap-[7px] pf-grid-cols-2">
+                    <div className="pf-border-t pf-border-gray-300 pf-p-[20px] pf-grid pf-gap-[7px] pf-grid-cols-2 pf-border-solid pf-border-0">
 
                         <button onClick={handleClear} className="pf-text-[14px] pf-underline pf-text-[#004890] pf-font-bold pf-text-[14px] pf-leading-[20px] pf-text-uppercase">
                             Clear
                         </button>
 
-                        <button
-                            onClick={handleApply}
-                            className="pf-bg-uneeda-primary pf-font-bold pf-text-[14px] pf-leading-[20px] pf-py-[10px] pf-rounded"
-                        >
+                        <button onClick={handleApply} className="pf-bg-uneeda-primary pf-font-bold pf-text-[14px] pf-leading-[20px] pf-py-[10px] pf-rounded">
                             Apply
                         </button>
 

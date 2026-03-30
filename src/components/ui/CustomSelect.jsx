@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 
-const CustomSelect = ({ options = [], value, onChange }) => {
+const CustomSelect = ({ options = [], value, onChange, isFilterDrawer = false }) => {
     const [open, setOpen] = useState(false);
     const ref = useRef();
 
@@ -27,9 +27,28 @@ const CustomSelect = ({ options = [], value, onChange }) => {
             >
                 <span>{selected?.label || "Select"}</span>
 
-                <svg className={`pf-transition-transform ${open ? "pf-rotate-180" : ""}`} width="8" height="6" viewBox="0 0 8 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M6.75 1.5L3.75 4.5L0.75 1.5" stroke="var(--color-body)" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"></path>
-                </svg>
+                {isFilterDrawer ? (
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="30"
+                        height="30"
+                        viewBox="0 0 30 30"
+                        fill="none"
+                        className={`pf-transition-transform ${open ? "pf-rotate-180" : ""}`}
+                    >
+                        <path
+                            d="M20 17.5L15 12.5L10 17.5"
+                            stroke="black"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
+                ) : (
+                    <svg className={`pf-transition-transform ${open ? "pf-rotate-180" : ""}`} width="8" height="6" viewBox="0 0 8 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6.75 1.5L3.75 4.5L0.75 1.5" stroke="var(--color-body)" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"></path>
+                    </svg>
+                )}
             </button>
 
             {/* Dropdown */}

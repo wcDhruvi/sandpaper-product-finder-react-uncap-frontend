@@ -5,10 +5,12 @@ import ProductFinderProgress from "./sections/ProductFinderProgress";
 import FilterSideBar from "./sections/FilterSideBar";
 import FilterBar from "./sections/FilterBar";
 import Loading from "../components/Loading";
+import ProductCard from "../components/ProductCard";
 
 import { useAppContext } from "../hooks/useAppContext";
 import { apiService, PFShopDomain } from "../utils/Constent";
 import { defaultSelectedFilter } from "../utils/Common";
+import Pagination from "../components/ui/Pagination";
 
 const ProductListing = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -44,6 +46,7 @@ const ProductListing = () => {
   const [products, setProducts] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [totalProduct, setTotalProduct] = useState(0);
+  const [filteredProductCount, setFilteredProductCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [showInlitalLoader, setShowInlitalLoader] = useState(true);
 
@@ -82,6 +85,7 @@ const ProductListing = () => {
         setProducts(res?.data?.products || []);
         setTotalPages(res?.data?.pagination?.last_page || 1);
         setTotalProduct(res?.data?.pagination?.total || 0);
+        setFilteredProductCount(res?.data?.pagination?.filtered_total || 0);
       }
     } catch (error) {
       if (error.name !== "AbortError") {
@@ -136,15 +140,6 @@ const ProductListing = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [page]);
 
-  /* ---------------- Pagination ---------------- */
-
-  const handleNext = () => {
-    if (page < totalPages) setPage((prev) => prev + 1);
-  };
-
-  const handlePrev = () => {
-    if (page > 1) setPage((prev) => prev - 1);
-  };
 
   /* ---------------- UI ---------------- */
 
@@ -153,7 +148,7 @@ const ProductListing = () => {
   useEffect(() => {
     let timer;
 
-    if ((filtersLoading || loading ) && !isHaveProduct) {
+    if ((filtersLoading || loading) && !isHaveProduct) {
       setShowInlitalLoader(true);
     } else {
       timer = setTimeout(() => {
@@ -164,177 +159,93 @@ const ProductListing = () => {
     return () => clearTimeout(timer);
   }, [filtersLoading, loading]);
 
+  const NotFoundContainer = () => <div className="pf-flex pf-justify-center pf-flex-col pf-items-center pf-gap-[30px] pf-p-[10vh]">
+    <svg width="171" height="137" viewBox="0 0 171 137" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M77.5235 47.358C77.7471 47.4705 77.9987 47.5268 78.2503 47.5268C79.0052 47.5268 79.6761 47.0766 79.9837 46.4013C81.2417 43.5314 82.975 40.9148 85.1556 38.692C85.8545 37.9323 85.8266 36.7506 85.0718 36.0472C84.3169 35.3438 83.1428 35.3719 82.4438 36.1316C79.9837 38.692 77.9708 41.6744 76.545 44.9382C76.3493 45.3884 76.3493 45.923 76.517 46.3732C76.7127 46.7952 77.0762 47.161 77.5235 47.358Z" fill="var(--color-accent)"></path>
+      <path d="M91.5298 32.9522C91.8933 32.9522 92.2288 32.8397 92.5363 32.6708C95.2481 30.9545 98.1276 29.5196 101.119 28.366C102.069 28.0002 102.545 26.9029 102.181 25.9181C101.818 24.9615 100.728 24.4832 99.7491 24.849C96.5341 26.087 93.4589 27.6344 90.5514 29.4914C89.8524 29.9416 89.517 30.7857 89.7406 31.6017C89.9643 32.4176 90.6911 32.9522 91.5298 32.9522Z" fill="var(--color-accent)"></path>
+      <path d="M83.2266 71.8927C82.8631 72.2022 82.6115 72.6805 82.5836 73.187C82.5556 73.6935 82.6954 74.1718 83.0309 74.5657C85.2394 77.1823 87.6996 79.6021 90.2996 81.8248C90.6351 82.1343 91.0544 82.275 91.5017 82.275C92.0608 82.275 92.5641 82.0218 92.9554 81.5997C93.6264 80.8119 93.5146 79.6021 92.7318 78.9268C90.2716 76.8447 87.9792 74.5657 85.8824 72.1178C85.1835 71.33 84.0093 71.2175 83.2266 71.8927Z" fill="var(--color-accent)"></path>
+      <path d="M73.7214 131.485C70.9258 130.36 68.4097 128.615 66.3409 126.393C65.642 125.633 64.4678 125.549 63.713 126.252C62.9582 126.955 62.8743 128.137 63.5732 128.925C66.0054 131.626 69.0247 133.708 72.3795 135.059C72.6032 135.143 72.8268 135.171 73.0784 135.171C73.973 135.199 74.7558 134.552 74.9515 133.652C75.1193 132.751 74.644 131.879 73.8053 131.542L73.7214 131.485Z" fill="var(--color-accent)"></path>
+      <path d="M92.0051 131.851C89.0976 132.751 86.0783 133.23 83.059 133.23H82.7515C81.773 133.314 81.0461 134.13 81.0461 135.115C81.0461 136.1 81.773 136.916 82.7515 137H83.087C86.4977 136.972 89.8804 136.437 93.1234 135.424C94.1018 135.115 94.661 134.074 94.3535 133.089C94.0459 132.104 93.0115 131.542 92.0331 131.851H92.0051Z" fill="var(--color-accent)"></path>
+      <path d="M105.704 96.2024C106.095 96.2024 106.486 96.0618 106.822 95.8367C107.213 95.5553 107.493 95.1051 107.577 94.6268C107.661 94.1485 107.521 93.642 107.241 93.22C105.2 90.4345 102.908 87.8178 100.392 85.4544C99.6371 84.751 98.4629 84.7791 97.764 85.5107C97.0651 86.2704 97.0931 87.4521 97.8199 88.1555C100.168 90.3782 102.293 92.7698 104.222 95.3584C104.557 95.8929 105.117 96.2024 105.704 96.2024Z" fill="var(--color-accent)"></path>
+      <path d="M78.3343 55.2924C78.2784 54.2513 77.4117 53.4635 76.3774 53.4916C75.343 53.5479 74.5602 54.4201 74.5881 55.4612C74.7838 59.0626 75.7064 62.5796 77.272 65.7872C77.4397 66.2936 77.8311 66.6875 78.3064 66.8845C78.7816 67.0814 79.3407 67.0814 79.816 66.8563C80.2913 66.6313 80.6547 66.2374 80.7945 65.7309C80.9622 65.2244 80.9063 64.6899 80.6267 64.2397C79.3128 61.4261 78.5021 58.3873 78.3343 55.2924Z" fill="var(--color-accent)"></path>
+      <path d="M109.841 101.295C109.366 101.464 109.003 101.802 108.779 102.252C108.555 102.702 108.555 103.237 108.723 103.687C109.562 105.994 110.009 108.442 110.009 110.89C110.009 111.509 109.981 112.099 109.925 112.69C109.841 113.731 110.596 114.632 111.603 114.744H111.742C112.721 114.744 113.504 114.013 113.615 113.028C113.699 112.296 113.727 111.593 113.727 110.861C113.699 107.963 113.168 105.094 112.162 102.364C111.798 101.492 110.792 101.014 109.841 101.295Z" fill="var(--color-accent)"></path>
+      <path d="M109.478 120.681C109.059 120.4 108.555 120.315 108.08 120.4C107.605 120.512 107.158 120.794 106.906 121.216C105.201 123.804 102.992 126.027 100.448 127.771C100.029 128.053 99.749 128.503 99.6652 128.981C99.5813 129.459 99.6931 129.966 99.9727 130.388C100.252 130.81 100.672 131.091 101.175 131.176C101.678 131.26 102.181 131.148 102.573 130.866C105.536 128.84 108.052 126.252 110.037 123.27C110.568 122.397 110.345 121.244 109.478 120.681Z" fill="var(--color-accent)"></path>
+      <path d="M119.878 20.9099C116.439 20.938 113 21.3038 109.646 21.979C108.695 22.1478 108.024 23.0482 108.136 24.0048C108.22 24.9615 109.031 25.7211 110.009 25.693H110.372C113.532 25.074 116.719 24.7364 119.934 24.7082C120.912 24.6238 121.639 23.8079 121.639 22.8231C121.639 21.8383 120.912 21.0224 119.934 20.938L119.878 20.9099Z" fill="var(--color-accent)"></path>
+      <path d="M72.8268 120.934C73.2741 120.006 72.9107 118.88 71.9881 118.402C68.2979 116.601 64.3001 115.532 60.1905 115.251V51.7472C60.1905 51.6347 60.1905 51.5221 60.1905 51.4096V15.4514C61.9517 14.8606 63.3216 13.4538 63.8807 11.6531C64.4399 9.88047 64.1323 7.91094 63.0141 6.41972C61.9517 4.90036 60.1905 4 58.3453 4C56.5002 4 54.7389 4.90036 53.6207 6.39158C52.5304 7.91094 52.1949 9.85234 52.754 11.6249C53.3132 13.3975 54.683 14.8325 56.4443 15.4233V17.3366C51.0766 14.2697 39.5026 9.73979 28.5996 19.5312C16.103 30.7857 3.215 25.0178 2.68383 24.7645C1.87309 24.3706 0.922566 24.6239 0.391391 25.3273C-0.139783 26.0588 -0.0838704 27.0436 0.531174 27.7188L7.77192 35.8221L1.23009 42.3497C0.866653 42.7155 0.643 43.2219 0.670957 43.7284C0.670957 44.2348 0.922566 44.7413 1.286 45.0789C1.42578 45.1915 15.8234 57.9653 30.7522 47.2735C36.1478 43.4189 41.3478 42.209 46.2401 43.644C50.4895 45.0508 54.1239 47.9207 56.4723 51.7753V115.645C53.3411 116.376 50.3498 117.614 47.638 119.33C46.8831 119.949 46.6875 121.019 47.2186 121.863C47.7498 122.679 48.8122 122.96 49.6788 122.482C49.6788 122.482 54.9346 119.049 59.7991 119.049C63.4614 119.274 67.0119 120.203 70.3107 121.806C71.2613 122.228 72.3795 121.863 72.8268 120.934ZM56.2486 9.90861C56.2486 9.06452 56.7518 8.27671 57.5346 7.93907C58.3174 7.60144 59.212 7.77026 59.827 8.38925C60.4421 8.98011 60.6098 9.90861 60.3023 10.6964C59.9668 11.4842 59.212 11.9907 58.3733 11.9907C57.1991 12.0188 56.2486 11.0622 56.2486 9.90861ZM51.6637 41.9277C46.6875 39.0015 38.636 37.0319 28.5996 44.2067C18.5632 51.3814 9.05793 46.1199 5.36766 43.5033L11.6299 37.2008C12.3568 36.4974 12.3848 35.3438 11.7138 34.6122L7.49236 29.8853C16.103 31.1515 24.7975 28.3941 31.1157 22.4011C42.0746 12.6097 53.5368 19.7 56.4723 21.8102V45.726C55.0185 44.263 53.425 42.9968 51.6637 41.9277Z" fill="var(--color-accent)"></path>
+      <path d="M162.552 8.8313L131.615 8.8313C130.838 8.8313 130.209 9.4609 130.209 10.2375L130.209 35.55C130.209 36.3267 130.838 36.9563 131.615 36.9563L162.552 36.9563C163.329 36.9563 163.959 36.3267 163.959 35.5501L163.959 10.2376C163.959 9.4609 163.329 8.8313 162.552 8.8313Z" stroke="#3B3B3B" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"></path>
+      <path d="M130.209 14.4565L163.959 14.4565" stroke="#3B3B3B" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"></path>
+      <path d="M154.115 20.0815C154.115 21.9463 153.374 23.7347 152.056 25.0533C150.737 26.3719 148.949 27.1127 147.084 27.1127C145.219 27.1127 143.431 26.3719 142.112 25.0533C140.793 23.7347 140.052 21.9463 140.052 20.0815" stroke="#3B3B3B" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"></path>
+      <path d="M149.467 7.01943L152.707 3.11465C153.161 2.55128 153.082 1.73536 152.509 1.28854C151.936 0.841726 151.106 0.919433 150.652 1.48281L147.511 5.30987L144.607 1.57994C144.132 1.1137 143.401 1.05542 142.868 1.46338C142.335 1.85192 142.177 2.57071 142.512 3.13408L145.535 7L142.295 10.8853C141.841 11.4487 141.92 12.2646 142.473 12.7115C143.046 13.1583 143.876 13.0806 144.33 12.5172L147.471 8.74841L150.336 12.4589C150.593 12.7892 150.968 12.964 151.383 12.964C151.679 12.964 151.956 12.8669 152.173 12.692C152.45 12.4783 152.628 12.1675 152.687 11.8373C152.726 11.4876 152.647 11.1573 152.43 10.8853L149.467 7.01943Z" fill="var(--color-accent)"></path>
+    </svg>
+    <span className="pf-text-xl">No products found</span>
+  </div>
 
   return (
     <>
       <ProductFinderProgress />
+      <div className="pf-product-result pf-relative pf-min-h-[250px]">
+        {showInlitalLoader ? (
+          <Loading/>
+        ) : shopifyProductIds?.length === 0 ? (
+          <NotFoundContainer />
+        ) : (
+          <div className="pf-row">
+            <div className="pf-w-full">
+              <div className="pf-grid pf-gap-[clamp(20px,4%,40px)] lg:pf-grid-cols-[clamp(200px,22%,291px)_1fr]">
 
-      <div className="pf-product-result pf-relative">
-        {showInlitalLoader && <Loading />}
+                {/* Sidebar */}
+                <FilterSideBar
+                  selectedFilters={selectedFilters}
+                  setSelectedFilters={setSelectedFilters}
+                />
 
-        <div className="pf-row">
-          <div className="pf-w-full">
+                {/* Main Content */}
+                <div className="pf-flex pf-flex-col sm:pf-gap-[40px]">
 
-            <div className="pf-grid pf-gap-[clamp(20px,4%,40px)] lg:pf-grid-cols-[clamp(200px,22%,291px)_1fr]">
+                  <div className="pf-flex pf-flex-col pf-items-start pf-gap-[15px] lg:pf-gap-[10px]">
+                    <FilterBar
+                      selectedFilters={selectedFilters}
+                      setSelectedFilters={setSelectedFilters}
+                      productCount={totalProduct}
+                      filteredProductCount={filteredProductCount}
+                      loading={isHaveProduct && loading}
+                    />
 
-              {/* Sidebar */}
-              <FilterSideBar
-                selectedFilters={selectedFilters}
-                setSelectedFilters={setSelectedFilters}
-              />
+                    <div className="pf-w-full pf-relative">
+                      {/* Sub-loading overlay for subsequent filter updates */}
+                      {loading && isHaveProduct && (
+                        <Loading className="pf-items-start pf-product-loading" />
+                      )}
 
-              {/* Main Content */}
-              <div className="pf-flex pf-flex-col sm:pf-gap-[40px]">
-
-                <div className="pf-flex pf-flex-col pf-items-start pf-gap-[15px] lg:pf-gap-[10px]">
-
-                  <FilterBar
-                    selectedFilters={selectedFilters}
-                    setSelectedFilters={setSelectedFilters}
-                    productCount={totalProduct}
-                    loading={isHaveProduct && loading}
-                  />
-
-                  <ul className="pf-w-full pf-grid pf-grid-cols-2 md:pf-grid-cols-3 lg:pf-grid-cols-4 pf-gap-[10px] md:pf-gap-[15px] lg:pf-gap-[20px] pf-list-none pf-ml-0 pf-relative">
-
-                    {(isHaveProduct && loading) && (
-                      <Loading className="pf-items-start pf-product-loading" />
-                    )}
-
-                    {products?.map((product, i) => {
-                      const firstImage = product.images_json?.find((img) => img?.src)?.src;
-
-                      const firstAvailableSkuVariant =
-                        product.variants_json?.find((variant) => variant?.sku);
-
-                      const firstSKU = firstAvailableSkuVariant?.sku || null;
-
-                      const handleUrl = `/products/${product.handle}`
-
-                      return (
-                        <li key={product.shopify_product_id} className="pf-h-full pf-group" >
-                          <div className="pf-flex pf-flex-col pf-h-full pf-bg-white pf-p-[15px] pf-border pf-border-[#eee] pf-gap-[15px]">
-
-                            {/* IMAGE */}
-                            <div className="pf-relative">
-                              <a className=" pf-block pf-relative pf-w-full pf-pt-[100%] pf-overflow-hidden" href={handleUrl}>
-                                {firstImage ? (
-                                  <img
-                                    src={firstImage}
-                                    alt={product.title}
-                                    className="pf-absolute pf-top-0 pf-left-0 pf-w-full pf-h-full pf-object-contain"
-                                  />
-                                ) : (
-                                  <div className="pf-absolute pf-top-0 pf-left-0 pf-w-full pf-h-full pf-flex pf-items-center pf-justify-center ">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 525.5 525.5"
-                                      className="pf-w-[60%] pf-h-[60%] pf-fill-[#a3a1a1]"
-                                    >
-                                      <path d="M324.5 212.7H203c-1.6 0-2.8 1.3-2.8 2.8V308c0 1.6 1.3 2.8 2.8 2.8h121.6c1.6 0 2.8-1.3 2.8-2.8v-92.5c0-1.6-1.3-2.8-2.9-2.8zm1.1 95.3c0 .6-.5 1.1-1.1 1.1H203c-.6 0-1.1-.5-1.1-1.1v-92.5c0-.6.5-1.1 1.1-1.1h121.6c.6 0 1.1.5 1.1 1.1V308z"></path>
-                                      <path d="M210.4 299.5H240v.1s.1 0 .2-.1h75.2v-76.2h-105v76.2zm1.8-7.2l20-20c1.6-1.6 3.8-2.5 6.1-2.5s4.5.9 6.1 2.5l1.5 1.5 16.8 16.8c-12.9 3.3-20.7 6.3-22.8 7.2h-27.7v-5.5zm101.5-10.1c-20.1 1.7-36.7 4.8-49.1 7.9l-16.9-16.9 26.3-26.3c1.6-1.6 3.8-2.5 6.1-2.5s4.5.9 6.1 2.5l27.5 27.5v7.8zm-68.9 15.5c9.7-3.5 33.9-10.9 68.9-13.8v13.8h-68.9zm68.9-72.7v46.8l-26.2-26.2c-1.9-1.9-4.5-3-7.3-3s-5.4 1.1-7.3 3l-26.3 26.3-.9-.9c-1.9-1.9-4.5-3-7.3-3s-5.4 1.1-7.3 3l-18.8 18.8V225h101.4z"></path>
-                                      <path d="M232.8 254c4.6 0 8.3-3.7 8.3-8.3s-3.7-8.3-8.3-8.3-8.3 3.7-8.3 8.3 3.7 8.3 8.3 8.3zm0-14.9c3.6 0 6.6 2.9 6.6 6.6s-2.9 6.6-6.6 6.6-6.6-2.9-6.6-6.6 3-6.6 6.6-6.6z"></path>
-                                    </svg>
-                                  </div>
-                                )}
-                              </a>
-                              <div className="pf-absolute pf-bottom-[10px] md:pf-bottom-[5px] pf-left-[10px] md:pf-left-auto md:pf-right-0 pf-cursor-pointer
-                              pf-flex pf-justify-center pf-items-center pf-gap-[5px] pf-self-stretch pf-rounded-[3px] pf-bg-white pf-shadow-[0_4px_6px_0_rgba(0,0,0,0.08)] pf-py-[6px] pf-px-[12px]
-                              pf-text-black pf-text-center pf-font-sans pf-text-[12px] pf-font-bold pf-leading-[18px] pf-opacity-0 pf-transition-opacity pf-duration-300 
-                              group-hover:pf-opacity-100">
-                                Quick view
-                              </div>
-                            </div>
-
-                            <div className="pf-flex pf-flex-col pf-flex-1 pf-gap-[8px]">
-
-                              <div className="pf-flex pf-flex-col pf-gap-[2px]">
-
-                                {/* SKU */}
-                                <div className="pf-flex pf-gap-[5px] pf-text-[#666365] pf-text-[12px]">
-                                  <span className="pf-font-bold">CODE #</span>
-                                  <span>{firstSKU || ""}</span>
-                                  {/* {firstSKU ? <><span className="pf-font-bold">CODE #</span>
-                                  <span>{firstSKU}</span> </> : <span className="pf-invisible"> CODE #</span>} */}
-                                </div>
-
-
-                                {/* TITLE */}
-                                <a className="pf-text-[14px] pf-font-bold pf-leading-[20px]" href={handleUrl}>
-                                  {product.title}
-                                </a>
-                              </div>
-
-                              {/* BUTTON */}
-                              <a
-                                href={`/products/${product.handle}`}
-                                className="pf-mt-auto pf-h-[36px] pf-flex pf-items-center pf-justify-center pf-rounded-[3px] pf-bg-uneeda-primary pf-text-black pf-text-[14px] pf-font-bold hover:pf-bg-uneeda-hover-primary"
-                              >
-                                Show Product
-                              </a>
-
-                            </div>
-                          </div>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-
-                {/* Pagination */}
-                {!loading && totalPages > 1 && (
-                  <div className="pf-flex pf-items-center pf-justify-center">
-                    <div className="pf-rounded-[6px] pf-border pf-border-[#D8D8D8] pf-flex pf-items-center pf-justify-center pf-border-solid pf-gap-[15px] pf-py-[1px] pf-px-[9px]">
-                      {/* PREV BUTTON */}
-                      <button
-                        onClick={handlePrev}
-                        disabled={page === 1}
-                        className={`pf-w-[28px] pf-h-[28px] pf-flex pf-items-center pf-justify-center pf-rounded-[6px] pf-border
-                          ${page === 1 ? "pf-border-[#D8D8D8] pf-opacity-50 pf-cursor-not-allowed" : "pf-border-[#D8D8D8] hover:pf-bg-gray-100"}`}
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none">
-                          <path d="M5.65 0.65L0.65 5.65L5.65 10.65" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </button>
-
-                      {/* PAGE NUMBERS */}
-                      <div className="pf-flex pf-items-center pf-gap-[3px] ">
-                        {Array.from({ length: totalPages }, (_, i) => {
-                          const pageNumber = i + 1;
-                          const isActive = pageNumber === page;
-
-                          return (
-                            <button
-                              key={pageNumber}
-                              onClick={() => setPage(pageNumber)}
-                              className={`pf-min-w-[28px] pf-h-[28px] pf-flex pf-items-center pf-justify-center pf-rounded-[4px] pf-text-[12px] pf-leading-[18px]
-                              ${isActive ? "pf-text-[#004890] pf-font-bold" : "pf-text-black hover:pf-bg-gray-100" }`}>
-                              {pageNumber}
-                            </button>
-                          );
-                        })}
-                      </div>
-
-                      {/* NEXT BUTTON */}
-                      <button
-                        onClick={handleNext}
-                        disabled={page === totalPages}
-                        className={`pf-w-[28px] pf-h-[28px] pf-flex pf-items-center pf-justify-center pf-rounded-[6px] pf-border
-                        ${page === totalPages ? "pf-border-[#D8D8D8] pf-opacity-50 pf-cursor-not-allowed" : "pf-border-[#D8D8D8] hover:pf-bg-gray-100"}`}
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none">
-                          <path d="M1.35 0.65L6.35 5.65L1.35 10.65" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </button>
-
+                      {/* Product Grid or No Products Found */}
+                      {!isHaveProduct && !loading ? (
+                        <NotFoundContainer />
+                      ) : (
+                        <ul className="pf-w-full pf-grid pf-grid-cols-2 md:pf-grid-cols-3 lg:pf-grid-cols-4 pf-gap-[10px] md:pf-gap-[15px] lg:pf-gap-[20px] pf-list-none pf-ml-0">
+                          {products?.map((product) => (
+                            <ProductCard key={product.shopify_product_id} product={product} />
+                          ))}
+                        </ul>
+                      )}
                     </div>
-                  </div>)}
+                  </div>
 
+                  {/* Pagination */}
+                  {!loading && totalPages > 1 && (
+                    <Pagination
+                      page={page}
+                      totalPages={totalPages}
+                      onPageChange={(newPage) => {
+                        setPage(newPage);
+                      }}
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div >
-      </div >
+        )}
+      </div>
     </>
   );
 };

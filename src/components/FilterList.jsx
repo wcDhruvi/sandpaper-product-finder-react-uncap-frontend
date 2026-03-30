@@ -16,7 +16,7 @@ const FilterList = ({ data = [], type, selectedFilters, onChange }) => {
         return (
           <li
             key={id}
-            className={`pf-flex pf-py-[2px] pf-items-center pf-gap-[8px] pf-self-stretch ${isDisabled ? "pf-opacity-50 pf-cursor-not-allowed" : "pf-cursor-pointer"
+            className={`pf-py-[2px] pf-items-center pf-gap-[8px] pf-self-stretch ${isDisabled ? "pf-opacity-50 pf-cursor-not-allowed" : "pf-cursor-pointer"
               }`}
           >
             <input
@@ -29,11 +29,11 @@ const FilterList = ({ data = [], type, selectedFilters, onChange }) => {
             />
             <label
               htmlFor={id}
-              className={`pf-text-black pf-text-[14px] pf-leading-[20px] pf-font-normal pf-flex pf-gap-[4px] ${isDisabled ? "pf-cursor-not-allowed" : "pf-cursor-pointer"
+              className={`pf-text-black pf-text-[14px] pf-leading-[20px] pf-font-normal ${isDisabled ? "pf-cursor-not-allowed" : "pf-cursor-pointer"
                 }`}
             >
               <span>{optionValue}</span>
-              <span className="pf-opacity-[0.6] pf-whitespace-nowrap">
+              <span className="pf-opacity-[0.6] pf-ml-[2px]">
                 ({optionCount})
               </span>
             </label>

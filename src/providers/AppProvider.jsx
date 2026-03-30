@@ -90,12 +90,12 @@ const AppProvider = ({ children }) => {
     const device = pickedData?.device || "";
     const material = pickedData?.material || "";
     return computeStepOrder(device, material);
-  }, [pickedData]);
+  }, [pickedData, step]);
 
   // ── stepOrder as flat string array for getPayload lookup ──
   const stepOrder = useMemo(() => {
     return stepOrderFull.map((s) => s.step);
-  }, [stepOrderFull]);
+  }, [stepOrderFull, step]);
 
   /* -----------------------------------------
      INITIAL LOAD
@@ -274,7 +274,7 @@ const AppProvider = ({ children }) => {
       shop: PFShopDomain,
       shape_description: shapeDescriptions,
       dim_1_description_fraction: size || undefined,
-      dim_2_description_fraction: size_height || undefined,
+      ...(size ? { dim_2_description_fraction: size_height || undefined } : {}),
       machine: device || undefined,
       shape: attachmentValues,
       dim_3_description: vented_hole || undefined,

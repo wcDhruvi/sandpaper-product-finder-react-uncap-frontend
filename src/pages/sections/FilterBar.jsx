@@ -3,7 +3,7 @@ import CustomSelect from "../../components/ui/CustomSelect";
 import FilterDrawer from "./FilterDrawer";
 import { defaultSelectedFilter } from "../../utils/Common";
 
-const FilterBar = ({ productCount, selectedFilters, setSelectedFilters, loading }) => {
+const FilterBar = ({ productCount, filteredProductCount, selectedFilters, setSelectedFilters, loading }) => {
 
     const removeFilter = (filterToRemove) => {
         setSelectedFilters((prev) => {
@@ -83,7 +83,7 @@ const FilterBar = ({ productCount, selectedFilters, setSelectedFilters, loading 
                                     className="  pf-w-[18px] pf-h-[18px] "
                                 >
                                     <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M7 1L1 7M7 7L1 1" stroke="#000" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        <path d="M7 1L1 7M7 7L1 1" stroke="#000" strokeLinecap="round" strokeLinejoin="round"></path>
                                     </svg>
                                 </button>
                             </div>
@@ -127,14 +127,14 @@ const FilterBar = ({ productCount, selectedFilters, setSelectedFilters, loading 
                     {loading ? <div className="loading-overlay--sticky">
                         <div className="pf-loader small"></div>
                     </div> : (productCount > 0 ? <div className="pf-text-[13px]">
-                        {productCount} products
+                        {productCount !== filteredProductCount ? `${filteredProductCount} of ${productCount} products` : `${productCount} products`}
                     </div> : '')}
 
                 </div>
             </div>
 
             {showDrawer && (
-                <FilterDrawer onDismiss={() => setShowDrawer(false)} selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
+                <FilterDrawer onDismiss={() => setShowDrawer(false)} selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} productCount={productCount} sortOptions={sortOptions} sortBy={sortBy} setSortBy={setSortBy} />
             )}
 
         </>
