@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import ChevronUp from "../../utils/icons/ChevronUp";
 
 const AccordionItem = ({ title, children, isOpen, onClick , className = ""}) => {
     const contentRef = useRef(null);
@@ -31,21 +32,7 @@ const AccordionItem = ({ title, children, isOpen, onClick , className = ""}) => 
                         isOpen ? "pf-rotate-180" : ""
                     }`}
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="30"
-                        height="30"
-                        viewBox="0 0 30 30"
-                        fill="none"
-                    >
-                        <path
-                            d="M20 17.5L15 12.5L10 17.5"
-                            stroke="black"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        />
-                    </svg>
+                    <ChevronUp />
                 </span>
             </button>
 

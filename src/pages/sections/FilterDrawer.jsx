@@ -6,6 +6,7 @@ import Switch from "../../components/ui/Switch";
 import { useAppContext } from "../../hooks/useAppContext";
 import { defaultSelectedFilter } from "../../utils/Common";
 import CustomSelect from "../../components/ui/CustomSelect";
+import Close from "../../utils/icons/Close";
 
 export default function FilterDrawer({
     onDismiss,
@@ -128,9 +129,7 @@ export default function FilterDrawer({
                             </div>
 
                             <button onClick={closeDrawer} className="pf-text-[18px]">
-                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M13 1L1 13M13 13L1 1" stroke="var(--color-body)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
-                                </svg>
+                                <Close />
                             </button>
                         </div>
                     </div>

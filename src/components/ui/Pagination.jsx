@@ -1,4 +1,6 @@
 import React from "react";
+import ChevronLeft from "../../utils/icons/ChevronLeft";
+import ChevronRight from "../../utils/icons/ChevronRight";
 
 const Pagination = ({ page, totalPages, onPageChange }) => {
 
@@ -52,15 +54,7 @@ const Pagination = ({ page, totalPages, onPageChange }) => {
                 : "pf-border-[#D8D8D8] hover:pf-bg-gray-100"
             }`}
           >
-            <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
-              <path
-                d="M5.65 0.65L0.65 5.65L5.65 10.65"
-                stroke="currentColor"
-                strokeWidth="1.3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <ChevronLeft />
           </button>
 
         {/* PAGES */}
@@ -104,15 +98,7 @@ const Pagination = ({ page, totalPages, onPageChange }) => {
                 : "pf-border-[#D8D8D8] hover:pf-bg-gray-100"
             }`}
           >
-            <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
-              <path
-                d="M1.35 0.65L6.35 5.65L1.35 10.65"
-                stroke="currentColor"
-                strokeWidth="1.3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <ChevronRight />
           </button>
         </div>
       </div>
