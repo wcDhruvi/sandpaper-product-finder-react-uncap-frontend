@@ -2,11 +2,11 @@ import React from "react";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
 
-import Wood from "../utils/icons/Wood";
-import Metal from "../utils/icons/Metal";
-import Composites from "../utils/icons/Composites";
-import SolidSurfaces from "../utils/icons/SolidSurfaces";
-import Check from "../utils/icons/Check";
+import Wood from "./icons/Wood";
+import Metal from "./icons/Metal";
+import Composites from "./icons/Composites";
+import SolidSurfaces from "./icons/SolidSurfaces";
+import Check from "./icons/Check";
 
 const APPLICATION_GROUP_ICONS = {
     "Wood": Wood,

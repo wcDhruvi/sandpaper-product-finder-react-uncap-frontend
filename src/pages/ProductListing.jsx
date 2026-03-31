@@ -1,17 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import ProductFinderProgress from "./sections/ProductFinderProgress";
-import FilterSideBar from "./sections/FilterSideBar";
-import FilterBar from "./sections/FilterBar";
-import Loading from "../components/Loading";
+import ProductFinderProgress from "../components/sections/ProductFinderProgress";
+import FilterSideBar from "../components/sections/FilterSideBar";
+import FilterBar from "../components/sections/FilterBar";
+import Loading from "../components/ui/Loading";
 import ProductCard from "../components/ProductCard";
 
 import { useAppContext } from "../hooks/useAppContext";
-import { apiService, PFShopDomain } from "../utils/Constent";
+import { apiService, PFShopDomain } from "../utils/Constants";
 import { defaultSelectedFilter } from "../utils/Common";
 import Pagination from "../components/ui/Pagination";
-import NotFoundLarge from "../utils/icons/NotFoundLarge";
+import NotFoundLarge from "../components/icons/NotFoundLarge";
 
 const ProductListing = () => {
   const [searchParams, setSearchParams] = useSearchParams();

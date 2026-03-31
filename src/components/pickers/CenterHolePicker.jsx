@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { useAppContext } from '../../hooks/useAppContext';
 import { twMerge } from "tailwind-merge";
 import clsx from "clsx";
-import ProgressHeader from '../ProgressHeader';
-import InfoCircle from '../InfoCircle';
-import CenterHole from '../../utils/icons/CenterHole';
+import ProgressHeader from '../ui/ProgressHeader';
+import InfoCircle from '../ui/InfoCircle';
+import CenterHole from '../icons/CenterHole';
 
 const CenterHolePicker = () => {
 

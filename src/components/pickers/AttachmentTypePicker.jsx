@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import ProgressHeader from '../ProgressHeader';
+import ProgressHeader from '../ui/ProgressHeader';
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
-import InfoCircle from '../InfoCircle';
+import InfoCircle from '../ui/InfoCircle';
 import { useAppContext } from '../../hooks/useAppContext';
 import NotFound from '../NotFound';
 import NotAvailable from '../NotAvailable';

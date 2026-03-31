@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { useAppContext } from "../hooks/useAppContext";
-import Close from "../utils/icons/Close";
-import { baseUrl } from "../utils/Constent";
+import Close from "./icons/Close";
+import { baseUrl } from "../utils/Constants";
 import "../assets/css/NotAvailable.css";
 
 export default function NotAvailable({ onDismiss, option }) {

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ApiBaseUrl } from './Constent';
+import { ApiBaseUrl } from './Constants';
 
 
 const instance = axios.create();

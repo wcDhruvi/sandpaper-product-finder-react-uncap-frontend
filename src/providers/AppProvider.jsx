@@ -7,7 +7,7 @@ import React, {
   useMemo
 } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { configuration_namespaceObject, resultPageUrl } from "../utils/Constent"
+import { configuration_namespaceObject, resultPageUrl } from "../utils/Constants"
 import { sizeSorter, unique, computeStepOrder } from "../utils/Common"
 import qs from "qs";
 
@@ -30,7 +30,7 @@ import {
   apiService,
   PFShopDomain,
   baseUrl
-} from "../utils/Constent";
+} from "../utils/Constants";
 
 
 

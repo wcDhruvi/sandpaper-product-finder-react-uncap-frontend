@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import AccordionItem from '../../components/ui/AccordionItem';
-import Switch from '../../components/ui/Switch';
-import FilterList from '../../components/FilterList';
+import AccordionItem from "../ui/AccordionItem";
+import Switch from "../ui/Switch";
+import FilterList from "../FilterList";
 import { useAppContext } from '../../hooks/useAppContext';
 
 const FilterSideBar = ({ setSelectedFilters, selectedFilters }) => {

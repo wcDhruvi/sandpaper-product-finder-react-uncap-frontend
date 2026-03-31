@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import ProgressHeader from '../ProgressHeader';
-import InfoCircle from '../InfoCircle';
+import ProgressHeader from '../ui/ProgressHeader';
+import InfoCircle from '../ui/InfoCircle';
 import { useAppContext } from '../../hooks/useAppContext';
 import NotAvailable from '../NotAvailable';
 import ApplicationBadge from '../ApplicationBadge';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { baseUrl } from '../../utils/Constent';
-import ApplicationNextButton from '../ApplicationNextButton';
+import { baseUrl } from '../../utils/Constants';
+import ApplicationNextButton from '../ui/ApplicationNextButton';
 
 const ApplicationPicker = () => {
     const {

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import CustomSelect from "../../components/ui/CustomSelect";
+import CustomSelect from "../ui/CustomSelect";
 import FilterDrawer from "./FilterDrawer";
 import { defaultSelectedFilter } from "../../utils/Common";
-import RemoveIcon from "../../utils/icons/RemoveIcon";
-import FilterIcon from "../../utils/icons/FilterIcon";
+import RemoveIcon from "../icons/RemoveIcon";
+import FilterIcon from "../icons/FilterIcon";
 
 const FilterBar = ({ productCount, filteredProductCount, selectedFilters, setSelectedFilters, loading }) => {
 

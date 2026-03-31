@@ -1,9 +1,9 @@
 import React from "react";
-import FinderProgress from "../../components/FinderProgress";
+import FinderProgress from "../FinderProgress";
 import { useAppContext } from "../../hooks/useAppContext";
-import FlippingNumber from "../../components/FlippingNumber";
-import IconRefresh from "../../utils/icons/IconRefresh";
-import { baseUrl, resultPageUrl } from "../../utils/Constent";
+import FlippingNumber from "../ui/FlippingNumber";
+import IconRefresh from "../icons/IconRefresh";
+import { baseUrl, resultPageUrl } from "../../utils/Constants";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 

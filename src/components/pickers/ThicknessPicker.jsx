@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useAppContext } from '../../hooks/useAppContext';
 import NotAvailable from '../NotAvailable';
-import ProgressHeader from '../ProgressHeader';
+import ProgressHeader from '../ui/ProgressHeader';
 import { twMerge } from "tailwind-merge";
 import clsx from "clsx";
 

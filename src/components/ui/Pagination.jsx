@@ -1,6 +1,6 @@
 import React from "react";
-import ChevronLeft from "../../utils/icons/ChevronLeft";
-import ChevronRight from "../../utils/icons/ChevronRight";
+import ChevronLeft from "../icons/ChevronLeft";
+import ChevronRight from "../icons/ChevronRight";
 
 const Pagination = ({ page, totalPages, onPageChange }) => {
 

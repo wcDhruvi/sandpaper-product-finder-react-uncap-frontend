@@ -1,6 +1,6 @@
 import React from "react";
-import useProgressSteps from "../hooks/useProgressSteps";
-import NextArrow from "../utils/icons/NextArrow";
+import useProgressSteps from "../../hooks/useProgressSteps";
+import NextArrow from "../icons/NextArrow";
 
 function NotSureButton() {
 

@@ -1,7 +1,6 @@
 import React from "react";
-import Questionmark from "../utils/icons/Questionmark";
-import SpecPopup from "./SpecPopup ";
-
+import Questionmark from "../icons/Questionmark";
+import SpecPopup from "./SpecPopup";
 function InfoCircle({ onClick, text }) {
 
     const handleClick = () => {

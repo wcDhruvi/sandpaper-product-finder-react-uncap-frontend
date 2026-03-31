@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import AccordionItem from "../../components/ui/AccordionItem";
-import FilterList from "../../components/FilterList";
-import Switch from "../../components/ui/Switch";
+import AccordionItem from "../ui/AccordionItem";
+import FilterList from "../FilterList";
+import Switch from "../ui/Switch";
 import { useAppContext } from "../../hooks/useAppContext";
 import { defaultSelectedFilter } from "../../utils/Common";
-import CustomSelect from "../../components/ui/CustomSelect";
-import Close from "../../utils/icons/Close";
+import CustomSelect from "../ui/CustomSelect";
+import Close from "../icons/Close";
 
 export default function FilterDrawer({
     onDismiss,

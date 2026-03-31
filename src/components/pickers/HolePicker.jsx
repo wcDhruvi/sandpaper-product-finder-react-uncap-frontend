@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { useAppContext } from '../../hooks/useAppContext';
 import NotFound from '../NotFound';
 import NotAvailable from '../NotAvailable';
-import ProgressHeader from '../ProgressHeader';
-import InfoCircle from '../InfoCircle';
-import NoCenterHole from '../../utils/icons/NoCenterHole';
-import CenterHole from '../../utils/icons/CenterHole';
+import ProgressHeader from '../ui/ProgressHeader';
+import InfoCircle from '../ui/InfoCircle';
+import NoCenterHole from '../icons/NoCenterHole';
+import CenterHole from '../icons/CenterHole';
 import { twMerge } from "tailwind-merge";
 import clsx from "clsx";
 

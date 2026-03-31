@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import ChevronUp from "../../utils/icons/ChevronUp";
-import ChevronDown from "../../utils/icons/ChevronDown";
+import ChevronUp from "../icons/ChevronUp";
+import ChevronDown from "../icons/ChevronDown";
 
 const CustomSelect = ({ options = [], value, onChange, isFilterDrawer = false }) => {
     const [open, setOpen] = useState(false);

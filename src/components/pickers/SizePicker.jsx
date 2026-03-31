@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { useAppContext } from '../../hooks/useAppContext'
-import ProgressHeader from '../ProgressHeader';
-import InfoCircle from '../InfoCircle';
-import SizeFormat from '../SizeFormat';
+import ProgressHeader from '../ui/ProgressHeader';
+import InfoCircle from '../ui/InfoCircle';
+import SizeFormat from '../ui/SizeFormat';
 import MaskedInchInput from "../MaskedInchInput";
 import clsx from "clsx";
-import SymbolX from '../../utils/icons/SymbolX';
+import SymbolX from '../icons/SymbolX';
 
 const COMMON_DISC_SIZES = ["3", "5", "6", "8"];
 

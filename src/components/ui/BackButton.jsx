@@ -1,6 +1,6 @@
 import React from "react";
-import useProgressSteps from "../hooks/useProgressSteps";
-import BackArrow from "../utils/icons/BackArrow";
+import useProgressSteps from "../../hooks/useProgressSteps";
+import BackArrow from "../icons/BackArrow";
 
 function BackButton() {
 

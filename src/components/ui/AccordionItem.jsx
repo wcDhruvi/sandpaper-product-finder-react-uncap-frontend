@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import ChevronUp from "../../utils/icons/ChevronUp";
+import ChevronUp from "../icons/ChevronUp";
 
 const AccordionItem = ({ title, children, isOpen, onClick , className = ""}) => {
     const contentRef = useRef(null);

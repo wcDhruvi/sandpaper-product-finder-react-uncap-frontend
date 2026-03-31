@@ -1,12 +1,9 @@
 import React from "react";
 import { useAppContext } from "../../hooks/useAppContext";
-
-// Device images
-import DeviceDiscOrbitalSander from "../../utils/icons/DeviceDiscOrbitalSander";
-import DeviceRectangularOrbitalSander from "../../utils/icons/DeviceRectangularOrbitalSander";
-import DeviceHandSanding from "../../utils/icons/DeviceHandSanding";
-
-import ProgressHeader from "../ProgressHeader";
+import DeviceDiscOrbitalSander from "../icons/DeviceDiscOrbitalSander";
+import DeviceRectangularOrbitalSander from "../icons/DeviceRectangularOrbitalSander";
+import DeviceHandSanding from "../icons/DeviceHandSanding";
+import ProgressHeader from "../ui/ProgressHeader";
 
 const DEVICE_IMAGES = {
     "Disc Orbital Sander": DeviceDiscOrbitalSander,

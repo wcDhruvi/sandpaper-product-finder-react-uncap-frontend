@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import StepCircle from "./StepCircle";
-import ProgressCircle from "./ProgressCircle";
-import IconRefresh from "../utils/icons/IconRefresh";
+import StepCircle from "./ui/StepCircle";
+import ProgressCircle from "./ui/ProgressCircle";
+import IconRefresh from "./icons/IconRefresh";
 import { useAppContext } from "../hooks/useAppContext";
 import useProgressSteps from "../hooks/useProgressSteps";
 import AccordionItem from "./ui/AccordionItem";
 import { Link } from "react-router-dom";
-import { baseUrl } from "../utils/Constent";
+import { baseUrl } from "../utils/Constants";
 
 /**
  * FinderProgress Component

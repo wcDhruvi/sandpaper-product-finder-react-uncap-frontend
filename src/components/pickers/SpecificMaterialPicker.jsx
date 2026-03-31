@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAppContext } from '../../hooks/useAppContext';
-import ProgressHeader from '../ProgressHeader';
+import ProgressHeader from '../ui/ProgressHeader';
 
 const SpecificMaterialPicker = () => {
 

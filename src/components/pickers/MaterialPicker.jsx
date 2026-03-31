@@ -1,15 +1,15 @@
 import React from "react";
 import { useAppContext } from "../../hooks/useAppContext";
 // device images
-import DeviceBenchtopSander from "../../utils/icons/DeviceBenchtopSander";
-import DeviceDiscOrbitalSander from "../../utils/icons/DeviceDiscOrbitalSander";
-import DeviceRectangularOrbitalSander from "../../utils/icons/DeviceRectangularOrbitalSander";
-import DeviceWideBeltSander from "../../utils/icons/DeviceWideBeltSander";
-import DeviceNarrowBeltSander from "../../utils/icons/DeviceNarrowBeltSander";
-import DevicePortableBeltSander from "../../utils/icons/DevicePortableBeltSander";
-import DeviceDrumSander from "../../utils/icons/DeviceDrumSander";
-import DeviceHandSanding from "../../utils/icons/DeviceHandSanding";
-import ProgressHeader from "../ProgressHeader";
+import DeviceBenchtopSander from "../icons/DeviceBenchtopSander";
+import DeviceDiscOrbitalSander from "../icons/DeviceDiscOrbitalSander";
+import DeviceRectangularOrbitalSander from "../icons/DeviceRectangularOrbitalSander";
+import DeviceWideBeltSander from "../icons/DeviceWideBeltSander";
+import DeviceNarrowBeltSander from "../icons/DeviceNarrowBeltSander";
+import DevicePortableBeltSander from "../icons/DevicePortableBeltSander";
+import DeviceDrumSander from "../icons/DeviceDrumSander";
+import DeviceHandSanding from "../icons/DeviceHandSanding";
+import ProgressHeader from "../ui/ProgressHeader";
 
 
 

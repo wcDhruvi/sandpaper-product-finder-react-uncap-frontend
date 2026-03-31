@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { useAppContext } from '../../hooks/useAppContext';
 import { twMerge } from "tailwind-merge";
 import clsx from "clsx";
-import ProgressHeader from '../ProgressHeader';
-import InfoCircle from '../InfoCircle';
-import NoHole from '../../utils/icons/NoHole';
-import MultiHole from '../../utils/icons/MultiHole';
-import Hole5 from '../../utils/icons/Hole5';
-import Hole6 from '../../utils/icons/Hole6';
-import Hole8 from '../../utils/icons/Hole8';
+import ProgressHeader from '../ui/ProgressHeader';
+import InfoCircle from '../ui/InfoCircle';
+import NoHole from '../icons/NoHole';
+import MultiHole from '../icons/MultiHole';
+import Hole5 from '../icons/Hole5';
+import Hole6 from '../icons/Hole6';
+import Hole8 from '../icons/Hole8';
 import NotFound from '../NotFound';
 import NotAvailable from '../NotAvailable';
 const HOLE_ICONS = {

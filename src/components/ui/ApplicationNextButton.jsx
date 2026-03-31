@@ -1,6 +1,6 @@
 import React from 'react'
 import { createPortal } from "react-dom";
-import "../assets/css/NextButton.css";
+import "../../assets/css/NextButton.css";
 
 const ApplicationNextButton = ({ handleNext, selected }) => {
     return createPortal(

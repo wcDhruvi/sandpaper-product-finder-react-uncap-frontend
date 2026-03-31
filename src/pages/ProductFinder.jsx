@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import qs from "qs";
 import { useLocation } from "react-router-dom";
 import { useAppContext } from "../hooks/useAppContext";
-import ProductFinderProgress from "./sections/ProductFinderProgress";
+import ProductFinderProgress from "../components/sections/ProductFinderProgress";
 import MaterialPicker from "../components/pickers/MaterialPicker";
 import SizePicker from "../components/pickers/SizePicker";
 import AttachmentTypePicker from "../components/pickers/AttachmentTypePicker";
@@ -14,8 +14,8 @@ import UsePicker from "../components/pickers/UsePicker";
 import ThicknessPicker from "../components/pickers/ThicknessPicker";
 import ApplicationPicker from "../components/pickers/ApplicationPicker";
 import BackingPicker from "../components/pickers/BackingPicker";
-import ProgressFooter from "../components/ProgressFooter";
-import Loading from "../components/Loading";
+import ProgressFooter from "../components/ui/ProgressFooter";
+import Loading from "../components/ui/Loading";
 
 const ProductFinder = () => {
 

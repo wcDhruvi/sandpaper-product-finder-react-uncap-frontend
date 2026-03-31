@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import NotFoundIcon from "../utils/icons/NotFound";
+import NotFoundIcon from "./icons/NotFound";
 import { useAppContext } from "../hooks/useAppContext";
-import { baseUrl } from "../utils/Constent";
+import { baseUrl } from "../utils/Constants";
 
 function NotFound() {
 

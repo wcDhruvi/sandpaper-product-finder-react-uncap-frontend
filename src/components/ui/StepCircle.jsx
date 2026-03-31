@@ -1,10 +1,10 @@
 import React, { useMemo } from "react";
 import SizeFormat from "./SizeFormat";
-import { useAppContext } from "../hooks/useAppContext";
-import ThickIcon from "../utils/icons/TickIcon";
+import { useAppContext } from "../../hooks/useAppContext";
+import ThickIcon from "../icons/TickIcon";
 import { Link, useLocation } from "react-router-dom";
-import { baseUrl, resultPageUrl } from "../utils/Constent";
-import SpecPopup from "./SpecPopup ";
+import { baseUrl, resultPageUrl } from "../../utils/Constants";
+import SpecPopup from "./SpecPopup";
 
 function StepCircle({ title, index, step, num }) {
 

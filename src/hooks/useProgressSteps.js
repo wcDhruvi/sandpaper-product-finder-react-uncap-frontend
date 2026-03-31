@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useAppContext } from "./useAppContext";
 import { STEP_ALIASES } from "../utils/Common";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { baseUrl, resultPageUrl } from "../utils/Constent";
+import { baseUrl, resultPageUrl } from "../utils/Constants";
 
 function useProgressSteps() {
   const { step, pickStep, stepOrderFull, stepOrder, getStringifiedQuery } = useAppContext();
