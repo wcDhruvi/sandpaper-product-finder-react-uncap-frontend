@@ -23,10 +23,10 @@ function NotFound() {
 
                         {/* Heading */}
                         <div className="pf-p-2 pf-flex pf-flex-col pf-gap-4 pf-text-center">
-                            <h2 className="pf-text-4xl md:pf-text-5xl pf-font-bold pf-text-zinc-900">
+                            <h2 className="pf-text-4xl md:pf-text-5xl pf-font-bold pf-text-zinc-900 pf-mb-0">
                                 Sorry,
                             </h2>
-                            <p className="pf-text-3xl md:pf-text-4xl md:pf-font-medium pf-text-zinc-900">
+                            <p className="pf-text-3xl md:pf-text-4xl md:pf-font-medium pf-text-zinc-900 pf-mb-0">
                                 We couldn't find any results for your search
                             </p>
                         </div>
@@ -34,7 +34,7 @@ function NotFound() {
                         {/* Body */}
                         <div className="pf-max-w-[606px] pf-mx-auto">
                             <div>
-                                <p className="pf-mt-8 pf-text-base pf-text-zinc-600 pf-text-center">
+                                <p className="pf-mt-8 pf-text-base pf-text-zinc-600 pf-text-center pf-mb-0">
                                     But don't worry, we're here to help! It looks like we don't
                                     have the exact item you're looking for in our catalog.
                                 </p>
@@ -42,7 +42,7 @@ function NotFound() {
 
                             {/* CTA card */}
                             <div className="pf-w-full pf-mt-8 pf-bg-white pf-px-6 pf-py-4 pf-border pf-border-zinc-200 pf-flex pf-flex-col pf-gap-4 pf-rounded-lg">
-                                <p className="pf-text-center pf-text-base pf-text-black pf-font-bold">
+                                <p className="pf-text-center pf-text-base pf-text-black pf-font-bold pf-mb-0">
                                     However, we can create a custom order just for you.
                                 </p>
                                 <Link
@@ -55,9 +55,6 @@ function NotFound() {
                         </div>
                     </div>
                 </div>
-
-                {/* Radial gradient background decoration */}
-                {/* <div className="pf-absolute pf-z-0 -pf-bottom-12 lg:-pf-bottom-18 pf-h-[40em] pf-pointer-events-none pf-w-screen pf-left-1/2 -pf-translate-x-1/2 pf-bg-[radial-gradient(ellipse_at_bottom,_#FCE45055_30%,#F6F6F6_60%)] lg:pf-bg-[radial-gradient(ellipse_at_bottom,_#FCE45055_30%,#F6F6F6_70%)]" /> */}
             </div>
         </div>
     );

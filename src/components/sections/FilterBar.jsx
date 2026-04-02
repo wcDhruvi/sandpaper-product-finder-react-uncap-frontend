@@ -4,6 +4,7 @@ import FilterDrawer from "./FilterDrawer";
 import { defaultSelectedFilter } from "../../utils/Common";
 import RemoveIcon from "../icons/RemoveIcon";
 import FilterIcon from "../icons/FilterIcon";
+import Spinner from "../icons/Spinner";
 
 const FilterBar = ({ productCount, filteredProductCount, selectedFilters, setSelectedFilters, loading }) => {
 
@@ -122,8 +123,8 @@ const FilterBar = ({ productCount, filteredProductCount, selectedFilters, setSel
                     </button>
 
                     {/* Product Count */}
-                    {loading ? <div className="loading-overlay--sticky">
-                        <div className="pf-loader small"></div>
+                    {loading ? <div className="pf-loading-overlay--sticky small">
+                        <Spinner />
                     </div> : (productCount > 0 ? <div className="pf-text-[13px]">
                         {productCount !== filteredProductCount ? `${filteredProductCount} of ${productCount} products` : `${productCount} products`}
                     </div> : '')}

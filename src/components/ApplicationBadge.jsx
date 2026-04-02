@@ -6,7 +6,6 @@ import Wood from "./icons/Wood";
 import Metal from "./icons/Metal";
 import Composites from "./icons/Composites";
 import SolidSurfaces from "./icons/SolidSurfaces";
-import Check from "./icons/Check";
 
 const APPLICATION_GROUP_ICONS = {
     "Wood": Wood,
@@ -39,7 +38,6 @@ const ApplicationBadge = ({
         applications = [...applications].sort();
     }
 
-
     const Icon = APPLICATION_GROUP_ICONS[title];
 
     const groupBoxClassName = (selectable, enabled) =>
@@ -48,7 +46,7 @@ const ApplicationBadge = ({
                 "pf-group pf-grow pf-flex  pf-flex-col-reverse sm:pf-flex-row pf-items-center pf-justify-center pf-gap-2 sm:pf-gap-4 pf-text-center pf-font-bold pf-text-black pf-cursor-pointer  pf-transition  pf-p-[20px] pf-text-[16px] pf-leading-[24px] lg:pf-text-[20px] lg:pf-leading-[28px]",
                 !selectable ? "pf-bg-disable" : enabled ? "pf-bg-uneeda-primary" : "pf-bg-white hover:pf-bg-uneeda-primary"
             )
-        );
+    );
 
     return (
         <div
@@ -64,19 +62,14 @@ const ApplicationBadge = ({
                 <div
                     className={twMerge(
                         clsx(
-                            "pf-w-full pf-h-full pf-px-5 pf-py-5 pf-cursor-pointer pf-transition   lg:pf-min-w-[164px]",
+                            "pf-w-full pf-h-full pf-px-5 pf-py-5 pf-cursor-pointer pf-transition lg:pf-min-w-[164px]",
                             !canSelect ? "pf-bg-disable " : "pf-bg-white hover:pf-bg-uneeda-primary"
                         )
                     )}
-                    onClick={() =>
-                        canSelect ? onPickGroup(title) : onDisabledGroup(title)
-                    }
+                    onClick={() => canSelect ? onPickGroup(title) : onDisabledGroup(title) }
                 >
                     {/* ICON */}
-
                     {Icon && <Icon />}
-
-
                     {/* TITLE */}
                     <div className="pf-text-lg md:text-base  pf-font-bold">
                         {title}
@@ -87,7 +80,6 @@ const ApplicationBadge = ({
             {/* APPLICATION LIST */}
             {activeGroup === title && (
                 <>
-
                     <div className="pf-option-section">
                         {/* Hole options grid */}
                         <div className={twMerge(clsx(

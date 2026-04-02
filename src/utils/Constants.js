@@ -416,9 +416,7 @@ export const defaultAppValue = {
     pickBackingMaterial: (mat) => { },
     pickThickness: (thick) => { },
     pickAdditionalFilters: (filters) => { },
-    loadProductInfo: (sku) => {
-        return new Promise((resolve, reject) => { });
-    },
+    
     resetData: (redirect) => { },
     replaceData: (data) => { },
     resetSomeData: (key) => { }

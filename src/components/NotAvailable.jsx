@@ -17,17 +17,12 @@ export default function NotAvailable({ onDismiss, option }) {
 
     useEffect(() => {
         setMounted(true);
-        const originalStyle = window.getComputedStyle(document.body).overflowY;
-        document.body.style.overflowY = "hidden";
         setShow(true);
-        return () => {
-            document.body.style.overflowY = originalStyle;
-        };
     }, []);
 
     const hide = () => {
         setShow(false);
-        setTimeout(() => onDismiss?.(), 500);
+        setTimeout(() => onDismiss?.(), 400);
     };
 
     if (!mounted) return null;

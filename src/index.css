@@ -7,6 +7,7 @@
 
 :root {
   --Family-Body: "DIN Pro", sans-serif;
+  --color-body: #000000;
 }
 
 /* =====================================================
@@ -201,34 +202,26 @@
   background: rgba(255, 255, 255, 0.7);
   z-index: 10;
 }
-
-.pf-product-loading .loading-overlay--sticky {
-padding-top: 100px;
+.pf-loading-overlay.no-backdrop {
+  background: transparent;
 }
 
-.loading-overlay--sticky {
+.pf-product-loading .pf-loading-overlay--sticky {
+  padding-top: 100px;
+}
+
+.pf-loading-overlay--sticky {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 42px;
+  height: 42px;
 }
 
 
-.pf-loader {
-  border: 4px solid #dbdada;
-  border-radius: 50%;
-  border-top: 4px solid #000000;
-  width: 40px;
-  height: 40px;
-  -webkit-animation: spin 2s linear infinite;
-  /* Safari */
-  animation: spin 2s linear infinite;
-}
-
-.pf-loader.small{
-  width: 20px;
-  height: 20px;
-  border: 2px solid #dbdada;
-  border-top: 2px solid #000000;
+.pf-loading-overlay--sticky.small {
+  width: 18px;
+  height: 18px;
 }
 
 /* Safari */
@@ -278,6 +271,83 @@ padding-top: 100px;
 .pf-no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 .pf-no-scrollbar {
   scrollbar-width: none;
+}
+
+/* 🔹 Pulse Loader */
+.pf-pulse-box {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.5);
+  animation: pf-pulse 0.7s infinite ease-in-out;
+}
+
+@keyframes pf-pulse {
+  0% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.5;
+  }
+}
+
+.pf-number {
+  animation: pf-scaleFadeIn 0.18s ease;
+}
+
+@keyframes pf-scaleFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(2px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.pf-spinner {
+  animation: pf-rotator 1.4s infinite linear;
+}
+
+.pf-spinner-path {
+  stroke-dasharray: 280;
+  stroke-dashoffset: 0;
+  transform-origin: center;
+  animation: pf-dash 1.4s infinite ease;
+}
+
+@keyframes pf-rotator {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(270deg);
+  }
+}
+
+@keyframes pf-dash {
+  0% {
+    stroke-dashoffset: 280;
+  }
+
+  50% {
+    stroke-dashoffset: 75;
+    transform: rotate(135deg);
+  }
+
+  100% {
+    stroke-dashoffset: 280;
+    transform: rotate(450deg);
+  }
 }

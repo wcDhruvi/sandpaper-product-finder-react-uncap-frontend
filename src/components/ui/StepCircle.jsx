@@ -48,7 +48,6 @@ function StepCircle({ title, index, step, num }) {
             pf-rounded-full
             pf-text-[14px] pf-font-bold pf-leading-[20px]
             pf-transition-all pf-duration-200
-            
             ${isPicked && !isCurrent
                 ? "pf-bg-[#004890] pf-text-white pf-items-center"
                 : isCurrent
@@ -63,20 +62,16 @@ function StepCircle({ title, index, step, num }) {
         )}
 
         <span className="pf-flex pf-flex-col pf-gap-[2px]">
-
           <span
             className={`
             pf-text-[14px] pf-font-bold pf-leading-[20px]
-            pf-transition-colors
-    pf-break-words pf-break-normal
-
+            pf-transition-colors pf-break-words pf-break-normal
             ${isCurrent
                 ? "pf-text-[#004890]"
                 : isPicked
                   ? "pf-text-[#666365] group-hover:pf-text-[#004890]"
                   : "pf-text-[#7F7F7F]"
               }
-
             ${!isPicked ? "group-hover:pf-text-[#004890]" : ""}
           `}
           >
@@ -84,7 +79,6 @@ function StepCircle({ title, index, step, num }) {
           </span>
 
           <span className={`pf-text-[18px] pf-font-bold pf-leading-[26px] pf-break-words pf-break-normal ${isCurrent ? 'pf-text-[#004890]' : 'pf-text-black'}`}>
-
             {step === "size" && (
               <>
                 {pickedData?.material === "Rolls" && pickedData?.size ? (
@@ -109,7 +103,7 @@ function StepCircle({ title, index, step, num }) {
             )}
 
             {step === "application" && pickedData?.application?.length > 0 && !activeGroup && (
-              <span className="pf-group pf-relative">
+              <span className="pf-group pf-relative pf-whitespace-nowrap">
                 {pickedData.application.length} selected
                 <SpecPopup className="pf-text-left sm:pf-max-w-[300px]">
                   {pickedData.application.join(", ")}
@@ -124,11 +118,8 @@ function StepCircle({ title, index, step, num }) {
                   {pickedData[index]}
                 </>
               )}
-
           </span>
-
         </span>
-
       </Link>
     </>
   );

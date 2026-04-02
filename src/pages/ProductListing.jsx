@@ -50,6 +50,7 @@ const ProductListing = () => {
   const [filteredProductCount, setFilteredProductCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [showInlitalLoader, setShowInlitalLoader] = useState(true);
+  const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
 
   const abortRef = useRef(null);
   const isFirstLoad = useRef(true);
@@ -87,6 +88,7 @@ const ProductListing = () => {
         setTotalPages(res?.data?.pagination?.last_page || 1);
         setTotalProduct(res?.data?.pagination?.total || 0);
         setFilteredProductCount(res?.data?.pagination?.filtered_total || 0);
+        setHasLoadedOnce(true);
       }
     } catch (error) {
       if (error.name !== "AbortError") {
@@ -141,6 +143,11 @@ const ProductListing = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [page]);
 
+  // Reset loaded status when base product set changes (e.g. new material/device)
+  useEffect(() => {
+    setHasLoadedOnce(false);
+  }, [shopifyProductIds]);
+
 
   /* ---------------- UI ---------------- */
 
@@ -149,7 +156,7 @@ const ProductListing = () => {
   useEffect(() => {
     let timer;
 
-    if ((filtersLoading || loading) && !isHaveProduct) {
+    if ((filtersLoading || loading) && !hasLoadedOnce) {
       setShowInlitalLoader(true);
     } else {
       timer = setTimeout(() => {
@@ -158,7 +165,7 @@ const ProductListing = () => {
     }
 
     return () => clearTimeout(timer);
-  }, [filtersLoading, loading]);
+  }, [filtersLoading, loading, hasLoadedOnce]);
 
   const NotFoundContainer = () => <div className="pf-flex pf-justify-center pf-flex-col pf-items-center pf-gap-[30px] pf-p-[10vh]">
     <NotFoundLarge />
@@ -196,10 +203,10 @@ const ProductListing = () => {
                       loading={isHaveProduct && loading}
                     />
 
-                    <div className="pf-w-full pf-relative">
+                    <div className={`pf-w-full pf-relative ${loading && hasLoadedOnce ? 'pf-opacity-50' : ''}`}>
                       {/* Sub-loading overlay for subsequent filter updates */}
-                      {loading && isHaveProduct && (
-                        <Loading className="pf-items-start pf-product-loading" />
+                      {loading && hasLoadedOnce && (
+                        <Loading className={`pf-items-start pf-product-loading ${!isHaveProduct ? 'pf-min-h-[400px]' : ''}`} noBackdrop />
                       )}
 
                       {/* Product Grid or No Products Found */}

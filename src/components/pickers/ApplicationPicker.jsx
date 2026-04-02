@@ -7,13 +7,13 @@ import ApplicationBadge from '../ApplicationBadge';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { baseUrl } from '../../utils/Constants';
 import ApplicationNextButton from '../ui/ApplicationNextButton';
+import { application_groups } from '../../utils/Constants';
 
 const ApplicationPicker = () => {
     const {
         step,
         material,
         device,
-        application_groups,
         availableFilters,
         filtersLoading,
         pickApplication,

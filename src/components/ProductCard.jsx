@@ -34,9 +34,9 @@ const ProductCard = ({ product }) => {
                             </div>
                         )}
                     </a>
-                    <div className="pf-absolute pf-bottom-[10px] md:pf-bottom-[5px] pf-left-[10px] md:pf-left-auto md:pf-right-0 pf-cursor-pointer pf-flex pf-justify-center pf-items-center pf-gap-[5px] pf-self-stretch pf-rounded-[3px] pf-bg-white pf-shadow-[0_4px_6px_0_rgba(0,0,0,0.08)] pf-py-[6px] pf-px-[12px] pf-text-black pf-text-center pf-font-sans pf-text-[12px] pf-font-bold pf-leading-[18px] pf-opacity-0 pf-transition-opacity pf-duration-300 group-hover:pf-opacity-100">
+                    {/* <div className="pf-absolute pf-bottom-[10px] md:pf-bottom-[5px] pf-left-[10px] md:pf-left-auto md:pf-right-0 pf-cursor-pointer pf-flex pf-justify-center pf-items-center pf-gap-[5px] pf-self-stretch pf-rounded-[3px] pf-bg-white pf-shadow-[0_4px_6px_0_rgba(0,0,0,0.08)] pf-py-[6px] pf-px-[12px] pf-text-black pf-text-center pf-font-sans pf-text-[12px] pf-font-bold pf-leading-[18px] pf-opacity-0 pf-transition-opacity pf-duration-300 group-hover:pf-opacity-100">
                         Quick view
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className="pf-flex pf-flex-col pf-flex-1 pf-gap-[8px]">
