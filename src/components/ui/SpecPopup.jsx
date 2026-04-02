@@ -13,7 +13,6 @@ const SpecPopup = ({ children, className = "" }) => {
         if (!parent) return;
 
         const handleMouseEnter = () => {
-            console.log("handleMouseEnter", parent.getBoundingClientRect());
             setRect(parent.getBoundingClientRect());
             setIsHovered(true);
         };

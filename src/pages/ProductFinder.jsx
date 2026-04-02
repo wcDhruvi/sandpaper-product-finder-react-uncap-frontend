@@ -67,13 +67,12 @@ const ProductFinder = () => {
         setCurrentStep(params.step || "");
     }, [location.search, step]);
 
-    const loadingDataPage = ["application", "backing", "centerholesize", "centerhole", "thickness", "ventedhole"]
+    const loadingDataPage = ["attachment","application", "backing", "centerholesize", "centerhole", "thickness", "ventedhole"]
 
     const isLoadingPage = loadingDataPage.includes(currentStep);
 
     return (
         <>
-
             {(currentStep && currentStep !== '1') && <ProductFinderProgress />}
             <div className="pf-section-spacing-padding">
                 {filtersLoading && isLoadingPage ? <Loading /> : null}
@@ -94,7 +93,6 @@ const ProductFinder = () => {
                     </div>
                 </div>
             </div>
-
         </>
     );
 };

@@ -59,7 +59,6 @@ const AppProvider = ({ children }) => {
   const [pickedData, setPickedData] = useState({});
   const [resultsCount, setResultsCount] = useState(0);
 
-
   const [availableFilters, setAvailableFilters] = useState(defaultAvailableFilters);
   const [shopifyProductIds, setShopifyProductIds] = useState([]);
   const [filterWithCount, setFilterWithCount] = useState({
@@ -77,7 +76,6 @@ const AppProvider = ({ children }) => {
 
   const sizes = configuration_namespaceObject.L;
   const isResults = pathname === resultPageUrl;
-
 
   // ── stepOrder: array of { step, title } ──
   const stepOrderFull = useMemo(() => {
