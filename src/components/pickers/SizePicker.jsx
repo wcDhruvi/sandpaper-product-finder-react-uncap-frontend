@@ -162,7 +162,7 @@ const SizePicker = () => {
                 </div>
                 <button
                   type="submit"
-                  className="pf-transition-all pf-text-lg pf-text-gray-900 pf-bg-uneeda-primary pf-uppercase pf-rounded pf-py-3 pf-px-20 pf-w-full sm:pf-w-auto"
+                  className="pf-transition-all pf-text-lg pf-text-gray-900 pf-bg-uneeda-primary pf-font-medium pf-rounded pf-py-3 pf-px-20 pf-w-full sm:pf-w-auto"
                 >
                   Next
                 </button>

@@ -213,7 +213,7 @@ const ProductListing = () => {
                       {!isHaveProduct && !loading ? (
                         <NotFoundContainer />
                       ) : (
-                        <ul className="pf-w-full pf-grid pf-grid-cols-2 md:pf-grid-cols-3 lg:pf-grid-cols-4 pf-gap-[10px] md:pf-gap-[15px] lg:pf-gap-[20px] pf-list-none pf-ml-0">
+                        <ul className="pf-w-full pf-grid pf-grid-cols-2 md:pf-grid-cols-3 lgx:pf-grid-cols-4 pf-gap-[10px] md:pf-gap-[15px] lg:pf-gap-[20px] pf-list-none pf-ml-0">
                           {products?.map((product) => (
                             <ProductCard key={product.shopify_product_id} product={product} />
                           ))}
