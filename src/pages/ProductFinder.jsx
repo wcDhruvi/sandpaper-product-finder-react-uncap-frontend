@@ -16,6 +16,7 @@ import ApplicationPicker from "../components/pickers/ApplicationPicker";
 import BackingPicker from "../components/pickers/BackingPicker";
 import ProgressFooter from "../components/ui/ProgressFooter";
 import Loading from "../components/ui/Loading";
+import NotFound from "../components/NotFound";
 
 const ProductFinder = () => {
 
@@ -24,7 +25,8 @@ const ProductFinder = () => {
         pickStep,
         replaceData,
         initialized,
-        filtersLoading
+        filtersLoading,
+        resultsCount,
     } = useAppContext();
 
     const location = useLocation();
@@ -67,28 +69,34 @@ const ProductFinder = () => {
         setCurrentStep(params.step || "");
     }, [location.search, step]);
 
-    const loadingDataPage = ["attachment","application", "backing", "centerholesize", "centerhole", "thickness", "ventedhole"]
 
-    const isLoadingPage = loadingDataPage.includes(currentStep);
-
+    const isNotFound = initialized && !filtersLoading && resultsCount === 0 && currentStep !== '1' && currentStep !== '';
+    const isNotFirstPage = currentStep !== '1' && currentStep !== '';
+    
     return (
         <>
             {(currentStep && currentStep !== '1') && <ProductFinderProgress />}
             <div className="pf-section-spacing-padding">
-                {filtersLoading && isLoadingPage ? <Loading /> : null}
+                {filtersLoading && isNotFirstPage ? <Loading /> : null}
                 <div className="pf-section-main">
                     <div className="pf-section-row">
-                        {(currentStep === '1' || currentStep === '') && <MaterialPicker />}
-                        {(currentStep === "specmaterial") && <SpecificMaterialPicker />}
-                        {(currentStep === "use") && <UsePicker />}
-                        {(currentStep === 'size') && <SizePicker />}
-                        {(currentStep === "thickness") && <ThicknessPicker />}
-                        {(currentStep === "attachment") && <AttachmentTypePicker />}
-                        {(currentStep === "centerhole") && <HolePicker />}
-                        {(currentStep === "centerholesize") && <CenterHolePicker />}
-                        {(currentStep === "ventedhole") && <VentedHolePicker />}
-                        {(currentStep === "application") && <ApplicationPicker />}
-                        {(currentStep === "backing") && <BackingPicker />}
+                        {isNotFound ? (
+                            <NotFound />
+                        ) : (
+                            <>
+                                {(currentStep === '1' || currentStep === '') && <MaterialPicker />}
+                                {(currentStep === "specmaterial") && <SpecificMaterialPicker />}
+                                {(currentStep === "use") && <UsePicker />}
+                                {(currentStep === 'size') && <SizePicker />}
+                                {(currentStep === "thickness") && <ThicknessPicker />}
+                                {(currentStep === "attachment") && <AttachmentTypePicker />}
+                                {(currentStep === "centerhole") && <HolePicker />}
+                                {(currentStep === "centerholesize") && <CenterHolePicker />}
+                                {(currentStep === "ventedhole") && <VentedHolePicker />}
+                                {(currentStep === "application") && <ApplicationPicker />}
+                                {(currentStep === "backing") && <BackingPicker />}
+                            </>
+                        )}
                         <ProgressFooter isFirstStep={currentStep === '1' || currentStep === ''} />
                     </div>
                 </div>

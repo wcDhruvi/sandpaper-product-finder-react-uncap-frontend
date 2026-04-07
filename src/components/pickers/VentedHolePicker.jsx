@@ -9,7 +9,6 @@ import MultiHole from '../icons/MultiHole';
 import Hole5 from '../icons/Hole5';
 import Hole6 from '../icons/Hole6';
 import Hole8 from '../icons/Hole8';
-import NotFound from '../NotFound';
 import NotAvailable from '../NotAvailable';
 const HOLE_ICONS = {
     "No holes": NoHole,
@@ -27,8 +26,6 @@ const VentedHolePicker = () => {
         getVentedHoles,
         availableFilters,
         pickedData,
-        filtersLoading,
-        resultsCount,
         material,
         device,
     } = useAppContext();
@@ -36,16 +33,7 @@ const VentedHolePicker = () => {
     const holes = getVentedHoles();
     const availableVentedHoles = availableFilters?.["Dim 3 Description"] ?? [];
 
-    const [isLoaded, setIsLoaded] = useState(false);
     const [showNotAvailable, setShowNotAvailable] = useState("");
-
-    useEffect(() => {
-        setIsLoaded(true);
-    }, []);
-
-    if (isLoaded && !filtersLoading && !resultsCount) {
-        return <NotFound />;
-    }
 
     const getHoleLabel = (hole) => {
         if (hole === "Festool") return "Festool";

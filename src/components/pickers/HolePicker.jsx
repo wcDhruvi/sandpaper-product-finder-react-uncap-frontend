@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useAppContext } from '../../hooks/useAppContext';
-import NotFound from '../NotFound';
 import NotAvailable from '../NotAvailable';
 import ProgressHeader from '../ui/ProgressHeader';
 import InfoCircle from '../ui/InfoCircle';
@@ -21,16 +20,7 @@ const HolePicker = () => {
         ? availableFilters["Dim 2 Description Fraction"]
         : [];
 
-    const [isLoaded, setIsLoaded] = useState(false);
     const [showNotAvailable, setShowNotAvailable] = useState("");
-
-    useEffect(() => {
-        setIsLoaded(true);
-    }, []);
-
-    if (isLoaded && !filtersLoading && !resultsCount) {
-        return <NotFound />;
-    }
 
     const sizeBoxClassName = (selectable) =>
         twMerge(

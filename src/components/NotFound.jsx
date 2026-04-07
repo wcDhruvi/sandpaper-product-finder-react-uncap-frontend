@@ -6,7 +6,7 @@ import { baseUrl } from "../utils/Constants";
 
 function NotFound() {
 
-    const { getStringifiedQuery, step } = useAppContext();
+    const { getStringifiedQuery, step, resetData } = useAppContext();
     const q = getStringifiedQuery();
 
     return (
@@ -45,12 +45,16 @@ function NotFound() {
                                 <p className="pf-text-center pf-text-base pf-text-black pf-font-bold pf-mb-0">
                                     However, we can create a custom order just for you.
                                 </p>
-                                <Link
-                                    to={`${baseUrl}/inquire/?${q}&step=${step}`}
-                                    className="pf-bg-uneeda-primary pf-text-center pf-px-4 pf-py-3.5 pf-w-full pf-text-lg pf-text-zinc-900 pf-rounded"
+                                <div
+                                    // to={`${baseUrl}/inquire/?${q}&step=${step}`}
+                                    className="pf-bg-uneeda-primary pf-text-center pf-px-4 pf-py-3.5 pf-w-full pf-text-lg pf-text-zinc-900 pf-rounded pf-cursor-pointer"
+                                    onClick={() => {
+                                        console.log("resetData");
+                                        resetData();
+                                    }}
                                 >
                                     Create Custom Order
-                                </Link>
+                                </div>
                             </div>
                         </div>
                     </div>

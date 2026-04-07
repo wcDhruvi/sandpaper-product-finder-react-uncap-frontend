@@ -62,12 +62,18 @@ function ProductFinderProgress() {
 
                             <div className="pf-flex pf-items-center pf-justify-center pf-py-[8px] lg:pf-w-[160px] lg:pf-h-[120px] lg:pf-p-[12px]">
 
-                                <Link
-                                    to={`${resultPageUrl}?${getStringifiedQuery()}`}
-                                    className="pf-text-[#004890] pf-font-bold pf-underline"
-                                >
-                                    Show Results
-                                </Link>
+                                {resultsCount !== 0 ? (
+                                    <Link
+                                        to={`${resultPageUrl}?${getStringifiedQuery()}`}
+                                        className="pf-text-[#004890] pf-font-bold pf-underline hover:pf-no-underline pf-text-[12px] pf-leading-[18px]"
+                                    >
+                                        Show Results
+                                    </Link>
+                                ) : (
+                                    <span className="pf-text-[#004890] pf-font-bold pf-text-[12px] pf-leading-[18px] pf-opacity-50 pf-cursor-not-allowed">
+                                        Show Results
+                                    </span>
+                                )}
 
                             </div>
                         </div>
@@ -84,9 +90,18 @@ function ProductFinderProgress() {
 
                                 <FlippingNumber num={resultsCount} />
 
-                                <Link className="pf-text-[#004890] pf-text-[12px] pf-leading-[18px] pf-font-bold pf-underline" to={`${resultPageUrl}?${getStringifiedQuery()}`}>
-                                    Show Results
-                                </Link>
+                                {resultsCount !== 0 ? (
+                                    <Link 
+                                        className="pf-text-[#004890] pf-text-[12px] pf-leading-[18px] pf-font-bold pf-underline hover:pf-no-underline" 
+                                        to={`${resultPageUrl}?${getStringifiedQuery()}`}
+                                    >
+                                        Show Results
+                                    </Link>
+                                ) : (
+                                    <span className="pf-text-[#004890] pf-text-[12px] pf-leading-[18px] pf-font-bold pf-opacity-50 pf-cursor-not-allowed">
+                                        Show Results
+                                    </span>
+                                )}
 
                             </div>
 
@@ -100,12 +115,18 @@ function ProductFinderProgress() {
             {!isResults ? (material === "Belts" ? (
                 <div className="pf-w-full pf-bg-[#f9fafb] lg:pf-hidden ">
                     <div className="pf-w-full pf-mx-auto pf-flex pf-items-center pf-justify-center pf-py-[8px] lg:pf-w-[160px] lg:pf-h-[120px] lg:pf-p-[12px] container">
-                        <Link
-                            to={`${resultPageUrl}?${getStringifiedQuery()}`}
-                            className="pf-text-[#004890] pf-text-[12px] pf-font-bold pf-leading-[18px] pf-underline"
-                        >
-                            Show results
-                        </Link>
+                        {resultsCount !== 0 ? (
+                            <Link
+                                to={`${resultPageUrl}?${getStringifiedQuery()}`}
+                                className="pf-text-[#004890] pf-text-[12px] pf-font-bold pf-leading-[18px] pf-underline hover:pf-no-underline"
+                            >
+                                Show results
+                            </Link>
+                        ) : (
+                            <span className="pf-text-[#004890] pf-text-[12px] pf-font-bold pf-leading-[18px] pf-opacity-50 pf-cursor-not-allowed">
+                                Show results
+                            </span>
+                        )}
                     </div>
                 </div>
             ) : (
@@ -119,12 +140,18 @@ function ProductFinderProgress() {
 
                             <FlippingNumber num={resultsCount} />
 
-                            <Link 
-                                to={`${resultPageUrl}?${getStringifiedQuery()}`}
-                                className="pf-text-[#004890] pf-text-[12px] pf-font-bold pf-leading-[16px] pf-underline"
-                            >
-                                Show Results
-                            </Link>
+                            {resultsCount !== 0 ? (
+                                <Link 
+                                    to={`${resultPageUrl}?${getStringifiedQuery()}`}
+                                    className="pf-text-[#004890] pf-text-[12px] pf-font-bold pf-leading-[16px] pf-underline hover:pf-no-underline"
+                                >
+                                    Show Results
+                                </Link>
+                            ) : (
+                                <span className="pf-text-[#004890] pf-text-[12px] pf-font-bold pf-leading-[16px] pf-opacity-50 pf-cursor-not-allowed">
+                                    Show Results
+                                </span>
+                            )}
 
                         </div>
                     </div>

@@ -4,26 +4,15 @@ import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
 import InfoCircle from '../ui/InfoCircle';
 import { useAppContext } from '../../hooks/useAppContext';
-import NotFound from '../NotFound';
 import NotAvailable from '../NotAvailable';
 
 const AttachmentTypePicker = () => {
 
-  const { getAttachments, pickAttachment, filtersLoading, resultsCount } = useAppContext();
+  const { getAttachments, pickAttachment } = useAppContext();
 
   const attachments = getAttachments();
 
-  const [isLoaded, setIsLoaded] = useState(false);
   const [showNotAvailable, setShowNotAvailable] = useState("");
-
-  useEffect(() => {
-    setIsLoaded(true);
-  }, []);
-
-  if (isLoaded && !filtersLoading && !resultsCount) {
-    return <NotFound />;
-  }
-
 
   return (
     <>
