@@ -215,9 +215,12 @@ const AppProvider = ({ children }) => {
 
       if (currentIndex !== -1) {
         const toDelete = stepOrder.slice(currentIndex);
-
         for (const key of toDelete) {
           delete base[key];
+
+          if (key === "specmaterial") {
+            delete base.material;
+          }
 
           if (key === "ventedhole" || key === "centerhole") {
             delete base.vented_hole;
@@ -229,6 +232,8 @@ const AppProvider = ({ children }) => {
       } else {
       }
     }
+
+    console.log("base", base);
 
     const {
       material, size, size_height,
