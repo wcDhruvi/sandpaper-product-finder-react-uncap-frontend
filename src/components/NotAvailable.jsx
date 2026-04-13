@@ -3,11 +3,11 @@ import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { useAppContext } from "../hooks/useAppContext";
 import Close from "./icons/Close";
-import { baseUrl } from "../utils/Constants";
+import { baseUrl, inquireUrl } from "../utils/Constants";
 import "../assets/css/NotAvailable.css";
 
 export default function NotAvailable({ onDismiss, option }) {
-    const { getStringifiedQuery, material, step, device } = useAppContext();
+    const { getStringifiedQuery, material, device, getStep, step } = useAppContext();
 
     const [show, setShow] = useState(false);
     const [mounted, setMounted] = useState(false);
@@ -61,16 +61,16 @@ export default function NotAvailable({ onDismiss, option }) {
                             <p className="pf-modal-inquire-text">
                                 Didn't find the product you need?
                             </p>
-                            <Link
-                                to={`${baseUrl}/inquire/?${q}&step=${step}`}
+                            <a
+                                href={`${inquireUrl}?${q}&step=${step}`}
                                 className="pf-modal-btn-yellow"
                             >
                                 Inquire Now
-                            </Link>
+                            </a>
                         </div>
 
                         <Link
-                            to={`${baseUrl}?reset=1&material=${material}&device=${device}&step=size`}
+                            to={`${baseUrl}?reset=1&material=${material}&device=${device}&step=${getStep(device, material)}`}
                             onClick={hide}
                             className="pf-modal-btn-blue"
                         >

@@ -1,8 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import NotFoundIcon from "./icons/NotFound";
 import { useAppContext } from "../hooks/useAppContext";
-import { baseUrl } from "../utils/Constants";
+import { inquireUrl } from "../utils/Constants";
 
 function NotFound() {
 
@@ -10,8 +9,8 @@ function NotFound() {
     const q = getStringifiedQuery();
 
     return (
-        <div className="pf-relative pf-w-full pf-flex">
-            <div className="pf-relative pf-w-screen pf-flex pf-flex-col">
+        <div className="pf-w-full pf-flex container pf-justify-center">
+            <div className=" pf-flex pf-flex-col">
 
                 {/* Main content */}
                 <div className="pf-relative pf-z-10 pf-w-full pf-grow pf-flex pf-flex-col pf-justify-between xl:pf-justify-start pf-gap-6 xl:pf-gap-8 pf-items-center md:pf-mt-4 lg:pf-mt-10">
@@ -45,16 +44,12 @@ function NotFound() {
                                 <p className="pf-text-center pf-text-base pf-text-black pf-font-bold pf-mb-0">
                                     However, we can create a custom order just for you.
                                 </p>
-                                <div
-                                    // to={`${baseUrl}/inquire/?${q}&step=${step}`}
+                                <a
+                                    href={`${inquireUrl}?${q}&step=${step}`}
                                     className="pf-bg-uneeda-primary pf-text-center pf-px-4 pf-py-3.5 pf-w-full pf-text-lg pf-text-zinc-900 pf-rounded pf-cursor-pointer"
-                                    onClick={() => {
-                                        console.log("resetData");
-                                        resetData();
-                                    }}
                                 >
                                     Create Custom Order
-                                </div>
+                                </a>
                             </div>
                         </div>
                     </div>

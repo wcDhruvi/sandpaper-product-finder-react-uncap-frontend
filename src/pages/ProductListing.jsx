@@ -76,7 +76,7 @@ const ProductListing = () => {
         ...selectedFilters,
         store_availability: selectedFilters?.inStock ? 1 : 0,
         page,
-        per_page: 10,
+        per_page: 12,
       };
 
       const res = await apiService.getProducts(payload, {

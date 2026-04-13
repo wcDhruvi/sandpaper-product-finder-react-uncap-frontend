@@ -5,7 +5,7 @@ import { useAppContext } from '../../hooks/useAppContext';
 import NotAvailable from '../NotAvailable';
 import ApplicationBadge from '../ApplicationBadge';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { baseUrl } from '../../utils/Constants';
+import { baseUrl, inquireUrl } from '../../utils/Constants';
 import ApplicationNextButton from '../ui/ApplicationNextButton';
 import { application_groups } from '../../utils/Constants';
 
@@ -38,7 +38,7 @@ const ApplicationPicker = () => {
         if (!filtersLoading && wasLoading) {
             if (material?.match(/belt/i) && !availableFilters.Surface.length) {
                 if (material !== "Belts") {
-                    navigate(`${baseUrl}/inquire/?` + getStringifiedQuery());
+                    window.location.href = `${inquireUrl}?` + getStringifiedQuery();
                 }
             }
         }
@@ -80,7 +80,7 @@ const ApplicationPicker = () => {
 
     const handleNavigate = () => {
         const query = getStringifiedQuery();
-        navigate(`${baseUrl}/inquire/?${query}`);
+        window.location.href = `${inquireUrl}?${query}`;
     };
 
     return (

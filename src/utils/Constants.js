@@ -4,6 +4,7 @@ export const ApiBaseUrl = "https://productfinder.sandpaper.com/api"
 
 export const baseUrl = "/pages/product-finder"
 export const resultPageUrl = `${baseUrl}/results`
+export const inquireUrl = "/pages/inquire-about"
 
 export const apiService = ApiService();
 export const PFShopId = window.PFStoreDetails.shopId;
@@ -419,7 +420,8 @@ export const defaultAppValue = {
     
     resetData: (redirect) => { },
     replaceData: (data) => { },
-    resetSomeData: (key) => { }
+    resetSomeData: (key) => { },
+    getStep: (device, material) => { }
 };
 
 

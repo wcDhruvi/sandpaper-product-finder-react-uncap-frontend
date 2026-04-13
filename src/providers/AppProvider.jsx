@@ -7,11 +7,10 @@ import React, {
   useMemo
 } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { configuration_namespaceObject, resultPageUrl } from "../utils/Constants"
+import { configuration_namespaceObject, inquireUrl, resultPageUrl } from "../utils/Constants"
 import { computeStepOrder } from "../utils/Common"
 import qs from "qs";
 import * as DataService from "../utils/DataService";
-
 
 /* -----------------------------------------
    IMPORT YOUR DATA FILES
@@ -26,7 +25,6 @@ import {
   PFShopDomain,
   baseUrl
 } from "../utils/Constants";
-
 
 /* -----------------------------------------
    CONTEXT
@@ -163,15 +161,16 @@ const AppProvider = ({ children }) => {
   useEffect(() => {
 
     if (!step) return;
-
     const query = getStringifiedQuery();
-
     let path = baseUrl;
-
-    if (step === "inquire") path = `${baseUrl}/inquire`;
+    if (step === "inquire") path =  inquireUrl;
     if (step === "results") path = resultPageUrl;
 
-    navigate(`${path}?${query}&step=${step}`, { replace: false });
+    if (path === inquireUrl) {
+      window.location.href = `${path}?${query}&step=${step}`;
+    } else {
+      navigate(`${path}?${query}&step=${step}`, { replace: false });
+    }
 
   }, [step, getStringifiedQuery]);
 
@@ -204,6 +203,7 @@ const AppProvider = ({ children }) => {
   /* -----------------------------------------
      FETCH RESULTS
   ----------------------------------------- */
+
   const getPayload = useCallback(() => {
 
     const body = prepareSearchBody();
@@ -217,23 +217,18 @@ const AppProvider = ({ children }) => {
         const toDelete = stepOrder.slice(currentIndex);
         for (const key of toDelete) {
           delete base[key];
-
           if (key === "specmaterial") {
             delete base.material;
           }
-
           if (key === "ventedhole" || key === "centerhole") {
             delete base.vented_hole;
             delete base.center_hole;
             delete base.center_hole_size;
           }
         }
-
       } else {
       }
     }
-
-    console.log("base", base);
 
     const {
       material, size, size_height,
@@ -326,12 +321,9 @@ const AppProvider = ({ children }) => {
     };
   }, []);
 
-
   useEffect(() => {
     fetchResults();
   }, [pickedData, fetchResults]);
-
-
 
   /* -----------------------------------------
      STEP HANDLER
@@ -446,6 +438,35 @@ const AppProvider = ({ children }) => {
   };
 
   /* -----------------------------------------
+     NEXT STEP CALCULATOR
+  ----------------------------------------- */
+
+  const getStep = useCallback((device = "", material = "") => {
+    // 1. Check for specmaterial (Hand Sanding or Rectangular)
+    if (device === "Hand Sanding" || device === "Rectangular Orbital Sander") {
+      if (!material) return "specmaterial";
+    }
+
+    // 2. Check for size
+    const showSize =
+      (material === "Sponges" &&
+        (device === "Disc Orbital Sander" ||
+          device === "Rectangular Orbital Sander")) ||
+      (material !== "Sponges" &&
+        (device !== "Hand Sanding" || material === "Sheets"));
+
+    if (showSize) return "size";
+
+    // 3. Check for thickness
+    if (material === "Sponges" || (!material && device === "Hand Sanding")) {
+      return "thickness";
+    }
+
+    // Default fallback
+    return "size";
+  }, []);
+
+  /* -----------------------------------------
      SIZE
   ----------------------------------------- */
 
@@ -499,7 +520,6 @@ const AppProvider = ({ children }) => {
     if (pickedMaterial === "Sheets") setStep("ventedhole");
     if (pickedMaterial === "Rolls") setStep("application");
   };
-
 
   /* -----------------------------------------
      CENTER HOLE
@@ -615,7 +635,6 @@ const AppProvider = ({ children }) => {
      DATA HELPERS
   ----------------------------------------- */
 
-
   const getSizes = () => DataService.getSizes(pickedData);
 
   const getThicknesses = () => DataService.getThicknesses();
@@ -633,9 +652,6 @@ const AppProvider = ({ children }) => {
   const getVentedHoles = () => DataService.getVentedHoles(pickedData);
 
   const getBackingMaterials = () => DataService.getBackingMaterials(pickedData);
-
-
-
 
   /* -----------------------------------------
      CONTEXT VALUE
@@ -687,6 +703,8 @@ const AppProvider = ({ children }) => {
     resetData,
     replaceData,
     resetSomeData,
+
+    getStep,
 
     stepOrder,
     stepOrderFull,
