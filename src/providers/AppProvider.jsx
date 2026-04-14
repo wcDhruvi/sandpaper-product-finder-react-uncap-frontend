@@ -163,7 +163,7 @@ const AppProvider = ({ children }) => {
     if (!step) return;
     const query = getStringifiedQuery();
     let path = baseUrl;
-    if (step === "inquire") path =  inquireUrl;
+    if (step === "inquire") path = inquireUrl;
     if (step === "results") path = resultPageUrl;
 
     if (path === inquireUrl) {
@@ -211,7 +211,8 @@ const AppProvider = ({ children }) => {
 
     const currentStep = step ?? searchParams.get("step");
     if (currentStep && stepOrder.length) {
-      const currentIndex = stepOrder.indexOf(currentStep);
+      const newStep = currentStep === "ventedhole" || currentStep === "centerhole" || currentStep === "centerholesize" ? "centerhole" : currentStep
+      const currentIndex = stepOrder.indexOf(newStep);
 
       if (currentIndex !== -1) {
         const toDelete = stepOrder.slice(currentIndex);
