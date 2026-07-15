@@ -6,9 +6,24 @@ import { Link } from "react-router-dom";
  * Displays individual product details in a grid format with image, title, SKU, and actions.
  */
 const ProductCard = ({ product }) => {
+    // Helper function to safely parse JSON
+    const parseJsonSafely = (data) => {
+        if (typeof data === 'string') {
+            try {
+                return JSON.parse(data);
+            } catch (e) {
+                return [];
+            }
+        }
+        return Array.isArray(data) ? data : [];
+    };
+
+    const images = parseJsonSafely(product.images_json);
+    const variants = parseJsonSafely(product.variants_json);
+
     // Extract primary image, SKU, and target URL
-    const firstImage = product.images_json?.find((img) => img?.src)?.src;
-    const firstAvailableSkuVariant = product.variants_json?.find((variant) => variant?.sku);
+    const firstImage = images.find((img) => img?.src)?.src;
+    const firstAvailableSkuVariant = variants.find((variant) => variant?.sku);
     const firstSKU = firstAvailableSkuVariant?.sku || null;
     const handleUrl = `/products/${product.handle}`;
 
