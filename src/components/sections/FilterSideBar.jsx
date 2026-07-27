@@ -6,10 +6,17 @@ import { useAppContext } from '../../hooks/useAppContext';
 
 const FilterSideBar = ({ setSelectedFilters, selectedFilters }) => {
 
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [openSections, setOpenSections] = useState({
+        availability: true,
+        grit: true,
+        grain: true,
+    });
 
-    const toggleAccordion = (index) => {
-        setActiveIndex((prev) => (prev === index ? null : index));
+    const toggleSection = (section) => {
+        setOpenSections((prev) => ({
+            ...prev,
+            [section]: !prev[section],
+        }));
     };
 
     const {
@@ -43,8 +50,8 @@ const FilterSideBar = ({ setSelectedFilters, selectedFilters }) => {
             {/* Availability */}
             <AccordionItem
                 title="Availability"
-                isOpen={activeIndex === 0}
-                onClick={() => toggleAccordion(0)}
+                isOpen={openSections.availability}
+                onClick={() => toggleSection("availability")}
             >
                 <Switch
                     checked={selectedFilters.inStock}
@@ -60,8 +67,8 @@ const FilterSideBar = ({ setSelectedFilters, selectedFilters }) => {
             {/* Grit */}
             <AccordionItem
                 title="Grit"
-                isOpen={activeIndex === 1}
-                onClick={() => toggleAccordion(1)}
+                isOpen={openSections.grit}
+                onClick={() => toggleSection("grit")}
             >
                 <FilterList
                     data={filterWithCount["grit"]}
@@ -74,8 +81,8 @@ const FilterSideBar = ({ setSelectedFilters, selectedFilters }) => {
             {/* Grain */}
             <AccordionItem
                 title="Grain"
-                isOpen={activeIndex === 2}
-                onClick={() => toggleAccordion(2)}
+                isOpen={openSections.grain}
+                onClick={() => toggleSection("grain")}
             >
                 <FilterList
                     data={filterWithCount["grain"]}
