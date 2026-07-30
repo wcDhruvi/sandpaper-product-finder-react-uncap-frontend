@@ -148,6 +148,29 @@
     @apply pf-bg-[#D8D8D8];
   }
 
+  /* =====================================================
+     PRODUCT BADGES
+  ===================================================== */
+  .pf-product-card--badges {
+    @apply pf-absolute pf-z-[5] pf-pointer-events-none;
+  }
+
+  .pf-product-card--badges.pf-top {
+    @apply pf-top-0;
+  }
+
+  .pf-product-card--badges.pf-left {
+    @apply pf-left-0;
+  }
+
+  .pf-badge {
+    @apply pf-inline-flex pf-items-center pf-text-white pf-text-[12px] pf-font-bold pf-h-max -pf-rotate-[10deg] pf-pt-0 pf-px-[3px] pf-pb-[2px] pf-uppercase pf-leading-[18px];
+  }
+
+  .pf-badge.pf-out-of-stock {
+    @apply pf-bg-[#7a7a7a];
+  }
+
 }
 
 .pf-section-spacing-padding {

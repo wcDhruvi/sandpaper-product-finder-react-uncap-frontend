@@ -21,6 +21,33 @@ const ProductCard = ({ product }) => {
     const images = parseJsonSafely(product.images_json);
     const variants = parseJsonSafely(product.variants_json);
 
+    // Check if product is sold out
+    const isSoldOut = (() => {
+      
+        if (!Array.isArray(variants) || variants.length === 0) {
+            return false;
+        }
+
+        return variants.every((v) => {
+            if (!v) return true;
+
+            const availableForSale = v.availableForSale === true || v.availableForSale === 'true';
+            const qty = typeof v.sellableOnlineQuantity === 'number'
+                ? v.sellableOnlineQuantity
+                : Number(v.sellableOnlineQuantity || v.inventory_quantity || 0);
+            const policy = v.inventoryPolicy;
+
+            if (typeof v.availableForSale !== 'undefined') {
+                if (availableForSale) return false;
+                if (policy === 'CONTINUE') return false;
+                return true;
+            }
+
+            if (policy === 'CONTINUE') return false;
+            return qty <= 0;
+        });
+    })();
+
     // Extract primary image, SKU, and target URL
     const firstImage = images.find((img) => img?.src)?.src;
     const firstAvailableSkuVariant = variants.find((variant) => variant?.sku);
@@ -34,6 +61,11 @@ const ProductCard = ({ product }) => {
             <div className="pf-flex pf-flex-col pf-h-full pf-bg-white pf-p-[15px] pf-border pf-border-[#eee] pf-gap-[15px]">
                 {/* IMAGE */}
                 <div className="pf-relative">
+                    {isSoldOut && (
+                        <span className="pf-product-card--badges pf-top pf-left">
+                            <span className="pf-badge pf-out-of-stock">Sold out</span>
+                        </span>
+                    )}
                     <a className="pf-block pf-relative pf-w-full pf-pt-[100%] pf-overflow-hidden" href={handleUrl}>
                         {firstImage ? (
                             <img
@@ -69,12 +101,12 @@ const ProductCard = ({ product }) => {
                     </div>
 
                     {/* BUTTON */}
-                    <a
+                        <a
                         href={`/products/${product.handle}`}
-                        className="pf-mt-auto pf-h-[36px] pf-flex pf-items-center pf-justify-center pf-rounded-[3px] pf-bg-uneeda-primary pf-text-black pf-text-[12px] pf-leading-[18px] md:pf-text-[14px] md:pf-leading-[20px] pf-font-bold hover:pf-bg-uneeda-hover-primary"
-                    >
-                        Show Product
-                    </a>
+                            className="pf-mt-auto pf-h-[36px] pf-flex pf-items-center pf-justify-center pf-rounded-[3px] pf-bg-uneeda-primary pf-text-black pf-text-[12px] pf-leading-[18px] md:pf-text-[14px] md:pf-leading-[20px] pf-font-bold hover:pf-bg-uneeda-hover-primary"
+                        >
+                            Show Product
+                        </a>
                 </div>
             </div>
         </li>
