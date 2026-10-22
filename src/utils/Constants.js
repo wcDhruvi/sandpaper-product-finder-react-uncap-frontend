@@ -8,7 +8,7 @@ export const inquireUrl = "/pages/inquire-about"
 
 export const apiService = ApiService();
 export const PFShopId = window.PFStoreDetails.shopId;
-export const PFShopDomain = window.PFStoreDetails.shopDomain;
+export const PFShopDomain = Shopify.shop;
 
 
 
@@ -417,7 +417,7 @@ export const defaultAppValue = {
     pickBackingMaterial: (mat) => { },
     pickThickness: (thick) => { },
     pickAdditionalFilters: (filters) => { },
-    
+
     resetData: (redirect) => { },
     replaceData: (data) => { },
     resetSomeData: (key) => { },
