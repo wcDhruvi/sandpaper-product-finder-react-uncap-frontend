@@ -3,12 +3,12 @@ import { useAppContext } from "../../hooks/useAppContext";
 
 function FlippingNumber({ num }) {
 
-    if (num > 9999) {
-        num = 9999;
+    if (num > 99999) {
+        num = 99999;
     }
     let s = num.toString();
-    if (s.length < 4) {
-        s = s.padStart(4, " ");
+    if (s.length < 5) {
+        s = s.padStart(5, " ");
     }
 
     const { filtersLoading } = useAppContext();
@@ -19,8 +19,8 @@ function FlippingNumber({ num }) {
                 {s.split("").map((elem, index) => (
                     <div
                         key={index}
-                        className="pf-flex pf-w-[36px] pf-h-[36px] pf-py-[5px] pf-px-[10px]
-                    pf-justify-center pf-items-center
+                        className="pf-flex pf-w-[36px] max-[320px]:pf-w-[30px] pf-h-[36px] max-[320px]:pf-h-[30px] pf-py-[5px] pf-px-[10px]
+                     pf-justify-center pf-items-center
                     pf-rounded-[6px]
                     pf-bg-[rgba(255,255,255,0.40)]"
                     >
@@ -32,7 +32,7 @@ function FlippingNumber({ num }) {
                        pf-text-center
                        pf-text-[18px]
                        pf-font-bold
-                       pf-leading-[26px] pf-number"
+                       pf-leading-[26px] max-[320px]:pf-text-[16px] pf-number"
                         >
                             {elem}
                         </span>
